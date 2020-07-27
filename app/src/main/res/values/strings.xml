@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">UniMag</string>
+    <string name="title_catalog">Каталог</string>
+    <string name="title_news">Новости</string>
+    <string name="title_personal_area">Личный кабинет</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="register">Register</string>
+    <string name="registration">Registration</string>
+    <string name="n">Ещё не зарегистрированы?\nЗарегистрируйтесь прямо сейчас!</string>
+    <string name="vxod">Войти</string>
+    <string name="vxod2">Вход</string>
+    <string name="register2Top">Заполните необходимые данные!</string>
+    <string name="name">Имя</string>
+    <string name="surname">Фамилия</string>
+    <string name="secondSurname">Отчество</string>
+    <string name="kod">Введите код, который был отправлен на вашу почту.</string>
+    <string name="vvedite_kod">Введите код</string>
+    <string name="title_basket">Корзина</string>
+</resources>
