@@ -74,7 +74,7 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
 
     public void setDescriptionProduct(String description){ //Функция установки значения описания продукта
         TextView descriptionProduct = getView().findViewById(R.id.description_product);
-        descriptionProduct.setText(description);
+        descriptionProduct.setText("Описание: " + description);
     }
 
     public void setInformationAboutProduct(){ //Функция установки всей информации о продукте

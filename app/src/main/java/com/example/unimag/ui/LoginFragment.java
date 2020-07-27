@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,6 +39,27 @@ public class LoginFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        ImageButton showPassword = getView().findViewById(R.id.show_password_in_login);
+
+        showPassword.setOnClickListener(new View.OnClickListener() { //Создание листенера для кнопки "Показать пароль"
+            @Override
+            public void onClick(View e) {
+                //System.out.println(password.getInputType());
+                //Если пароль невиден
+                if (password.getInputType() == 131201) {
+                    password.setInputType(1);
+                    password.setSelection(password.getText().length()); //Установка курсора в конец ввода
+                    showPassword.setColorFilter(getResources().getColor(R.color.light_blue)); //Покраска знака глаза
+                }
+                //Если пароль виден
+                else if (password.getInputType() == 1) {
+                    password.setInputType(131201);
+                    password.setSelection(password.getText().length());
+                    showPassword.setColorFilter(getResources().getColor(R.color.black));
+                }
+            }
+        });
 
         Button register = getView().findViewById(R.id.button_register);
         Button vhod = getView().findViewById(R.id.button_vxod);

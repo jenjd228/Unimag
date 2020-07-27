@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -68,6 +70,32 @@ public class RegisterFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         Button b = getView().findViewById(R.id.register_button);
+        ImageButton showPassword = getView().findViewById(R.id.show_password_in_registr);
+        EditText editPassword1 = getView().findViewById(R.id.password);
+        EditText editPassword2 = getView().findViewById(R.id.repeatPassword);
+
+        showPassword.setOnClickListener(new View.OnClickListener() { //Создание листенера для кнопки "Показать пароль"
+            @Override
+            public void onClick(View e) {
+                //Если пароль невиден
+                if (editPassword1.getInputType() == 131201) {
+                    editPassword1.setInputType(1);
+                    editPassword2.setInputType(1);
+                    editPassword1.setSelection(editPassword1.getText().length()); //Установка курсора в конец ввода
+                    editPassword2.setSelection(editPassword2.getText().length()); //Установка курсора в конец ввода
+                    showPassword.setColorFilter(getResources().getColor(R.color.light_blue)); //Покраска знака глаза
+                }
+                //Если пароль виден
+                else if (editPassword1.getInputType() == 1) {
+                    editPassword1.setInputType(131201);
+                    editPassword2.setInputType(131201);
+                    editPassword1.setSelection(editPassword1.getText().length()); //Установка курсора в конец ввода
+                    editPassword2.setSelection(editPassword2.getText().length()); //Установка курсора в конец ввода
+                    showPassword.setColorFilter(getResources().getColor(R.color.black));
+                }
+            }
+        });
+
         b.setOnClickListener(e -> {
             String email2 = String.valueOf(email.getText());
             String password2 = String.valueOf(password.getText());
@@ -75,6 +103,7 @@ public class RegisterFragment extends Fragment {
             boolean pas = checkPassword(password2);
             boolean repPas = checkRepeatPassword(password2,repeatPassword2);
             boolean em = checkEmail(email2);
+            TextView viewError = getView().findViewById(R.id.text_hint_registration); //TextView с подсказкой об ошибке
 
 
             if (repPas && pas && em){ //если пароль email правильный
@@ -86,22 +115,27 @@ public class RegisterFragment extends Fragment {
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
                 }
-                goToNextFragmentRegistration();
             }
             if (!pas){
                 Toast toast = Toast.makeText(this.getContext(),
                         "Некорректный пароль !", Toast.LENGTH_SHORT);
                 toast.show();
+                viewError.setTextColor(getResources().getColor(R.color.colorPrimary)); //Установка красного цвета
+                viewError.setText("Ошибка: некорректный пароль !\nПароль должен состоять из латинских букв и содержать как минимум 1 цифру, 1 знак, 1 заглавную букву и 1 маленькую букву.\nДлина пароля не менее 6 символов.");
             }
             if (!repPas){
                 Toast toast = Toast.makeText(this.getContext(),
                         "Пароли не совпадают !", Toast.LENGTH_SHORT);
                 toast.show();
+                viewError.setTextColor(getResources().getColor(R.color.colorPrimary));
+                viewError.setText("Ошибка: пароли не совпадают");
             }
             if(!em){
                 Toast toast = Toast.makeText(this.getContext(),
                         "Некорректный email !", Toast.LENGTH_SHORT);
                 toast.show();
+                viewError.setTextColor(getResources().getColor(R.color.colorPrimary));
+                viewError.setText("Ошибка: некорректный Email");
             }
         });
     }

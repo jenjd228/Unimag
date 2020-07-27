@@ -10,6 +10,9 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -145,9 +148,40 @@ public class MyCabinetFragment extends Fragment {
         setBalls(points);
     }
 
+    //Установка бокового меню
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_fragment_my_cabinet, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+
+    //Реагирования пунктов меню на нажатие
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //Нажат пункт меню
+        switch (item.getItemId()) {
+            //Если нажат пункт "Редактировать профиль"
+            case R.id.action_settings:
+                FragmentManager manager = getFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+                transaction.replace(MyCabinetFragment.this.getId(), new EditProfileFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
+                return true;
+            //Если нажат пункт "Выйти"
+            case R.id.action_exit:
+                //Прописать
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
 
         //Установка onClickListener'a для кнопки "Мои заказы"
         TextView buttonMyOrders = requireView().findViewById(R.id.button_orders);
