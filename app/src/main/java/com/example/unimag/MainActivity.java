@@ -7,6 +7,7 @@ import android.util.Log;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -45,9 +46,26 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        //FragmentManager manager = this.getSupportFragmentManager();
-        //manager.popBackStack("Catalog",FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        if (!recursivePopBackStack(getSupportFragmentManager())) {
+            super.onBackPressed();
+        }
+    }
+
+    private boolean recursivePopBackStack(FragmentManager fragmentManager) {
+        for (Fragment fragment : fragmentManager.getFragments()) {
+            if (fragment != null && fragment.isVisible()) {
+                if (recursivePopBackStack(fragment.getChildFragmentManager())) {
+                    return true;
+                }
+            }
+        }
+
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+            return true;
+        }
+
+        return false;
     }
 
     @Override

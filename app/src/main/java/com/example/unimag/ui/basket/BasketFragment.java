@@ -72,23 +72,34 @@ public class BasketFragment extends Fragment {
         TextView buttonReady = requireView().findViewById(R.id.button_oformlenie_order);
         buttonReady.setOnClickListener(e -> {
 
-            List<BasketProductDTO> products = gridAdapterBasket.getProductList();
-
-            StringBuilder stringBuilder = new StringBuilder();
-            for (int i = 0;i<products.size();i++){
-                if (i == products.size()-1){
-                    stringBuilder.append(products.get(i).getProductId());
-                    break;
-                }
-                stringBuilder.append(products.get(i).getProductId()).append(",");
+            List<BasketProductDTO> products = new ArrayList<>();
+            if (gridAdapterBasket.getProductList()!=null){
+              products = gridAdapterBasket.getProductList();
             }
+            System.out.println(gridAdapterBasket.getProductList());
+            System.out.println(products.size());
+            if (products.size()!=0){
+                StringBuilder stringBuilder = new StringBuilder();
+                for (int i = 0;i<products.size();i++){
+                    if (i == products.size()-1){
+                        stringBuilder.append(products.get(i).getProductId());
+                        break;
+                    }
+                    stringBuilder.append(products.get(i).getProductId()).append(",");
+                }
+                if (stringBuilder.length()!=0){
+                    AddRequest addRequest = new AddRequest(stringBuilder.toString(),secureKod,"addToOrders");
+                    addRequest.execute();
 
-            AddRequest addRequest = new AddRequest(stringBuilder.toString(),secureKod,"addToOrders");
-            addRequest.execute();
-
-            Toast toast = Toast.makeText(getContext(),
-                    "Заказ оформлен!", Toast.LENGTH_LONG);
-            toast.show();
+                    Toast toast = Toast.makeText(getContext(),
+                            "Заказ оформлен!", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+            }else {
+                Toast toast = Toast.makeText(getContext(),
+                        "Корзина пуста!", Toast.LENGTH_LONG);
+                toast.show();
+            }
         });
     }
 

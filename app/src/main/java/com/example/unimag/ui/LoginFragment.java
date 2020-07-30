@@ -41,6 +41,7 @@ public class LoginFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         ImageButton showPassword = getView().findViewById(R.id.show_password_in_login);
+        password = getView().findViewById(R.id.inputPassword);
 
         showPassword.setOnClickListener(new View.OnClickListener() { //Создание листенера для кнопки "Показать пароль"
             @Override

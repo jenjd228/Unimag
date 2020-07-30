@@ -82,6 +82,8 @@ public class CatalogFragment extends Fragment {
                 customGridAdapter.addList(participantJsonList);
                 currentNumberList++;
             }
+        }else {
+            gridView.setAdapter(customGridAdapter);
         }
 
         gridView.setOnItemClickListener((a, v, position, id) -> {

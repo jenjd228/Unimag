@@ -50,12 +50,12 @@ public class RegisterFragment2 extends Fragment {
     public void onStart() {
         super.onStart();
         try {
-            birthDay =  getActivity().findViewById(R.id.birthDay);
-            birthMonth =  getActivity().findViewById(R.id.birthMonth);
-            birthYear =  getActivity().findViewById(R.id.birthYear);
-            name =  getActivity().findViewById(R.id.name);
-            surname =  getActivity().findViewById(R.id.surname);
-            secondSurname =  getActivity().findViewById(R.id.secondSurname);
+            birthDay =  getView().findViewById(R.id.birthDay);
+            birthMonth =  getView().findViewById(R.id.birthMonth);
+            birthYear =  getView().findViewById(R.id.birthYear);
+            name =  getView().findViewById(R.id.name);
+            surname =  getView().findViewById(R.id.surname);
+            secondSurname =  getView().findViewById(R.id.secondSurname);
         }  catch (NullPointerException e){
             System.out.println(e.getMessage());
         }
