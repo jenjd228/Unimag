@@ -6,7 +6,7 @@
         android:id="@+id/navigation_catalog"
         android:icon="@drawable/ic_catalog_black_24_dp"
         android:title="@string/title_catalog"
-        app:showAsAction="withText"/>
+        app:showAsAction="withText" />
 
     <item
         android:id="@+id/navigation_news"

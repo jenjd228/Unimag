@@ -50,11 +50,11 @@ public class RegisterKodFragment extends Fragment {
         Button b = getView().findViewById(R.id.register_button_kod);
         b.setOnClickListener(e -> {
             String kod1 = kod.getText().toString();
-            checkByKod(kod1);
+           // checkByKod(kod1);
         });
     }
 
-    private void checkByKod(String kod){
+    /*private void checkByKod(String kod){
 
         CreateAndSendRequast createAndSendRequast = new CreateAndSendRequast(kod);
         createAndSendRequast.execute();
@@ -117,5 +117,5 @@ public class RegisterKodFragment extends Fragment {
             return String.valueOf(random.nextInt(rage));
         }
 
-    }
+    }*/
 }

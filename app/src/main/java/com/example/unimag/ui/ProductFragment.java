@@ -51,6 +51,7 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
         View root = inflater.inflate(R.layout.fragment_product, container, false);
         return root;
     }
@@ -69,7 +70,7 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
         //setImageURI(Uri uri) — загружает изображение по его URI
         ImageView imageProduct = getView().findViewById(R.id.image_product);
 
-        Glide.with(getView()).load("http://192.168.31.143:8080/upload/"+url).into(imageProduct);
+        Glide.with(getView()).load("http://"+GlobalVar.ip+":8080/upload/"+url).into(imageProduct);
     }
 
     public void setDescriptionProduct(String description){ //Функция установки значения описания продукта

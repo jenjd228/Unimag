@@ -31,6 +31,7 @@ import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
 
 import com.example.unimag.R;
+import com.example.unimag.ui.ThreadCheckingConnection;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -79,6 +80,7 @@ public class MyCabinetFragment extends Fragment {
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
         View root = inflater.inflate(R.layout.fragment_my_cabinet, container, false);
         return root;
     }

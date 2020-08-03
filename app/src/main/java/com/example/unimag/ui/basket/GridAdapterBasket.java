@@ -17,8 +17,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.unimag.R;
-import com.example.unimag.ui.CreateAndSendRequest;
 import com.example.unimag.ui.DTO.BasketProductDTO;
+import com.example.unimag.ui.GlobalVar;
 import com.example.unimag.ui.Request.AddRequest;
 import com.example.unimag.ui.Request.DeleteRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
@@ -98,7 +98,7 @@ public class GridAdapterBasket  extends BaseAdapter {
         //int imageId = this.getMipmapResIdByName("image");
 
         //holder.imageView.setImageResource(imageId);
-        Glide.with(convertView).load("http://192.168.31.143:8080/upload/"+product.getImageName()).into(holder.imageView);
+        Glide.with(convertView).load("http://"+ GlobalVar.ip +":8080/upload/"+product.getImageName()).into(holder.imageView);
 
         holder.deleteButton.setOnClickListener(v -> {
             DeleteRequest deleteRequest = new DeleteRequest(secureKod,product.getProductId(),"deleteBasketProduct");

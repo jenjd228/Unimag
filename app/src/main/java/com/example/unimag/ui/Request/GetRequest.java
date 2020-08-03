@@ -1,6 +1,7 @@
 package com.example.unimag.ui.Request;
 import android.os.AsyncTask;
 
+import com.example.unimag.ui.GlobalVar;
 import com.example.unimag.ui.basket.GridAdapterBasket;
 import com.example.unimag.ui.catalog.CustomGridAdapter;
 
@@ -36,21 +37,21 @@ public class GetRequest extends AsyncTask<Void, Void, String> {
         switch (methodName){
             case "getBasketList":{
                 request = new Request.Builder()
-                        .url("http://192.168.31.143:8080/getBasketList/"+secureKod) // The URL to send the data to
+                        .url("http://"+ GlobalVar.ip +":8080/getBasketList/"+secureKod) // The URL to send the data to
                         .get()
                         .build();
                 break;
             }
             case "getList":{
                 request = new Request.Builder()
-                        .url("http://192.168.31.143:8080/getList/"+currentNumberList) // The URL to send the data to
+                        .url("http://"+ GlobalVar.ip +":8080/getList/"+currentNumberList) // The URL to send the data to
                         .get()
                         .build();
                 break;
             }
             case "getUser":{
                 request = new Request.Builder()
-                        .url("http://192.168.31.143:8080/getUser/"+secureKod) // The URL to send the data to
+                        .url("http://"+ GlobalVar.ip +":8080/getUser/"+secureKod) // The URL to send the data to
                         .get()
                         .build();
                 break;
@@ -63,8 +64,8 @@ public class GetRequest extends AsyncTask<Void, Void, String> {
             return result;
         } catch (IOException e) {
             e.printStackTrace();
+            return "";
         }
-        return null;
     }
 
     @Override

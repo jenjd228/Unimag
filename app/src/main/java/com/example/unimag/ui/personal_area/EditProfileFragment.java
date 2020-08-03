@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.unimag.R;
+import com.example.unimag.ui.ThreadCheckingConnection;
 
 public class EditProfileFragment extends Fragment {
 
@@ -38,6 +39,7 @@ public class EditProfileFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
         root = inflater.inflate(R.layout.fragment_edit_profile, container, false);
         return root;
     }

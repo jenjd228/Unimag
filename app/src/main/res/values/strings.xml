@@ -3,6 +3,7 @@
     <string name="title_catalog">Каталог</string>
     <string name="title_news">Новости</string>
     <string name="title_personal_area">Личный кабинет</string>
+    <string name="ip">192.168.0.85</string>
     <string name="email">Email</string>
     <string name="password">Пароль</string>
     <string name="repeat_password">Повторите пароль</string>

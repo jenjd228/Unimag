@@ -16,12 +16,9 @@ import androidx.annotation.RequiresApi;
 
 import com.bumptech.glide.Glide;
 import com.example.unimag.R;
-import com.example.unimag.ui.DTO.BasketProductDTO;
 import com.example.unimag.ui.DTO.OrderDTO;
+import com.example.unimag.ui.GlobalVar;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class GridAdapterOrder extends BaseAdapter {
@@ -82,7 +79,7 @@ public class GridAdapterOrder extends BaseAdapter {
         //int imageId = this.getMipmapResIdByName(order.getImageName());
         //Вставка изображения
         //holder.imageOrderView.setImageResource(imageId);
-        Glide.with(convertView).load("http://192.168.31.143:8080/upload/"+order.getImageName()).into(holder.imageOrderView);
+        Glide.with(convertView).load("http://"+ GlobalVar.ip +":8080/upload/"+order.getImageName()).into(holder.imageOrderView);
 
         return convertView;
     }

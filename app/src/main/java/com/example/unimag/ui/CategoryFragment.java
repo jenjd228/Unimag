@@ -1,12 +1,10 @@
 package com.example.unimag.ui;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,33 +16,46 @@ import com.example.unimag.R;
 import com.example.unimag.ui.catalog.CatalogFragment;
 
 
-
 public class CategoryFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_category, container, false);
-        return root;
-    }
 
-    public interface OnSelectedButtonListener { //Интерфейс для связи с Activity
-        void onButtonSelected(String category);
+        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute(); //Если дисконект
+
+        return root;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //Создание функции передающей данные между фрагментами
-        TextView buttonSouvenirs = getView().findViewById(R.id.souvenirs);
-        buttonSouvenirs.setOnClickListener(new View.OnClickListener() { //Создание листенера для кнопки "Показать еще"
+        LinearLayout viewClothes = getView().findViewById(R.id.clothes);
+        LinearLayout viewSouvenirs = getView().findViewById(R.id.souvenirs);
+
+
+        viewClothes.setOnClickListener(new View.OnClickListener() { //Создание листенера для кнопки "Одежда"
+            @Override
+            public void onClick(View v) {
+                //Передача информации (мб в MySQL)
+
+                //Переход обратно во вкладку каталога
+                FragmentManager manager = getFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+                transaction.replace(CategoryFragment.this.getId(), new CatalogFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
+
+        viewSouvenirs.setOnClickListener(new View.OnClickListener() { //Создание листенера для кнопки "Сувениры"
             @Override
             public void onClick(View e) {
-                //Связывание с Activity
-                OnSelectedButtonListener listener = (OnSelectedButtonListener) getActivity();
-                //Выполнение функции onButtonSelected, объявленной в Activity, для дальнейшей передачи информации фрагменту
-                listener.onButtonSelected("Сувениры");
+                //Передача информации (мб в MySQL)
+
                 //Переход обратно во вкладку каталога
-                FragmentManager manager = CategoryFragment.this.getFragmentManager();
+                FragmentManager manager = getFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
                 transaction.replace(CategoryFragment.this.getId(), new CatalogFragment());
                 transaction.addToBackStack(null);

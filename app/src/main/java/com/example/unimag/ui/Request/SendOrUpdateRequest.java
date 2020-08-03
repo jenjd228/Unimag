@@ -2,6 +2,7 @@ package com.example.unimag.ui.Request;
 
 import android.os.AsyncTask;
 
+import com.example.unimag.ui.GlobalVar;
 import com.example.unimag.ui.basket.GridAdapterBasket;
 import com.example.unimag.ui.catalog.CustomGridAdapter;
 
@@ -45,7 +46,7 @@ public class SendOrUpdateRequest extends AsyncTask<Void, Void, String> {
                         .add("email",email)
                         .build();
                 request = new Request.Builder()
-                        .url("http://192.168.31.143:8080/sendMessage")
+                        .url("http://"+ GlobalVar.ip +":8080/sendMessage")
                         .post(formBody)
                         .build();
                 break;
@@ -56,7 +57,7 @@ public class SendOrUpdateRequest extends AsyncTask<Void, Void, String> {
                         .add("password",  password)
                         .build();
                 request = new Request.Builder()
-                        .url("http://192.168.31.143:8080/firstUpdate")
+                        .url("http://"+ GlobalVar.ip +":8080/firstUpdate")
                         .post(formBody)
                         .build();
                 break;
@@ -68,7 +69,7 @@ public class SendOrUpdateRequest extends AsyncTask<Void, Void, String> {
                         .add("birthData",  birthDay)
                         .build();
                 request = new Request.Builder()
-                        .url("http://192.168.31.143:8080/userUpdate")
+                        .url("http://"+ GlobalVar.ip +":8080/userUpdate")
                         .post(formBody)
                         .build();
                 break;
@@ -81,8 +82,8 @@ public class SendOrUpdateRequest extends AsyncTask<Void, Void, String> {
             return result;
         } catch (IOException e) {
             e.printStackTrace();
+            return "";
         }
-        return null;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.example.unimag.ui.Request;
 
 import android.os.AsyncTask;
 
+import com.example.unimag.ui.GlobalVar;
 import com.example.unimag.ui.basket.GridAdapterBasket;
 import com.example.unimag.ui.catalog.CustomGridAdapter;
 
@@ -40,7 +41,7 @@ public class CheckRequest extends AsyncTask<Void, Void, String> {
         switch (methodName){
             case "checkBySecureKod":{
                 request = new Request.Builder()
-                        .url("http://192.168.31.143:8080/checkBySecureKod/"+secureKod)
+                        .url("http://"+ GlobalVar.ip +":8080/checkBySecureKod/"+secureKod)
                         .get()
                         .build();
                 break;
@@ -52,7 +53,7 @@ public class CheckRequest extends AsyncTask<Void, Void, String> {
                         .add("password", password)
                         .build();
                 request = new Request.Builder()
-                        .url("http://192.168.31.143:8080/checkByKod")
+                        .url("http://"+ GlobalVar.ip +":8080/checkByKod")
                         .post(formBody)
                         .build();
                 break;
@@ -65,8 +66,8 @@ public class CheckRequest extends AsyncTask<Void, Void, String> {
             return result;
         } catch (IOException e) {
             e.printStackTrace();
+            return "";
         }
-        return null;
     }
 
     @Override

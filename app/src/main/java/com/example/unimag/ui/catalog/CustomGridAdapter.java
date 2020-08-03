@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.unimag.R;
 import com.example.unimag.ui.DTO.ProductDTO;
+import com.example.unimag.ui.GlobalVar;
 
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class CustomGridAdapter  extends BaseAdapter {
         holder.productDescription.setText("" + productDTO.getPrice());
 
         //int imageId = this.getMipmapResIdByName("image");
-        Glide.with(convertView).load("http://192.168.31.143:8080/upload/"+ productDTO.getImageName()).into(holder.flagView);
+        Glide.with(convertView).load("http://"+ GlobalVar.ip +":8080/upload/"+ productDTO.getImageName()).into(holder.flagView);
 
 
         return convertView;

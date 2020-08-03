@@ -15,7 +15,7 @@ import java.net.Socket;
 
 public class ThreadCheckingConnection extends AsyncTask<Void, Void, Boolean> {
 
-    private String host = "192.168.0.85"; //Хост (Примеры: "google.com", "8.8.8.8")
+    private String host = GlobalVar.ip; //Хост (Примеры: "google.com", "8.8.8.8")
     private int port = 8080; //Порт
     private int timeout = 2000; //Время в мс для отклика сервера
     private FragmentManager fragmentManager;

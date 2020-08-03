@@ -1,8 +1,6 @@
 package com.example.unimag;
-
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -14,10 +12,6 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.client.RestTemplate;
-
-import DTO.ProductDTO;
 
 public class MainActivity extends AppCompatActivity {
 

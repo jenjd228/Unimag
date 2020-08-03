@@ -27,6 +27,7 @@ public class LoginFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
         root = inflater.inflate(R.layout.fragment_login, container, false);
         return root;
     }
@@ -43,28 +44,27 @@ public class LoginFragment extends Fragment {
         ImageButton showPassword = getView().findViewById(R.id.show_password_in_login);
         password = getView().findViewById(R.id.inputPassword);
 
-        showPassword.setOnClickListener(new View.OnClickListener() { //Создание листенера для кнопки "Показать пароль"
-            @Override
-            public void onClick(View e) {
-                //System.out.println(password.getInputType());
-                //Если пароль невиден
-                if (password.getInputType() == 131201) {
-                    password.setInputType(1);
-                    password.setSelection(password.getText().length()); //Установка курсора в конец ввода
-                    showPassword.setColorFilter(getResources().getColor(R.color.light_blue)); //Покраска знака глаза
-                }
-                //Если пароль виден
-                else if (password.getInputType() == 1) {
-                    password.setInputType(131201);
-                    password.setSelection(password.getText().length());
-                    showPassword.setColorFilter(getResources().getColor(R.color.black));
-                }
+        //Создание листенера для кнопки "Показать пароль"
+        showPassword.setOnClickListener(e -> {
+            //System.out.println(password.getInputType());
+            //Если пароль невиден
+            if (password.getInputType() == 131201) {
+                password.setInputType(1);
+                password.setSelection(password.getText().length()); //Установка курсора в конец ввода
+                showPassword.setColorFilter(getResources().getColor(R.color.light_blue)); //Покраска знака глаза
+            }
+            //Если пароль виден
+            else if (password.getInputType() == 1) {
+                password.setInputType(131201);
+                password.setSelection(password.getText().length());
+                showPassword.setColorFilter(getResources().getColor(R.color.black));
             }
         });
 
         Button register = getView().findViewById(R.id.button_register);
         Button vhod = getView().findViewById(R.id.button_vxod);
         register.setOnClickListener(e -> {
+            new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
             FragmentManager manager = getFragmentManager();
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.replace(this.getId(), new RegisterFragment());
@@ -72,6 +72,7 @@ public class LoginFragment extends Fragment {
             transaction.commit();
         });
         vhod.setOnClickListener(e -> {
+            new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
             //System.out.println(1);
             /*FragmentManager manager = getFragmentManager();
             FragmentTransaction transaction = manager.beginTransaction();

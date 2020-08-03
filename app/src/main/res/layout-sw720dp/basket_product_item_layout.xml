@@ -21,7 +21,8 @@
             android:layout_height="60dp"
             android:layout_gravity="center"
             android:layout_marginRight="15dp"
-            tools:ignore="MissingConstraints"></CheckBox>
+            tools:ignore="MissingConstraints"
+            android:theme="@style/CheckBox"></CheckBox>
 
         <ImageView
             android:id="@+id/image_basket_product"

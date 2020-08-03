@@ -2,6 +2,8 @@ package com.example.unimag.ui.Request;
 
 import android.os.AsyncTask;
 
+import com.example.unimag.ui.GlobalVar;
+
 import java.io.IOException;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -23,11 +25,11 @@ public class DeleteRequest extends AsyncTask<Void, Void, String> {
     protected String doInBackground(Void... voids) {
         OkHttpClient client = new OkHttpClient();
         Request request = null;
-        Response response = null;
+        Response response;
         switch (methodName){
             case "deleteBasketProduct":{
                 request = new Request.Builder()
-                        .url("http://192.168.31.143:8080/deleteBasketProduct/"+secureKod+"/"+productId) // The URL to send the data to
+                        .url("http://"+ GlobalVar.ip +":8080/deleteBasketProduct/"+secureKod+"/"+productId) // The URL to send the data to
                         .get()
                         .build();
                 break;
@@ -40,8 +42,8 @@ public class DeleteRequest extends AsyncTask<Void, Void, String> {
             return result;
         } catch (IOException e) {
             e.printStackTrace();
+            return "";
         }
-        return null;
     }
 
     @Override

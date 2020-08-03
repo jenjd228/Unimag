@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.unimag.R;
 import com.example.unimag.ui.Request.SendOrUpdateRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
+import com.example.unimag.ui.ThreadCheckingConnection;
 import com.example.unimag.ui.personal_area.MyCabinetFragment;
 
 import java.util.regex.Matcher;
@@ -42,6 +43,7 @@ public class RegisterFragment2 extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
         root = inflater.inflate(R.layout.fragment_register2, container, false);
         return root;
     }
@@ -67,6 +69,7 @@ public class RegisterFragment2 extends Fragment {
 
         Button b = getView().findViewById(R.id.register_button2);
         b.setOnClickListener(e -> {
+            new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
             String birthDay2 = checkDay(String.valueOf(birthDay.getText()));
             String birthMonth2 = checkBirthMonth(String.valueOf(birthMonth.getText()));
             String birthYear2 = checkBirthYear(String.valueOf(birthYear.getText()));

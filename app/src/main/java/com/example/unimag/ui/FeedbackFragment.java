@@ -22,6 +22,7 @@ public class FeedbackFragment extends Fragment {
     private EditText textMessage;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
         View root = inflater.inflate(R.layout.fragment_feedback, container, false);
         return root;
     }
@@ -34,33 +35,30 @@ public class FeedbackFragment extends Fragment {
         textSubject =  getView().findViewById(R.id.editTextSubject); //Тема письма
         textMessage =  getView().findViewById(R.id.editTextMessage); //Сообщение письма
 
-        buttonSend.setOnClickListener(new View.OnClickListener() {
+        buttonSend.setOnClickListener(v -> {
+            new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
 
-            @Override
-            public void onClick(View v) {
+            String subject = textSubject.getText().toString();
+            String message = textMessage.getText().toString();
 
-                String subject = textSubject.getText().toString();
-                String message = textMessage.getText().toString();
+            //Intent представляет собой объект обмена сообщениями,
+            //с помощью которого можно запросить выполнение действия у компонента другого приложения
+            Intent email = new Intent(Intent.ACTION_SEND);
+            //Указываем получателя (почта нашего ИП)
+            email.putExtra(Intent.EXTRA_EMAIL, new String[]{"pkuzmenko@sfedu.ru"});
+            //Устанавливаем Тему сообщения
+            email.putExtra(Intent.EXTRA_SUBJECT, subject);
+            //Устанавливаем само сообщение
+            email.putExtra(Intent.EXTRA_TEXT, message);
+            //тип отправляемого сообщения
+            email.setType("message/rfc822");
+            //Вызываем intent выбора клиента для отправки сообщения
+            startActivity(Intent.createChooser(email, "Выберите приложение (почту) для отправки письма:"));
 
-                //Intent представляет собой объект обмена сообщениями,
-                //с помощью которого можно запросить выполнение действия у компонента другого приложения
-                Intent email = new Intent(Intent.ACTION_SEND);
-                //Указываем получателя (почта нашего ИП)
-                email.putExtra(Intent.EXTRA_EMAIL, new String[]{"pkuzmenko@sfedu.ru"});
-                //Устанавливаем Тему сообщения
-                email.putExtra(Intent.EXTRA_SUBJECT, subject);
-                //Устанавливаем само сообщение
-                email.putExtra(Intent.EXTRA_TEXT, message);
-                //тип отправляемого сообщения
-                email.setType("message/rfc822");
-                //Вызываем intent выбора клиента для отправки сообщения
-                startActivity(Intent.createChooser(email, "Выберите приложение (почту) для отправки письма:"));
+            //Обнуление полей после отправки письма
+            textSubject.setText("");
+            textMessage.setText("");
 
-                //Обнуление полей после отправки письма
-                textSubject.setText("");
-                textMessage.setText("");
-
-            }
         });
 
     }

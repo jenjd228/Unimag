@@ -19,18 +19,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.unimag.R;
 import com.example.unimag.ui.DTO.BasketProductDTO;
-import com.example.unimag.ui.DTO.OrdersDTO;
 import com.example.unimag.ui.Product.GridAdapterOrder;
 import com.example.unimag.ui.DTO.ProductDTO;
 import com.example.unimag.ui.ProductFragment;
 import com.example.unimag.ui.Request.AddRequest;
 import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
+import com.example.unimag.ui.ThreadCheckingConnection;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import lombok.SneakyThrows;
@@ -76,8 +75,6 @@ public class BasketFragment extends Fragment {
             if (gridAdapterBasket.getProductList()!=null){
               products = gridAdapterBasket.getProductList();
             }
-            System.out.println(gridAdapterBasket.getProductList());
-            System.out.println(products.size());
             if (products.size()!=0){
                 StringBuilder stringBuilder = new StringBuilder();
                 for (int i = 0;i<products.size();i++){
@@ -106,6 +103,7 @@ public class BasketFragment extends Fragment {
     @SneakyThrows
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
         basketViewModel =
                 ViewModelProviders.of(this).get(BasketViewModel.class);
         View view = inflater.inflate(R.layout.fragment_basket, container, false);
@@ -113,17 +111,22 @@ public class BasketFragment extends Fragment {
 
         gridView.setAdapter(gridAdapterBasket = new GridAdapterBasket(this.getContext(), new ArrayList<>()));
 
-        GetRequest getRequest = new GetRequest(secureKod,"getBasketList");
-        getRequest.execute();
-        String result = getRequest.get();
-        if (result.equals("BAD_REQUEST") || result.equals("Error!")){
+        try{
+            GetRequest getRequest = new GetRequest(secureKod,"getBasketList");
+            getRequest.execute();
+            String result = getRequest.get();
+            if (result.equals("BAD_REQUEST") || result.equals("Error!")){
 
-        }else {
-            List<BasketProductDTO> participantJsonList;
-            ObjectMapper objectMapper = new ObjectMapper();
-            participantJsonList = objectMapper.readValue(getRequest.get(), new TypeReference<List<BasketProductDTO>>(){});
-            gridAdapterBasket.addList(participantJsonList);
+            }else {
+                List<BasketProductDTO> participantJsonList;
+                ObjectMapper objectMapper = new ObjectMapper();
+                participantJsonList = objectMapper.readValue(getRequest.get(), new TypeReference<List<BasketProductDTO>>(){});
+                gridAdapterBasket.addList(participantJsonList);
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
         }
+
 
         gridView.setOnItemClickListener((a, v, position, id) -> {
             Object o = gridView.getItemAtPosition(position);

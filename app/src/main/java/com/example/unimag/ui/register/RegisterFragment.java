@@ -3,7 +3,6 @@ package com.example.unimag.ui.register;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,22 +20,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.unimag.R;
-import com.example.unimag.ui.CreateAndSendRequest;
 import com.example.unimag.ui.Request.SendOrUpdateRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
+import com.example.unimag.ui.ThreadCheckingConnection;
 
-import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import lombok.SneakyThrows;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 public class RegisterFragment extends Fragment {
     private DataDBHelper dataDbHelper;
@@ -60,6 +51,7 @@ public class RegisterFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
         root = inflater.inflate(R.layout.fragment_register, container, false);
         dataDbHelper = new DataDBHelper(Objects.requireNonNull(container).getContext());
         return root;
@@ -97,6 +89,7 @@ public class RegisterFragment extends Fragment {
         });
 
         b.setOnClickListener(e -> {
+            new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
             String email2 = String.valueOf(email.getText());
             String password2 = String.valueOf(password.getText());
             String repeatPassword2 = String.valueOf(repeatPassword.getText());

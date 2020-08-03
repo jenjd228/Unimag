@@ -22,7 +22,6 @@
         android:textSize="40sp"
         android:hint="@string/name"
         android:backgroundTint="@color/colorPrimary"
-        android:digits="@string/allowed_symbols"
         android:maxLength="32"/>
 
     <EditText
@@ -33,7 +32,6 @@
         android:textSize="40sp"
         android:hint="@string/surname"
         android:backgroundTint="@color/colorPrimary"
-        android:digits="@string/allowed_symbols"
         android:maxLength="32"/>
 
     <EditText
@@ -44,7 +42,6 @@
         android:textSize="40sp"
         android:hint="@string/secondSurname"
         android:backgroundTint="@color/colorPrimary"
-        android:digits="@string/allowed_symbols"
         android:maxLength="32"/>
 
     <TextView

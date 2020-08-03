@@ -1,10 +1,6 @@
 package com.example.unimag.ui.personal_area;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,20 +13,14 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.unimag.R;
-import com.example.unimag.ui.CreateAndSendRequest;
 import com.example.unimag.ui.Request.CheckRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
 import com.example.unimag.ui.LoginFragment;
+import com.example.unimag.ui.ThreadCheckingConnection;
 
-import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 import lombok.SneakyThrows;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 public class PersonalAreaFragment extends Fragment {
     private DataDBHelper dataDbHelper;
@@ -62,6 +52,7 @@ public class PersonalAreaFragment extends Fragment {
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
         //Создание View-Model для данного фрагмента (передаем данные Activity)
         personalAreaViewModel =
                 ViewModelProviders.of(this).get(com.example.unimag.ui.personal_area.PersonalAreaViewModel.class);
@@ -74,9 +65,9 @@ public class PersonalAreaFragment extends Fragment {
         if (secureKod==null){
 
         }else {
+            try {
             CheckRequest checkRequest = new CheckRequest(secureKod,"checkBySecureKod");
             checkRequest.execute();
-            try {
                 if(checkRequest.get().equals("ok")){
                     //isLogin = true;
                     FragmentManager manager = PersonalAreaFragment.this.getFragmentManager();

@@ -3,6 +3,7 @@ package com.example.unimag.ui.Request;
 import android.os.AsyncTask;
 
 import com.example.unimag.ui.DTO.OrdersDTO;
+import com.example.unimag.ui.GlobalVar;
 import com.example.unimag.ui.basket.GridAdapterBasket;
 import com.example.unimag.ui.catalog.CustomGridAdapter;
 
@@ -47,7 +48,7 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
                         .add("secureKod",secureKod)
                         .build();
                 request = new Request.Builder()
-                        .url("http://192.168.31.143:8080/addToBasket")
+                        .url("http://"+ GlobalVar.ip +":8080/addToBasket")
                         .post(formBody)
                         .build();
                 break;
@@ -58,7 +59,7 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
                         .add("stringIds",stringIds)
                         .build();
                 request = new Request.Builder()
-                        .url("http://192.168.31.143:8080/addToOrders")
+                        .url("http://"+ GlobalVar.ip +":8080/addToOrders")
                         .post(formBody)
                         .build();
                 break;
@@ -71,8 +72,8 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
             return result;
         } catch (IOException e) {
             e.printStackTrace();
+            return "";
         }
-        return null;
     }
 
     @Override
