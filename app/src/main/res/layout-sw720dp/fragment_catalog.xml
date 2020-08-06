@@ -35,23 +35,22 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_category"
-        app:layout_constraintBottom_toTopOf="@id/button_add_elements"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:numColumns="2"
         android:stretchMode="columnWidth"
         tools:ignore="NestedScrolling">
     </GridView>
 
-    <Button
-        android:id="@+id/button_add_elements"
-        style="@style/ButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Показать еще"
-        android:textSize="38sp"
+    <ImageView
+        android:id="@+id/view_loading"
+        android:layout_width="170dp"
+        android:layout_height="50dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:scaleType="fitCenter"
+        android:background="@drawable/animation_loading"
+        android:visibility="invisible"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

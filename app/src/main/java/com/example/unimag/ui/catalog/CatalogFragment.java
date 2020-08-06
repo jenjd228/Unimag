@@ -1,23 +1,30 @@
 package com.example.unimag.ui.catalog;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.unimag.R;
+import com.example.unimag.ui.CategoryFragment;
 import com.example.unimag.ui.DTO.ProductDTO;
 import com.example.unimag.ui.ProductFragment;
 import com.example.unimag.ui.Request.GetRequest;
@@ -25,6 +32,7 @@ import com.example.unimag.ui.ThreadCheckingConnection;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +50,8 @@ public class CatalogFragment extends Fragment {
     private CustomGridAdapter customGridAdapter;
 
     private GetRequest getRequest;
+
+    private Boolean isEnd = false; //Переменная отвечающая за "товары закончились"
 
     @Override
     public void onStart() {
@@ -103,34 +113,86 @@ public class CatalogFragment extends Fragment {
         return view;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Button b = requireView().findViewById(R.id.button_add_elements);
-        b.setOnClickListener(e -> {
-            getRequest = new GetRequest(currentNumberList,"getList");
-            getRequest.execute();
-            try {
-                String otvet = getRequest.get();
 
-                if(otvet.equals("Error!")){
-                    Toast toast = Toast.makeText(getContext(),
-                            "Товары закончились!", Toast.LENGTH_SHORT);
-                    toast.show();
+        TextView viewCategory = getView().findViewById(R.id.text_category); //Кнопка категории и сортировки
+        ImageView loading = getView().findViewById(R.id.view_loading); //Элемент анимации во фаргменте каталога
+        AnimationDrawable animation = (AnimationDrawable) loading.getBackground(); //Говорим что фон - это анимация
 
-                } else {
-                    List<ProductDTO> participantJsonList;
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    participantJsonList = objectMapper.readValue(otvet, new TypeReference<List<ProductDTO>>() {
-                    });
-                    customGridAdapter.addList(participantJsonList);
-                    currentNumberList++;
-                }
-            }catch (Exception ex){
-                ex.getStackTrace();
+
+        //Listener для кнопки с категорией
+        viewCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager manager = getFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+                transaction.replace(CatalogFragment.this.getId(), new CategoryFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
-
         });
+
+        //Автообновление каталога
+        gridView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                //Если товары еще не закончились
+                if (!isEnd) {
+                    View lastElement = (View) gridView.getChildAt(gridView.getChildCount() - 1); //Определяем последний товар
+
+                    //Обработка возможного исключения с GridView
+                    int xLastElement;
+                    if (gridView.getChildCount() == 0) {
+                        xLastElement = 0;
+                    } else {
+                        xLastElement = lastElement.getBottom();
+                    }
+
+                    int diff = (xLastElement - (gridView.getHeight() + gridView.getScrollY())); //Определяем разницу в пикселях
+
+                    //Если разница равна нулю - добавляем товары
+                    if (diff == 0) {
+
+                        //Проигрыш анимации
+                        loading.setVisibility(View.VISIBLE); //Делаем видимым ImageView
+                        animation.setOneShot(false); //Зацикливаем анимацию
+                        animation.start(); //Начинаем проигрывать анимацию
+
+                        getRequest = new GetRequest(currentNumberList, "getList");
+                        getRequest.execute();
+                        try {
+                            String otvet = getRequest.get();
+
+                            if (otvet.equals("Error!")) {
+                                isEnd = true; //Товары закончились
+                                //Завершение анимации
+                                animation.stop(); //Останавливаем анимацию
+                                loading.setVisibility(View.INVISIBLE); //Делаем невидимым ImageView
+                            } else {
+                                List<ProductDTO> participantJsonList;
+                                ObjectMapper objectMapper = new ObjectMapper();
+                                participantJsonList = objectMapper.readValue(otvet, new TypeReference<List<ProductDTO>>() {
+                                });
+                                customGridAdapter.addList(participantJsonList);
+                                currentNumberList++;
+                                //Завершение анимации
+                                animation.stop(); //Останавливаем анимацию
+                                loading.setVisibility(View.INVISIBLE); //Делаем невидимым ImageView
+                            }
+                        } catch (Exception ex) {
+                            ex.getStackTrace();
+                        }
+
+                    }
+
+                }
+            }
+        });
+
+
     }
 
     @Override

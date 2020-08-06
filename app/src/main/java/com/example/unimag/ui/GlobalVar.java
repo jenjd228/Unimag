@@ -4,6 +4,6 @@ package com.example.unimag.ui;
 
 public class GlobalVar {
 
-    public static String ip = "192.168.31.143"; //IP сервера
+    public static String ip = "192.168.0.85"; //IP сервера
 
 }
