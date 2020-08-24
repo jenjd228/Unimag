@@ -1,134 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Категория"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        android:padding="10dp"
-        android:textColor="@color/black"
-        android:background="@color/normal_black">
-    </TextView>
-
     <LinearLayout
-        android:id="@+id/clothes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        android:background="@color/light_black">
-
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/clothes"
-            android:background="@null"
-            android:layout_marginLeft="5dp"
-            android:scaleType="fitCenter"/>
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20dp"
-            android:textColor="@color/black"
+            android:text="Категория"
+            android:textSize="26sp"
             android:textStyle="bold"
-            android:textSize="40sp"
-            android:text="Одежда" />
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:background="@color/normal_black">
+        </TextView>
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/clothes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:background="@color/light_black">
 
-    <LinearLayout
-        android:id="@+id/souvenirs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp">
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/clothes"
+                android:background="@null"
+                android:layout_marginLeft="5dp"
+                android:scaleType="fitCenter"/>
 
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/souvenirs"
-            android:background="@null"
-            android:layout_marginLeft="5dp"
-            android:scaleType="fitCenter"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="40sp"
+                android:text="Одежда" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/souvenirs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/souvenirs"
+                android:background="@null"
+                android:layout_marginLeft="5dp"
+                android:scaleType="fitCenter"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="40sp"
+                android:text="Сувениры" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/partner_program"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:background="@color/light_black">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/partner_program"
+                android:background="@null"
+                android:layout_marginLeft="5dp"
+                android:scaleType="fitCenter"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="40sp"
+                android:text="Партнерская программа" />
+
+        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20dp"
-            android:textColor="@color/black"
+            android:text="Дополнительная фильтрация"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:textSize="40sp"
-            android:text="Сувениры" />
-
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Дополнительная фильтрация"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:padding="10dp"
-        android:textColor="@color/black"
-        android:background="@color/normal_black">
-    </TextView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Сортировать цену:"
+            android:padding="10dp"
             android:textColor="@color/black"
-            android:textSize="20sp">
+            android:background="@color/normal_black">
         </TextView>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp">
 
-            <CheckBox
-                android:id="@+id/is_price_up"
-                android:theme="@style/CheckBox"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="по возрастанию" />
+                android:text="Сортировать цену:"
+                android:textColor="@color/black"
+                android:textSize="20sp">
+            </TextView>
 
-            <CheckBox
-                android:id="@+id/is_price_down"
-                android:theme="@style/CheckBox"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="по убыванию" />
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp">
+
+                <CheckBox
+                    android:id="@+id/is_price_up"
+                    android:theme="@style/CheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="по возрастанию" />
+
+                <CheckBox
+                    android:id="@+id/is_price_down"
+                    android:theme="@style/CheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="по убыванию" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
+        <Button
+            android:id="@+id/button_save_filtr"
+            style="@style/ButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="Применить фильтрацию" />
+
     </LinearLayout>
 
-    <Button
-        android:id="@+id/button_save_filtr"
-        style="@style/ButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:text="Применить фильтрацию" />
-
-</LinearLayout>
+</ScrollView>

@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.unimag.R;
 import com.example.unimag.ui.catalog.CatalogFragment;
+import com.example.unimag.ui.partner_program.PartnerProgramFragment;
 
 
 public class CategoryFragment extends Fragment {
@@ -32,9 +33,11 @@ public class CategoryFragment extends Fragment {
 
         LinearLayout viewClothes = getView().findViewById(R.id.clothes);
         LinearLayout viewSouvenirs = getView().findViewById(R.id.souvenirs);
+        LinearLayout viewPartnerProgram = getView().findViewById(R.id.partner_program);
 
 
-        viewClothes.setOnClickListener(new View.OnClickListener() { //Создание листенера для кнопки "Одежда"
+        //Создание листенера для кнопки "Одежда"
+        viewClothes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Передача информации (мб в MySQL)
@@ -48,8 +51,8 @@ public class CategoryFragment extends Fragment {
             }
         });
 
-
-        viewSouvenirs.setOnClickListener(new View.OnClickListener() { //Создание листенера для кнопки "Сувениры"
+        //Создание листенера для кнопки "Сувениры"
+        viewSouvenirs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View e) {
                 //Передача информации (мб в MySQL)
@@ -62,5 +65,19 @@ public class CategoryFragment extends Fragment {
                 transaction.commit();
             }
         });
+
+        //Создание листенера для кнопки "Партнерская программа"
+        viewPartnerProgram.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Переход во вкладку партнерской программы
+                FragmentManager manager = getFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+                transaction.replace(CategoryFragment.this.getId(), new PartnerProgramFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
     }
 }
