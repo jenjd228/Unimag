@@ -87,11 +87,7 @@ public class RegisterKodFragment extends Fragment {
     }
 
     private void goToNextFragmentRegistration(){
-        FragmentManager manager = getFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(this.getId(), new RegisterFragment2(email));
-        transaction.addToBackStack(null);
-        transaction.commit();
+
     }
 
 }

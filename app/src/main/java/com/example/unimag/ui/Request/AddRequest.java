@@ -64,6 +64,17 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
                         .build();
                 break;
             }
+            case "addOneProductToBasket":{
+                RequestBody formBody = new FormBody.Builder()
+                        .add("id",String.valueOf(productId))
+                        .add("secureKod", secureKod)
+                        .build();
+                request = new Request.Builder()
+                        .url("http://"+ GlobalVar.ip +":8080/addOneProductToBasket")
+                        .post(formBody)
+                        .build();
+                break;
+            }
         }
 
         try {

@@ -1,5 +1,6 @@
 package com.example.unimag.ui.catalog;
 
+import android.app.Notification;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
 import com.example.unimag.ui.CategoryFragment;
@@ -35,6 +37,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 import lombok.SneakyThrows;
@@ -103,11 +106,8 @@ public class CatalogFragment extends Fragment {
             Object o = gridView.getItemAtPosition(position);
             ProductDTO productDTO = (ProductDTO) o;
 
-            FragmentManager manager = CatalogFragment.this.getFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-            transaction.replace(CatalogFragment.this.getId(), new ProductFragment(productDTO.getImageName(), productDTO.getTitle(), productDTO.getDescriptions(), productDTO.getPrice(), productDTO.getId()));
-            transaction.addToBackStack(null);
-            transaction.commit();
+            CatalogFragmentDirections.ActionNavigationCatalogToProductFragment2 action= CatalogFragmentDirections.actionNavigationCatalogToProductFragment2(productDTO.getImageName(), productDTO.getTitle(), productDTO.getDescriptions(), productDTO.getPrice(), productDTO.getId());
+            Navigation.findNavController(v).navigate(action);
         });
 
         return view;
@@ -127,11 +127,7 @@ public class CatalogFragment extends Fragment {
         viewCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager manager = getFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                transaction.replace(CatalogFragment.this.getId(), new CategoryFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
+                Navigation.findNavController(v).navigate(R.id.action_navigation_catalog_to_categoryFragment);
             }
         });
 

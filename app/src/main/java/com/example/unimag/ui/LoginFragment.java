@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
 import com.example.unimag.ui.personal_area.MyCabinetFragment;
@@ -65,11 +66,7 @@ public class LoginFragment extends Fragment {
         Button vhod = getView().findViewById(R.id.button_vxod);
         register.setOnClickListener(e -> {
             new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
-            FragmentManager manager = getFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-            transaction.replace(this.getId(), new RegisterFragment());
-            transaction.addToBackStack(null);
-            transaction.commit();
+            Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_registerFragment);
         });
         vhod.setOnClickListener(e -> {
             new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();

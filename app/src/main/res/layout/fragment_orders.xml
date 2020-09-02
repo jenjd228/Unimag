@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".OrderFragment">
+    tools:context=".ui.product.OrderFragment">
 
     <GridView
         android:id="@+id/grid_view_orders"

@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
+   /* @Override
     public void onBackPressed() {
         if (!recursivePopBackStack(getSupportFragmentManager())) {
             super.onBackPressed();
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return false;
-    }
+    }*/
 
     @Override
     protected void onStart() {

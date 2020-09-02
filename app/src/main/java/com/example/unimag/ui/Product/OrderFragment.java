@@ -1,5 +1,6 @@
 package com.example.unimag.ui.Product;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,16 +10,23 @@ import android.widget.GridView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.unimag.R;
+import com.example.unimag.ui.DTO.BasketProductDTO;
 import com.example.unimag.ui.DTO.OrderDTO;
+import com.example.unimag.ui.DTO.OrdersDTO;
 import com.example.unimag.ui.DTO.ProductDTO;
 import com.example.unimag.ui.ProductFragment;
+import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
 import com.example.unimag.ui.ThreadCheckingConnection;
+import com.example.unimag.ui.basket.GridAdapterBasket;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 import java.util.ArrayList;
@@ -31,6 +39,8 @@ public class OrderFragment extends Fragment {
 
     private DataDBHelper dataDbHelper;
 
+    private GridView gridView;
+
     private String secureKod = null;
 
     @Override
@@ -41,9 +51,31 @@ public class OrderFragment extends Fragment {
         dataDbHelper.close();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
         View root = inflater.inflate(R.layout.fragment_orders, container, false);
+
+        gridView = root.findViewById(R.id.grid_view_orders);
+
+        gridView.setAdapter(gridAdapterOrder = new GridAdapterOrder(this.getContext(), new ArrayList<>()));
+
+        try{
+            GetRequest getRequest = new GetRequest(secureKod,"getOrdersList");
+            getRequest.execute();
+            String result = getRequest.get();
+            if (result.equals("BAD_REQUEST") || result.equals("Error!")){
+
+            }else {
+                List<OrderDTO> participantJsonList;
+                ObjectMapper objectMapper = new ObjectMapper();
+                participantJsonList = objectMapper.readValue(getRequest.get(), new TypeReference<List<OrderDTO>>(){});
+                gridAdapterOrder.addList(participantJsonList);
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
         return root;
     }
 
@@ -54,11 +86,11 @@ public class OrderFragment extends Fragment {
         //CreateAndSendRequast createAndSendRequast = new CreateAndSendRequast(secureKod);
         //createAndSendRequast.execute();
 
-        List<OrderDTO> products = new ArrayList<>();
+       // List<OrderDTO> products = new ArrayList<>();
         //Создание нашего списка товаров с помощью функции getList()
-        final GridView gridView = (GridView) getView().findViewById(R.id.grid_view_orders);
+        //final GridView gridView = (GridView) getView().findViewById(R.id.grid_view_orders);
         //Установление адаптера (что-то вроде прохождения по всем элементам)
-        gridView.setAdapter(gridAdapterOrder = new GridAdapterOrder(this.getContext(),products));
+        //gridView.setAdapter(gridAdapterOrder = new GridAdapterOrder(this.getContext(),products));
 
         //Установка onClickListenera для каждого элемента item
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -67,12 +99,14 @@ public class OrderFragment extends Fragment {
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
                 Object o = gridView.getItemAtPosition(position);
                 ProductDTO productDTO = (ProductDTO) o;
-                FragmentManager manager = OrderFragment.this.getFragmentManager();
+
+                /*FragmentManager manager = OrderFragment.this.getFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
                 transaction.replace(OrderFragment.this.getId(), new ProductFragment(productDTO.getImageName(), productDTO.getTitle(), productDTO.getDescriptions(), productDTO.getPrice(), productDTO.getId()));
                 transaction.addToBackStack(null);
-                transaction.commit();
+                transaction.commit();*/
             }
         });
+
     }
 }

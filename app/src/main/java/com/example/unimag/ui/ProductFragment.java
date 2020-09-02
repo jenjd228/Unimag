@@ -19,7 +19,10 @@ import com.bumptech.glide.Glide;
 import com.example.unimag.R;
 import com.example.unimag.ui.Request.AddRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
+import com.example.unimag.ui.basket.BasketFragmentDirections;
+import com.example.unimag.ui.catalog.CatalogFragmentDirections;
 
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 
@@ -34,13 +37,10 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
     private String imageName;
     String secureKod = null;
 
-    public ProductFragment(String imageName,String title, String descriptions, Integer price,Integer productId){
-        this.title = title;
-        this.descriptions = descriptions;
-        this.price = price;
-        this.productId = productId;
-        this.imageName = imageName;
+    public ProductFragment(){
+
     }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,6 +48,13 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
         dataDbHelper = new DataDBHelper(getActivity());
         secureKod = dataDbHelper.getSecureKod(dataDbHelper);
         dataDbHelper.close();
+
+        productId = ProductFragmentArgs.fromBundle(requireArguments()).getProductId();
+        title = ProductFragmentArgs.fromBundle(requireArguments()).getTitle();
+        descriptions = ProductFragmentArgs.fromBundle(requireArguments()).getDescriptions();
+        price = ProductFragmentArgs.fromBundle(requireArguments()).getPrice();
+        imageName = ProductFragmentArgs.fromBundle(requireArguments()).getImageName();
+
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -114,57 +121,4 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
             }
         });
     }
-
-    /*class CreateAndSendRequast extends AsyncTask<Void, Void, Response> {
-        private Integer id;
-        private String secureKod;
-        CreateAndSendRequast(Integer id,String secureKod){
-            this.id = id;
-            this.secureKod = secureKod;
-        }
-
-        @Override
-        protected Response doInBackground(Void... params) {
-            OkHttpClient client = new OkHttpClient();
-            RequestBody formBody = new FormBody.Builder()
-                    .add("id", id.toString()) // A simple POST field
-                    .add("secureKod",secureKod)
-                    .build();
-            Request request = new Request.Builder()
-                    .url("http://192.168.31.143:8080/addToBasket") // The URL to send the data to
-                    .post(formBody)
-                    .build();
-            Response response = null;
-            try {
-                response = client.newCall(request).execute(); //ответ сервера
-                //System.out.println(response.body().string());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return response;
-        }
-
-        @Override
-        protected void onPostExecute(Response result) {
-            super.onPostExecute(result);
-            String otvet;
-            otvet = null;
-            try {
-                otvet = result.body().string();
-                if(otvet.equals("ok")){
-                    Toast toast = Toast.makeText(getContext(),
-                            "Товар добавлен!", Toast.LENGTH_SHORT);
-                    toast.show();
-                } else {
-                    Toast toast = Toast.makeText(getContext(),
-                            "Ошибка!", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-    }*/
 }

@@ -1,5 +1,6 @@
 package com.example.unimag.ui.basket;
 
+import android.app.Notification;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
 import com.example.unimag.ui.DTO.BasketProductDTO;
@@ -133,11 +135,8 @@ public class BasketFragment extends Fragment {
             ProductDTO productDTO = (ProductDTO) o;
             /*Toast.makeText(getActivity(), "Selected :"
                     + " " + product +" "+id, Toast.LENGTH_LONG).show();*/
-            FragmentManager manager = BasketFragment.this.getFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-            transaction.replace(BasketFragment.this.getId(), new ProductFragment(productDTO.getImageName(), productDTO.getTitle(), productDTO.getDescriptions(), productDTO.getPrice(), productDTO.getId()));
-            transaction.addToBackStack(null);
-            transaction.commit();
+            BasketFragmentDirections.ActionNavigationBasketToProductFragment action = BasketFragmentDirections.actionNavigationBasketToProductFragment(productDTO.getImageName(), productDTO.getTitle(), productDTO.getDescriptions(), productDTO.getPrice(), productDTO.getId());
+            Navigation.findNavController(v).navigate(action);
 
         });
 

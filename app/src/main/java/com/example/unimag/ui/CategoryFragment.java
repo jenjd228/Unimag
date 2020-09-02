@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
 import com.example.unimag.ui.catalog.CatalogFragment;
@@ -43,26 +44,18 @@ public class CategoryFragment extends Fragment {
                 //Передача информации (мб в MySQL)
 
                 //Переход обратно во вкладку каталога
-                FragmentManager manager = getFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                transaction.replace(CategoryFragment.this.getId(), new CatalogFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
+                Navigation.findNavController(v).navigate(R.id.action_categoryFragment_to_navigation_catalog);
             }
         });
 
         //Создание листенера для кнопки "Сувениры"
         viewSouvenirs.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View e) {
+            public void onClick(View v) {
                 //Передача информации (мб в MySQL)
-
+                //
                 //Переход обратно во вкладку каталога
-                FragmentManager manager = getFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                transaction.replace(CategoryFragment.this.getId(), new CatalogFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
+                Navigation.findNavController(v).navigate(R.id.action_categoryFragment_to_navigation_catalog);
             }
         });
 
@@ -71,11 +64,7 @@ public class CategoryFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //Переход во вкладку партнерской программы
-                FragmentManager manager = getFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                transaction.replace(CategoryFragment.this.getId(), new PartnerProgramFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
+                Navigation.findNavController(v).navigate(R.id.action_categoryFragment_to_partnerProgramFragment);
             }
         });
 

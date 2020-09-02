@@ -5,8 +5,11 @@ import android.os.AsyncTask;
 import com.example.unimag.ui.GlobalVar;
 
 import java.io.IOException;
+
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class DeleteRequest extends AsyncTask<Void, Void, String> {
@@ -31,6 +34,17 @@ public class DeleteRequest extends AsyncTask<Void, Void, String> {
                 request = new Request.Builder()
                         .url("http://"+ GlobalVar.ip +":8080/deleteBasketProduct/"+secureKod+"/"+productId) // The URL to send the data to
                         .get()
+                        .build();
+                break;
+            }
+            case "deleteOneProductFromBasket" : {
+                RequestBody formBody = new FormBody.Builder()
+                        .add("id", productId.toString())
+                        .add("secureKod",secureKod)
+                        .build();
+                request = new Request.Builder()
+                        .url("http://"+ GlobalVar.ip +":8080/deleteOneProductFromBasket")
+                        .post(formBody)
                         .build();
                 break;
             }

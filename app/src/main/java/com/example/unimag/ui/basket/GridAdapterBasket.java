@@ -126,7 +126,7 @@ public class GridAdapterBasket  extends BaseAdapter {
             if (secureKod==null){
 
             }else {
-                AddRequest addRequest = new AddRequest(product.getProductId(),secureKod,"addToBasket");
+                AddRequest addRequest = new AddRequest(product.getProductId(),secureKod,"addOneProductToBasket");
                 addRequest.execute();
                 try {
                     if(addRequest.get().equals("ok")){
@@ -147,7 +147,29 @@ public class GridAdapterBasket  extends BaseAdapter {
         });
 
         holder.deleteProductCountButton.setOnClickListener(v -> {
+            if (listData.get(position).getCount()-1 ==0){
 
+            }else {
+                if (secureKod!=null){
+                    DeleteRequest deleteRequest = new DeleteRequest(secureKod ,product.getProductId(),"deleteOneProductFromBasket");
+                    deleteRequest.execute();
+                    try {
+                        if(deleteRequest.get().equals("ok")){
+                            Toast toast = Toast.makeText(context,
+                                    "Товар удален!", Toast.LENGTH_SHORT);
+                            toast.show();
+                        } else {
+                            Toast toast = Toast.makeText(context,
+                                    "Ошибка!", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    } catch (ExecutionException | InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+                listData.get(position).setCount(product.getCount()-1);
+                notifyDataSetChanged();
+            }
         });
 
 

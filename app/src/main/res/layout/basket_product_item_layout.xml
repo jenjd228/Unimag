@@ -124,7 +124,7 @@
                 android:gravity="end">
 
                 <Button
-                    android:id="@+id/addProductCountButton"
+                    android:id="@+id/deleteProductCountButton"
                     android:layout_width="34dp"
                     android:layout_height="35dp"
                     android:layout_gravity="right"
@@ -141,7 +141,7 @@
                     android:textColor="#383a3b"></TextView>
 
                 <Button
-                    android:id="@+id/deleteProductCountButton"
+                    android:id="@+id/addProductCountButton"
                     android:layout_width="34dp"
                     android:layout_height="35dp"
                     android:layout_gravity="right"

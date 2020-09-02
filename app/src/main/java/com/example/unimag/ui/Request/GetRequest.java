@@ -35,23 +35,30 @@ public class GetRequest extends AsyncTask<Void, Void, String> {
         Request request = null;
         Response response = null;
         switch (methodName){
+            case "getOrdersList":{
+                request = new Request.Builder()
+                        .url("http://"+ GlobalVar.ip +":8080/getOrders/"+secureKod)
+                        .get()
+                        .build();
+                break;
+            }
             case "getBasketList":{
                 request = new Request.Builder()
-                        .url("http://"+ GlobalVar.ip +":8080/getBasketList/"+secureKod) // The URL to send the data to
+                        .url("http://"+ GlobalVar.ip +":8080/getBasketList/"+secureKod)
                         .get()
                         .build();
                 break;
             }
             case "getList":{
                 request = new Request.Builder()
-                        .url("http://"+ GlobalVar.ip +":8080/getList/"+currentNumberList) // The URL to send the data to
+                        .url("http://"+ GlobalVar.ip +":8080/getList/"+currentNumberList)
                         .get()
                         .build();
                 break;
             }
             case "getUser":{
                 request = new Request.Builder()
-                        .url("http://"+ GlobalVar.ip +":8080/getUser/"+secureKod) // The URL to send the data to
+                        .url("http://"+ GlobalVar.ip +":8080/getUser/"+secureKod)
                         .get()
                         .build();
                 break;

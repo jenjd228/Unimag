@@ -16,6 +16,7 @@ import androidx.annotation.RequiresApi;
 
 import com.bumptech.glide.Glide;
 import com.example.unimag.R;
+import com.example.unimag.ui.DTO.BasketProductDTO;
 import com.example.unimag.ui.DTO.OrderDTO;
 import com.example.unimag.ui.GlobalVar;
 

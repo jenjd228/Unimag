@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
 import com.example.unimag.ui.Request.CheckRequest;
@@ -18,6 +19,7 @@ import com.example.unimag.ui.SqLite.DataDBHelper;
 import com.example.unimag.ui.LoginFragment;
 import com.example.unimag.ui.ThreadCheckingConnection;
 
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 import lombok.SneakyThrows;
@@ -26,6 +28,7 @@ public class PersonalAreaFragment extends Fragment {
     private DataDBHelper dataDbHelper;
     private Boolean isLogin = false;
     View root;
+    String secureKod;
 
     private com.example.unimag.ui.personal_area.PersonalAreaViewModel personalAreaViewModel;
 
@@ -34,21 +37,15 @@ public class PersonalAreaFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dataDbHelper = new DataDBHelper(getActivity());
-        String secureKod = dataDbHelper.getSecureKod(dataDbHelper);
+        secureKod = dataDbHelper.getSecureKod(dataDbHelper);
         dataDbHelper.close();
-        if (secureKod==null){
-            FragmentManager manager = getFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-            transaction.replace(PersonalAreaFragment.this.getId(), new LoginFragment());
-            transaction.addToBackStack(null);
-            transaction.commit();
-        }
-        checkBySecureKod(secureKod);
     }
 
+    @SneakyThrows
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        checkBySecureKod(secureKod);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,24 +60,16 @@ public class PersonalAreaFragment extends Fragment {
 
     private void checkBySecureKod(String secureKod) throws ExecutionException, InterruptedException {
         if (secureKod==null){
-
+            Navigation.findNavController(requireView()).navigate(R.id.action_navigation_personal_area_to_loginFragment);
         }else {
             try {
             CheckRequest checkRequest = new CheckRequest(secureKod,"checkBySecureKod");
             checkRequest.execute();
                 if(checkRequest.get().equals("ok")){
                     //isLogin = true;
-                    FragmentManager manager = PersonalAreaFragment.this.getFragmentManager();
-                    FragmentTransaction transaction = manager.beginTransaction();
-                    transaction.replace(PersonalAreaFragment.this.getId(), new MyCabinetFragment());
-                    transaction.addToBackStack(null);
-                    transaction.commit();
+                    Navigation.findNavController(requireView()).navigate(R.id.action_navigation_personal_area_to_myCabinetFragment);
                 } else {
-                    FragmentManager manager = getFragmentManager();
-                    FragmentTransaction transaction = manager.beginTransaction();
-                    transaction.replace(PersonalAreaFragment.this.getId(), new LoginFragment());
-                    transaction.addToBackStack(null);
-                    transaction.commit();
+                    Navigation.findNavController(requireView()).navigate(R.id.action_navigation_personal_area_to_loginFragment);
                 }
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();

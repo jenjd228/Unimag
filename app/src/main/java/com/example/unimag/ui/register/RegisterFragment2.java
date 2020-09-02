@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
 import com.example.unimag.ui.Request.SendOrUpdateRequest;
@@ -36,8 +37,8 @@ public class RegisterFragment2 extends Fragment {
     private EditText secondSurname;
     private String email;
 
-    RegisterFragment2(String email){
-        this.email = email;
+    RegisterFragment2(){
+
     }
 
     @Nullable
@@ -61,6 +62,13 @@ public class RegisterFragment2 extends Fragment {
         }  catch (NullPointerException e){
             System.out.println(e.getMessage());
         }
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        email = RegisterFragment2Args.fromBundle(requireArguments()).getEmail();
     }
 
     @Override
@@ -203,10 +211,6 @@ public class RegisterFragment2 extends Fragment {
     }
 
     private void goToLK(){
-        FragmentManager manager = RegisterFragment2.this.getFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(RegisterFragment2.this.getId(), new MyCabinetFragment());
-        transaction.addToBackStack(null);
-        transaction.commit();
+        Navigation.findNavController(getView()).navigate(R.id.action_registerFragment2_to_myCabinetFragment);
     }
 }

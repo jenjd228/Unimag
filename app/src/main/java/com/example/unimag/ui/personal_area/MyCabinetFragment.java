@@ -24,6 +24,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 
 import com.example.unimag.ui.FeedbackFragment;
 import com.example.unimag.ui.Product.OrderFragment;
@@ -36,6 +37,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 import DTO.UserDTO;
@@ -165,11 +167,7 @@ public class MyCabinetFragment extends Fragment {
         switch (item.getItemId()) {
             //Если нажат пункт "Редактировать профиль"
             case R.id.action_settings:
-                FragmentManager manager = getFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                transaction.replace(MyCabinetFragment.this.getId(), new EditProfileFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
+                Navigation.findNavController(requireView()).navigate(R.id.action_myCabinetFragment_to_editProfileFragment);
                 return true;
             //Если нажат пункт "Выйти"
             case R.id.action_exit:
@@ -189,12 +187,8 @@ public class MyCabinetFragment extends Fragment {
         TextView buttonMyOrders = requireView().findViewById(R.id.button_orders);
         buttonMyOrders.setOnClickListener(new View.OnClickListener() { //Переход по кнопке "Мои заказы"
             @Override
-            public void onClick(View e) {
-                FragmentManager manager = MyCabinetFragment.this.getFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                transaction.replace(MyCabinetFragment.this.getId(), new OrderFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_myCabinetFragment_to_orderFragment);
             }
         });
 
@@ -202,12 +196,8 @@ public class MyCabinetFragment extends Fragment {
         TextView buttonFeedback = requireView().findViewById(R.id.button_feedback);
         buttonFeedback.setOnClickListener(new View.OnClickListener() { //Переход по кнопке "Мои заказы"
             @Override
-            public void onClick(View e) {
-                FragmentManager manager = MyCabinetFragment.this.getFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                transaction.replace(MyCabinetFragment.this.getId(), new FeedbackFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_myCabinetFragment_to_feedbackFragment);
             }
         });
     }

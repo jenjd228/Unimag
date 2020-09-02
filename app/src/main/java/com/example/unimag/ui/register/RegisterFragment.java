@@ -1,5 +1,6 @@
 package com.example.unimag.ui.register;
 
+import android.app.Notification;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -18,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
 import com.example.unimag.ui.Request.SendOrUpdateRequest;
@@ -200,11 +202,7 @@ public class RegisterFragment extends Fragment {
     }*/
 
     private void goToNextFragmentRegistration(){
-        RegisterFragment2 registerFragment2 = new RegisterFragment2(email.getText().toString());
-        FragmentManager manager = getFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(this.getId(), registerFragment2);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        RegisterFragmentDirections.ActionRegisterFragment3ToRegisterFragment2 action = RegisterFragmentDirections.actionRegisterFragment3ToRegisterFragment2(String.valueOf(email.getText()));
+        Navigation.findNavController(requireView()).navigate(action);
     }
 }

@@ -9,7 +9,14 @@
         android:id="@+id/navigation_catalog"
         android:name="com.example.unimag.ui.catalog.CatalogFragment"
         android:label="@string/title_catalog"
-        tools:layout="@layout/fragment_catalog" />
+        tools:layout="@layout/fragment_catalog" >
+        <action
+            android:id="@+id/action_navigation_catalog_to_categoryFragment"
+            app:destination="@id/categoryFragment" />
+        <action
+            android:id="@+id/action_navigation_catalog_to_productFragment2"
+            app:destination="@id/productFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_news"
@@ -21,11 +28,127 @@
         android:id="@+id/navigation_basket"
         android:name="com.example.unimag.ui.basket.BasketFragment"
         android:label="@string/title_basket"
-        tools:layout="@layout/fragment_basket" />
+        tools:layout="@layout/fragment_basket" >
+        <action
+            android:id="@+id/action_navigation_basket_to_productFragment"
+            app:destination="@id/productFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_personal_area"
         android:name="com.example.unimag.ui.personal_area.PersonalAreaFragment"
         android:label="@string/title_personal_area"
-        tools:layout="@layout/fragment_personal_area" />
+        tools:layout="@layout/fragment_personal_area" >
+        <action
+            android:id="@+id/action_navigation_personal_area_to_myCabinetFragment"
+            app:destination="@id/myCabinetFragment" />
+        <action
+            android:id="@+id/action_navigation_personal_area_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.example.unimag.ui.CategoryFragment"
+        android:label="CategoryFragment" >
+        <action
+            android:id="@+id/action_categoryFragment_to_navigation_catalog"
+            app:destination="@id/navigation_catalog" />
+        <action
+            android:id="@+id/action_categoryFragment_to_partnerProgramFragment"
+            app:destination="@id/partnerProgramFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/partnerProgramFragment"
+        android:name="com.example.unimag.ui.partner_program.PartnerProgramFragment"
+        android:label="PartnerProgramFragment" >
+        <action
+            android:id="@+id/action_partnerProgramFragment_to_categoryFragment"
+            app:destination="@id/categoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myCabinetFragment"
+        android:name="com.example.unimag.ui.personal_area.MyCabinetFragment"
+        android:label="MyCabinetFragment" >
+        <action
+            android:id="@+id/action_myCabinetFragment_to_feedbackFragment"
+            app:destination="@id/feedbackFragment" />
+        <action
+            android:id="@+id/action_myCabinetFragment_to_orderFragment"
+            app:destination="@id/orderFragment" />
+        <action
+            android:id="@+id/action_myCabinetFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.unimag.ui.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_myCabinetFragment2"
+            app:destination="@id/myCabinetFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/feedbackFragment"
+        android:name="com.example.unimag.ui.FeedbackFragment"
+        android:label="FeedbackFragment" />
+    <fragment
+        android:id="@+id/orderFragment"
+        android:name="com.example.unimag.ui.Product.OrderFragment"
+        android:label="OrderFragment" />
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.unimag.ui.register.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_registerFragment3_to_registerFragment2"
+            app:destination="@id/registerFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment2"
+        android:name="com.example.unimag.ui.register.RegisterFragment2"
+        android:label="fragment_register2"
+        tools:layout="@layout/fragment_register2" >
+        <action
+            android:id="@+id/action_registerFragment2_to_myCabinetFragment"
+            app:destination="@id/myCabinetFragment" />
+        <argument
+            android:name="email"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.example.unimag.ui.personal_area.EditProfileFragment"
+        android:label="fragment_edit_profile"
+        tools:layout="@layout/fragment_edit_profile" />
+    <fragment
+        android:id="@+id/productFragment"
+        android:name="com.example.unimag.ui.ProductFragment"
+        android:label="ProductFragment" >
+        <action
+            android:id="@+id/action_productFragment_to_navigation_basket"
+            app:destination="@id/navigation_basket" />
+        <argument
+            android:name="imageName"
+            app:argType="string" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <argument
+            android:name="descriptions"
+            app:argType="string" />
+        <argument
+            android:name="price"
+            app:argType="integer" />
+        <argument
+            android:name="productId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_productFragment_to_navigation_catalog2"
+            app:destination="@id/navigation_catalog" />
+    </fragment>
 </navigation>
