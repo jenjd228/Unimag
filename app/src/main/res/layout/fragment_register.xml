@@ -13,10 +13,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/register_text_margin"
-        android:hint="@string/email"
         android:backgroundTint="@color/colorPrimary"
         android:digits="@string/allowed_symbols"
-        android:maxLength="32"/>
+        android:hint="@string/email"
+        android:maxLength="32" />
 
     <EditText
         android:id="@+id/password"

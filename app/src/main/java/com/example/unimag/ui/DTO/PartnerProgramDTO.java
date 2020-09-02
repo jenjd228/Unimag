@@ -17,4 +17,6 @@ public class PartnerProgramDTO {
 
     private String description; //Описание скидки партнера
 
+    private int price; //Цена подписки
+
 }
