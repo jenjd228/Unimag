@@ -25,7 +25,7 @@ public class OrderDTO {
 
     private Date date;
 
-    private Date dataOfOrder; //Дата заказа
+    private String dataOfOrder; //Дата заказа
 
     private String status; //Статус товара
 

@@ -60,7 +60,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout_card"
-        app:layout_constraintBottom_toTopOf="@id/time_tovar"
         android:text="Детали заказа"
         android:background="@color/light_black"
         android:paddingTop="10dp"
@@ -72,123 +71,54 @@
 
     <!-- НАСТОЛЬКО ВРЕМЕННО ЧТО ВАМ ДАЖЕ НЕ СНИЛОСЬ-->
 
-    <LinearLayout
-        android:id="@+id/time_tovar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_register_order"
-        android:orientation="horizontal"
-        android:padding="10dp">
-
-        <ImageView
-            android:layout_width="110dp"
-            android:layout_height="110dp"
-            android:src="@drawable/nike">
-        </ImageView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingLeft="10dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:text="Название: "
-                    android:textColor="#000000"
-                    android:textStyle="bold"></TextView>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textColor="#383a3b"
-                    android:gravity="center_vertical"
-                    android:text="Подписка Nike"></TextView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:text="Кол-во: "
-                    android:textColor="#000000"
-                    android:textStyle="bold"></TextView>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textColor="#383a3b"
-                    android:gravity="center_vertical"
-                    android:text="1"></TextView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:text="Стоимость: "
-                    android:textColor="#000000"
-                    android:textStyle="bold"></TextView>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textColor="#383a3b"
-                    android:gravity="center_vertical"
-                    android:text="250 рублей"></TextView>
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
+    <GridView
+        android:id="@+id/grid_view_order"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:numColumns="1"
+        android:stretchMode="columnWidth"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_register_order" />
 
     <!-- НАСТОЛЬКО ВРЕМЕННО ЧТО ВАМ ДАЖЕ НЕ СНИЛОСЬ-->
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/button_register_order"
         android:background="@color/light_black"
-        android:padding="5dp">
+        android:orientation="horizontal"
+        android:padding="5dp"
+        app:layout_constraintBottom_toTopOf="@id/button_register_order"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Итого к оплате:"
-            android:textSize="20dp"
             android:textColor="@color/black"
-            android:textStyle="bold"/>
+            android:textSize="20dp"
+            android:textStyle="bold" />
 
         <TextView
-            android:layout_marginLeft="10dp"
+            android:id="@+id/money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="250 рублей"
-            android:textSize="20dp"
-            android:textColor="@color/black" />
+            android:layout_marginLeft="10dp"
+            android:text="1200"
+            android:textColor="@color/black"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="рублей"
+            android:textColor="@color/black"
+            android:textSize="20dp" />
 
     </LinearLayout>
 

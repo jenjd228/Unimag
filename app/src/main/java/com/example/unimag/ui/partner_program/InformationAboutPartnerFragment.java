@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,10 +17,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
 import com.example.unimag.R;
-import com.example.unimag.ui.CategoryFragment;
 import com.example.unimag.ui.GlobalVar;
 import com.example.unimag.ui.ThreadCheckingConnection;
-import com.example.unimag.ui.basket.RegisterOrderFragment;
+import com.example.unimag.ui.pay.RegisterOrderFragment;
 
 
 public class InformationAboutPartnerFragment extends Fragment {

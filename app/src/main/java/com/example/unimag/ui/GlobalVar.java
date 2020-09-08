@@ -4,11 +4,9 @@ package com.example.unimag.ui;
 
 public class GlobalVar {
 
-<<<<<<< HEAD
     public static String ip = "192.168.0.104"; //IP сервера
-=======
-    public static String ip = "192.168.1.71"; //IP сервера
+    //public static String ip = "192.168.1.71"; //IP сервера
     public static boolean isBuy = false; //ВРЕМЕННО куплена ли хоть одна подписка на партнера
->>>>>>> vetka_p
+
 
 }

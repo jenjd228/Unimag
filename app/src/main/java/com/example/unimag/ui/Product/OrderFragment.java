@@ -93,6 +93,17 @@ public class OrderFragment extends Fragment {
         //gridView.setAdapter(gridAdapterOrder = new GridAdapterOrder(this.getContext(),products));
 
         //Установка onClickListenera для каждого элемента item
+        ArrayList<OrderDTO> listData = new ArrayList<OrderDTO>();
+
+        OrderDTO p1 = new OrderDTO();
+        p1.setTitle("Часы ЮФУ ясень");
+        p1.setImageName("29.jpg");
+        p1.setDataOfOrder("02.02.2020");
+        p1.setStatus("Не доставлено");
+        listData.add(p1);
+
+        GridAdapterOrder adapter = new GridAdapterOrder(this.getContext(), listData);
+        gridView.setAdapter(adapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override

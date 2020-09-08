@@ -33,6 +33,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import lombok.SneakyThrows;
 
@@ -77,6 +78,7 @@ public class BasketFragment extends Fragment {
             if (gridAdapterBasket.getProductList()!=null){
               products = gridAdapterBasket.getProductList();
             }
+            //Navigation.findNavController(requireView()).navigate(R.id.action_navigation_basket_to_registerOrderFragment);
             if (products.size()!=0){
                 StringBuilder stringBuilder = new StringBuilder();
                 for (int i = 0;i<products.size();i++){
@@ -86,13 +88,14 @@ public class BasketFragment extends Fragment {
                     }
                     stringBuilder.append(products.get(i).getProductId()).append(",");
                 }
+                Navigation.findNavController(requireView()).navigate(R.id.action_navigation_basket_to_registerOrderFragment);
                 if (stringBuilder.length()!=0){
                     AddRequest addRequest = new AddRequest(stringBuilder.toString(),secureKod,"addToOrders");
                     addRequest.execute();
 
-                    Toast toast = Toast.makeText(getContext(),
+                    /*Toast toast = Toast.makeText(getContext(),
                             "Заказ оформлен!", Toast.LENGTH_LONG);
-                    toast.show();
+                    toast.show();*/
                 }
             }else {
                 Toast toast = Toast.makeText(getContext(),
@@ -123,6 +126,7 @@ public class BasketFragment extends Fragment {
                 List<BasketProductDTO> participantJsonList;
                 ObjectMapper objectMapper = new ObjectMapper();
                 participantJsonList = objectMapper.readValue(getRequest.get(), new TypeReference<List<BasketProductDTO>>(){});
+                System.out.println(participantJsonList);
                 gridAdapterBasket.addList(participantJsonList);
             }
         }catch (Exception e){

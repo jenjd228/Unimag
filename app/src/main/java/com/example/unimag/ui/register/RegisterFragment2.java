@@ -37,8 +37,12 @@ public class RegisterFragment2 extends Fragment {
     private EditText secondSurname;
     private String email;
 
-    RegisterFragment2(){
+    public RegisterFragment2(){
 
+    }
+
+    public RegisterFragment2(String email){
+        this.email = email;
     }
 
     @Nullable

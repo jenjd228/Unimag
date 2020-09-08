@@ -133,6 +133,8 @@ public class GridAdapterBasket  extends BaseAdapter {
                         Toast toast = Toast.makeText(context,
                                 "Товар добавлен!", Toast.LENGTH_SHORT);
                         toast.show();
+                        listData.get(position).setCount(product.getCount()+1);
+                        notifyDataSetChanged();
                     } else {
                         Toast toast = Toast.makeText(context,
                                 "Ошибка!", Toast.LENGTH_SHORT);
@@ -142,8 +144,6 @@ public class GridAdapterBasket  extends BaseAdapter {
                     ex.printStackTrace();
                 }
             }
-            listData.get(position).setCount(product.getCount()+1);
-            notifyDataSetChanged();
         });
 
         holder.deleteProductCountButton.setOnClickListener(v -> {

@@ -9,6 +9,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,6 +27,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
+import com.example.unimag.MainActivity;
 import com.example.unimag.ui.FeedbackFragment;
 import com.example.unimag.ui.Product.OrderFragment;
 import com.example.unimag.ui.Request.GetRequest;
@@ -60,6 +62,29 @@ public class MyCabinetFragment extends Fragment {
         String secureKod = dataDbHelper.getSecureKod(dataDbHelper);
         dataDbHelper.close();
         getDataBySecureKod(secureKod);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(getView() == null){
+            return;
+        }
+
+        requireView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     private void getDataBySecureKod(String secureKod) throws ExecutionException, InterruptedException, IOException {

@@ -1,9 +1,12 @@
 package com.example.unimag;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -13,7 +16,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements  BottomNavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +38,24 @@ public class MainActivity extends AppCompatActivity {
         //Связывание (привязка) контроллера навигации и меню
         NavigationUI.setupWithNavController(navView, navController);
 
+        navView.setOnNavigationItemSelectedListener(this);
+
 
     }
+    //onNavigationItemSelected
+
+
+   /* binding.navView.setNavigationItemSelectedListener(this)
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+
+        when (item.itemId) {
+            R.id.about_item -> navController.navigate(R.id.aboutFramgent)
+            R.id.settings_item -> navController.navigate(R.id.settingsFramgent)
+        }
+
+        return true
+    }*/
 
    /* @Override
     public void onBackPressed() {
@@ -65,5 +84,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        System.out.println("Нажата кнопка меню");
+        switch (item.getItemId()) {
+            case R.id.navigation_catalog: Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.navigation_catalog);break;
+            case R.id.navigation_news: Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.navigation_news);break;
+            case R.id.navigation_basket: Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.navigation_basket);break;
+            case R.id.navigation_personal_area: Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.navigation_personal_area);break;
+        }
+
+        return true;
     }
 }

@@ -68,6 +68,9 @@ public class PersonalAreaFragment extends Fragment {
                 if(checkRequest.get().equals("ok")){
                     //isLogin = true;
                     Navigation.findNavController(requireView()).navigate(R.id.action_navigation_personal_area_to_myCabinetFragment);
+                    System.out.println("-----------------------");
+                    System.out.println(Navigation.findNavController(requireView()).getBackStackEntry(Navigation.findNavController(requireView()).getCurrentDestination().getId()).toString());
+                    System.out.println("-----------------------");
                 } else {
                     Navigation.findNavController(requireView()).navigate(R.id.action_navigation_personal_area_to_loginFragment);
                 }
