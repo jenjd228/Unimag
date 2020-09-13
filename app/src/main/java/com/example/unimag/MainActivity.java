@@ -3,6 +3,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 
+import com.example.unimag.ui.SqLite.DataDBHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -17,11 +18,15 @@ import androidx.navigation.ui.NavigationUI;
 
 
 public class MainActivity extends AppCompatActivity implements  BottomNavigationView.OnNavigationItemSelectedListener {
+    //private DataDBHelper dataDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //dataDbHelper = new DataDBHelper(this);
+        //String secureKod = dataDbHelper.getSecureKod(dataDbHelper);
+        //dataDbHelper.close();
         //Передача каждого идентификатора меню в виде набора идентификаторов
         //поскольку каждое меню следует рассматривать как пункты назначения верхнего уровня.
 

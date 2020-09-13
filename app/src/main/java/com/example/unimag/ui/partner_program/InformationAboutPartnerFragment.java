@@ -93,16 +93,13 @@ public class InformationAboutPartnerFragment extends Fragment {
 
                     //Сделать проверку (отправляем на сервер запрос к БД и смотрим офрмлена ли подписка у чела)
                     //В соответствии с этим устанавливаем setText для кнопки
-                    /**
-                     * ...
-                     */
 
                     //Временно
-                    FragmentManager manager = getFragmentManager();
+                    /*FragmentManager manager = getFragmentManager();
                     FragmentTransaction transaction = manager.beginTransaction();
                     transaction.replace(InformationAboutPartnerFragment.this.getId(), new RegisterOrderFragment());
                     transaction.addToBackStack(null);
-                    transaction.commit();
+                    transaction.commit();*/
 
                     GlobalVar.isBuy = true;
                 }

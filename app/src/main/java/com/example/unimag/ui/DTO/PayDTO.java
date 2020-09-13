@@ -1,7 +1,5 @@
 package com.example.unimag.ui.DTO;
 
-import java.util.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,13 +7,14 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrdersDTO {
+public class PayDTO {
 
-    private Integer id;
+    private String imageName;
 
-    private Integer userId;
+    private Integer price;
 
-    private Integer productId;
+    private String title;
 
-    private Date dateOfOrder;
+    private Integer count;
+
 }

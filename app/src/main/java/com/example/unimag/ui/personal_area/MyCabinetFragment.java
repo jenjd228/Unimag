@@ -28,6 +28,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
 import com.example.unimag.MainActivity;
+import com.example.unimag.ui.DTO.UserDTO;
 import com.example.unimag.ui.FeedbackFragment;
 import com.example.unimag.ui.Product.OrderFragment;
 import com.example.unimag.ui.Request.GetRequest;
@@ -42,7 +43,6 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
-import DTO.UserDTO;
 import lombok.SneakyThrows;
 
 

@@ -2,13 +2,9 @@ package com.example.unimag.ui.Request;
 
 import android.os.AsyncTask;
 
-import com.example.unimag.ui.DTO.OrdersDTO;
 import com.example.unimag.ui.GlobalVar;
-import com.example.unimag.ui.basket.GridAdapterBasket;
-import com.example.unimag.ui.catalog.CustomGridAdapter;
 
 import java.io.IOException;
-import java.util.List;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;

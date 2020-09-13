@@ -1,6 +1,8 @@
 package com.example.unimag.ui.basket;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
+import android.drm.DrmStore;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,6 +23,7 @@ import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
 import com.example.unimag.ui.DTO.BasketProductDTO;
+import com.example.unimag.ui.DTO.PayDTO;
 import com.example.unimag.ui.Product.GridAdapterOrder;
 import com.example.unimag.ui.DTO.ProductDTO;
 import com.example.unimag.ui.ProductFragment;
@@ -28,12 +31,19 @@ import com.example.unimag.ui.Request.AddRequest;
 import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
 import com.example.unimag.ui.ThreadCheckingConnection;
+import com.example.unimag.ui.pay.GridAdapterForPay;
+import com.example.unimag.ui.register.RegisterFragmentDirections;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import lombok.SneakyThrows;
 
@@ -75,12 +85,23 @@ public class BasketFragment extends Fragment {
         buttonReady.setOnClickListener(e -> {
 
             List<BasketProductDTO> products = new ArrayList<>();
+            List<PayDTO> payDTOList = new ArrayList<>();
             if (gridAdapterBasket.getProductList()!=null){
-              products = gridAdapterBasket.getProductList();
+                products = gridAdapterBasket.getProductList();
+                for (BasketProductDTO basketProductDTO : products){
+                    payDTOList.add(new PayDTO(basketProductDTO.getImageName(),basketProductDTO.getPrice(),basketProductDTO.getTitle(),basketProductDTO.getCount()));
+                }
             }
+
             //Navigation.findNavController(requireView()).navigate(R.id.action_navigation_basket_to_registerOrderFragment);
             if (products.size()!=0){
-                StringBuilder stringBuilder = new StringBuilder();
+
+                String list = new Gson().toJson(payDTOList);
+                System.out.println(list + "-----");
+                BasketFragmentDirections.ActionNavigationBasketToRegisterOrderFragment action = BasketFragmentDirections.actionNavigationBasketToRegisterOrderFragment(list);
+                Navigation.findNavController(requireView()).navigate(action);
+
+                /*StringBuilder stringBuilder = new StringBuilder();
                 for (int i = 0;i<products.size();i++){
                     if (i == products.size()-1){
                         stringBuilder.append(products.get(i).getProductId());
@@ -96,7 +117,7 @@ public class BasketFragment extends Fragment {
                     /*Toast toast = Toast.makeText(getContext(),
                             "Заказ оформлен!", Toast.LENGTH_LONG);
                     toast.show();*/
-                }
+                //}
             }else {
                 Toast toast = Toast.makeText(getContext(),
                         "Корзина пуста!", Toast.LENGTH_LONG);
@@ -126,7 +147,6 @@ public class BasketFragment extends Fragment {
                 List<BasketProductDTO> participantJsonList;
                 ObjectMapper objectMapper = new ObjectMapper();
                 participantJsonList = objectMapper.readValue(getRequest.get(), new TypeReference<List<BasketProductDTO>>(){});
-                System.out.println(participantJsonList);
                 gridAdapterBasket.addList(participantJsonList);
             }
         }catch (Exception e){

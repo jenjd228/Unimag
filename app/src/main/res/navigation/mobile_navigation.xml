@@ -151,5 +151,9 @@
     <fragment
         android:id="@+id/registerOrderFragment"
         android:name="com.example.unimag.ui.pay.RegisterOrderFragment"
-        android:label="RegisterOrderFragment" />
+        android:label="RegisterOrderFragment" >
+        <argument
+            android:name="list"
+            app:argType="string" />
+    </fragment>
 </navigation>

@@ -12,19 +12,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.unimag.R;
-import com.example.unimag.ui.DTO.BasketProductDTO;
 import com.example.unimag.ui.DTO.OrderDTO;
-import com.example.unimag.ui.DTO.OrdersDTO;
 import com.example.unimag.ui.DTO.ProductDTO;
-import com.example.unimag.ui.ProductFragment;
 import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
 import com.example.unimag.ui.ThreadCheckingConnection;
-import com.example.unimag.ui.basket.GridAdapterBasket;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
