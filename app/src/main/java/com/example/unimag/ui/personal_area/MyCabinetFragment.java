@@ -23,24 +23,17 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
-import com.example.unimag.MainActivity;
+import com.example.unimag.R;
 import com.example.unimag.ui.DTO.UserDTO;
-import com.example.unimag.ui.FeedbackFragment;
-import com.example.unimag.ui.Product.OrderFragment;
 import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
-
-import com.example.unimag.R;
 import com.example.unimag.ui.ThreadCheckingConnection;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 import lombok.SneakyThrows;
@@ -197,10 +190,17 @@ public class MyCabinetFragment extends Fragment {
             //Если нажат пункт "Выйти"
             case R.id.action_exit:
                 //Прописать
+                dataDbHelper.getWritableDatabase().delete(DataDBHelper.TABLE_CONTACTS,null,null);
+                Navigation.findNavController(requireView()).navigate(R.id.action_myCabinetFragment_to_navigation_personal_area);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void ResetNavigationStack()
+    {
+
     }
 
     @Override

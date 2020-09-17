@@ -1,5 +1,9 @@
 package com.example.unimag.ui;
 
+import android.annotation.SuppressLint;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,34 +11,34 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
-import com.example.unimag.ui.personal_area.MyCabinetFragment;
-import com.example.unimag.ui.register.RegisterFragment;
+import com.example.unimag.ui.Request.CheckRequest;
+import com.example.unimag.ui.SqLite.DataDBHelper;
+
+import java.util.concurrent.ExecutionException;
 
 public class LoginFragment extends Fragment {
-    private Button register;
     private EditText login;
     private EditText password;
-    private View root;
+    private DataDBHelper dataDBHelper;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
-        root = inflater.inflate(R.layout.fragment_login, container, false);
-        return root;
+        return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        dataDBHelper = new DataDBHelper(getActivity());
         super.onCreate(savedInstanceState);
     }
 
@@ -44,6 +48,9 @@ public class LoginFragment extends Fragment {
 
         ImageButton showPassword = getView().findViewById(R.id.show_password_in_login);
         password = getView().findViewById(R.id.inputPassword);
+        login = getView().findViewById(R.id.inputLogin);
+        Button register = getView().findViewById(R.id.button_register);
+        Button singIn = getView().findViewById(R.id.button_vxod);
 
         //Создание листенера для кнопки "Показать пароль"
         showPassword.setOnClickListener(e -> {
@@ -62,20 +69,53 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        Button register = getView().findViewById(R.id.button_register);
-        Button vhod = getView().findViewById(R.id.button_vxod);
         register.setOnClickListener(e -> {
             new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
             Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_registerFragment);
         });
-        vhod.setOnClickListener(e -> {
+        singIn.setOnClickListener(e -> {
             new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
-            //System.out.println(1);
-            /*FragmentManager manager = getFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-            transaction.replace(this.getId(), new MyCabinetFragment());
-            transaction.addToBackStack(null);
-            transaction.commit();*/
+            String password = String.valueOf(this.password.getText());
+            String email = String.valueOf(this.login.getText());
+            if (!password.equals("") && !email.equals("")) {
+                CheckRequest checkRequest = new CheckRequest(email, password, "checkUserForLoginIn");
+                checkRequest.execute();
+                try {
+                    String response = checkRequest.get();
+                    if (response.equals("LOCKED")) {
+                        Toast toast = Toast.makeText(getContext(),
+                                "Неверный пароль!", Toast.LENGTH_SHORT);
+                        toast.show();
+                    } else if (response.equals("NOT_FOUND")) {
+                        Toast toast = Toast.makeText(getContext(),
+                                "Пользователь с такой почтой не найден!", Toast.LENGTH_SHORT);
+                        toast.show();
+                    } else {
+                        SQLiteDatabase sqLiteDatabase = dataDBHelper.getWritableDatabase();
+                        @SuppressLint("Recycle") Cursor cursor = sqLiteDatabase.query(DataDBHelper.TABLE_CONTACTS, null, null, null, null, null, null);
+                        if (cursor.getCount() == 0) {
+                            ContentValues contentValues = new ContentValues();//запись
+                            contentValues.put(DataDBHelper.KEY_SECUREKOD, response);
+                            sqLiteDatabase.insert(DataDBHelper.TABLE_CONTACTS, null, contentValues);
+                        } else {
+                            sqLiteDatabase.delete(DataDBHelper.TABLE_CONTACTS, null, null);//удаление
+                            ContentValues contentValues = new ContentValues();//запись
+                            contentValues.put(DataDBHelper.KEY_SECUREKOD, response);
+                            sqLiteDatabase.insert(DataDBHelper.TABLE_CONTACTS, null, contentValues);
+                        }
+                        dataDBHelper.close();
+                        Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_myCabinetFragment2);
+                    }
+                } catch (ExecutionException ex) {
+                    ex.printStackTrace();
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            }else {
+                Toast toast = Toast.makeText(getContext(),
+                        "Введите данные!", Toast.LENGTH_SHORT);
+                toast.show();
+            }
         });
     }
 

@@ -28,13 +28,11 @@ public class GridAdapterForPay extends BaseAdapter {
 
 
     private LayoutInflater layoutInflater;
-    private String secureKod;
     private List<PayDTO> listFromBasket;
 
 
-    GridAdapterForPay(Context context , List<PayDTO> listProduct, String secureKod){
+    GridAdapterForPay(Context context , List<PayDTO> listProduct){
         this.listFromBasket = listProduct;
-        this.secureKod = secureKod;
         layoutInflater = LayoutInflater.from(context);
     }
 
@@ -94,6 +92,14 @@ public class GridAdapterForPay extends BaseAdapter {
 
     public List<PayDTO> getProductList(){
         return listFromBasket;
+    }
+
+    public Integer getTheCostOfProducts(){
+        int totalMoney = 0;
+        for (PayDTO  payDTO: listFromBasket){
+            totalMoney += payDTO.getCount()*payDTO.getPrice();
+        }
+        return totalMoney;
     }
 
     static class ViewHolder {

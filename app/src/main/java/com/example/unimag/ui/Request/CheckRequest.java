@@ -17,13 +17,18 @@ import okhttp3.Response;
 public class CheckRequest extends AsyncTask<Void, Void, String> {
     private String secureKod;
     private String email;
-    private String kod;
+    private String kodOrSecureKod;
     private String password;
     private String methodName;
 
-    public CheckRequest(String email,String kod,String password,String methodName){
+    public CheckRequest(String email,String kodOrSecureKod,String password,String methodName){
         this.email = email;
-        this.kod = kod;
+        this.kodOrSecureKod = kodOrSecureKod;
+        this.password = password;
+        this.methodName = methodName;
+    }
+    public CheckRequest(String email,String password,String methodName){
+        this.email = email;
         this.password = password;
         this.methodName = methodName;
     }
@@ -33,11 +38,12 @@ public class CheckRequest extends AsyncTask<Void, Void, String> {
         this.methodName = methodName;
     }
 
+
     @Override
     protected String doInBackground(Void... voids) {
         OkHttpClient client = new OkHttpClient();
         Request request = null;
-        Response response = null;
+        Response response;
         switch (methodName){
             case "checkBySecureKod":{
                 request = new Request.Builder()
@@ -46,9 +52,20 @@ public class CheckRequest extends AsyncTask<Void, Void, String> {
                         .build();
                 break;
             }
+            case "checkUserForLoginIn":{
+                RequestBody formBody = new FormBody.Builder()
+                        .add("email", email)
+                        .add("password", password)
+                        .build();
+                request = new Request.Builder()
+                        .url("http://"+ GlobalVar.ip +":8080/checkUserForLoginIn")
+                        .post(formBody)
+                        .build();
+                break;
+            }
             case "checkByKod":{
                 RequestBody formBody = new FormBody.Builder()
-                        .add("kod",  kod)
+                        .add("kod",  kodOrSecureKod)
                         .add("email", email)
                         .add("password", password)
                         .build();
@@ -62,8 +79,7 @@ public class CheckRequest extends AsyncTask<Void, Void, String> {
 
         try {
             response = client.newCall(request).execute(); //ответ сервера
-            String result = response.body().string();
-            return result;
+            return response.body().string();
         } catch (IOException e) {
             e.printStackTrace();
             return "";

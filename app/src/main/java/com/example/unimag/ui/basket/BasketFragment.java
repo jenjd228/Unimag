@@ -120,7 +120,7 @@ public class BasketFragment extends Fragment {
                 //}
             }else {
                 Toast toast = Toast.makeText(getContext(),
-                        "Корзина пуста!", Toast.LENGTH_LONG);
+                        "Вы не выбрали товар!", Toast.LENGTH_LONG);
                 toast.show();
             }
         });

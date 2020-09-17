@@ -1,16 +1,13 @@
 package com.example.unimag.ui.Request;
+
 import android.os.AsyncTask;
 
 import com.example.unimag.ui.GlobalVar;
-import com.example.unimag.ui.basket.GridAdapterBasket;
-import com.example.unimag.ui.catalog.CustomGridAdapter;
 
 import java.io.IOException;
 
-import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class GetRequest extends AsyncTask<Void, Void, String> {
@@ -25,6 +22,10 @@ public class GetRequest extends AsyncTask<Void, Void, String> {
 
     public GetRequest(Integer currentNumberList,String methodName){
         this.currentNumberList = currentNumberList;
+        this.methodName = methodName;
+    }
+
+    public GetRequest(String methodName){
         this.methodName = methodName;
     }
 
@@ -59,6 +60,13 @@ public class GetRequest extends AsyncTask<Void, Void, String> {
             case "getUser":{
                 request = new Request.Builder()
                         .url("http://"+ GlobalVar.ip +":8080/getUser/"+secureKod)
+                        .get()
+                        .build();
+                break;
+            }
+            case "getCatalogSize":{
+                request = new Request.Builder()
+                        .url("http://"+ GlobalVar.ip +":8080/getCatalogSize")
                         .get()
                         .build();
                 break;

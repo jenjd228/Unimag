@@ -25,7 +25,6 @@ import com.example.unimag.ui.ThreadCheckingConnection;
 
 public class EditProfileFragment extends Fragment {
 
-    private View root;
     private ImageView editImageUser;
     private EditText editTextFirstName;
     private EditText editTextSurname;
@@ -40,8 +39,7 @@ public class EditProfileFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
-        root = inflater.inflate(R.layout.fragment_edit_profile, container, false);
-        return root;
+        return inflater.inflate(R.layout.fragment_edit_profile, container, false);
     }
 
 

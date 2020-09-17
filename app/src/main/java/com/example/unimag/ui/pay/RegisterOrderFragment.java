@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,6 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import lombok.SneakyThrows;
 
@@ -69,9 +71,8 @@ public class RegisterOrderFragment extends Fragment {
             List<PayDTO> participantJsonList;
             ObjectMapper objectMapper = new ObjectMapper();
             participantJsonList = objectMapper.readValue(list, new TypeReference<List<PayDTO>>(){});
-            gridView.setAdapter(gridAdapterForPay = new GridAdapterForPay(this.getContext(), new ArrayList<>(),secureKod));
+            gridView.setAdapter(gridAdapterForPay = new GridAdapterForPay(this.getContext(), new ArrayList<>()));
 
-            System.out.println(participantJsonList);
             gridAdapterForPay.addList(participantJsonList);
         }
         return view;
@@ -81,8 +82,9 @@ public class RegisterOrderFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Button button_register_order = getView().findViewById(R.id.button_register_order);
-
+        Button button_register_order = requireView().findViewById(R.id.button_register_order);
+        TextView totalMoney = requireView().findViewById(R.id.money);
+        totalMoney.setText(String.valueOf(gridAdapterForPay.getTheCostOfProducts()));
 
         button_register_order.setOnClickListener(new View.OnClickListener() {
             @Override
