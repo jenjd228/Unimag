@@ -10,6 +10,7 @@ import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,12 +40,6 @@ public class SortFragment extends Fragment {
         RadioButton buttonASC = requireView().findViewById(R.id.radioButtonASC);
         RadioButton buttonDESK = requireView().findViewById(R.id.radioButtonDESC);
         RadioButton buttonWithoutSort = requireView().findViewById(R.id.radioButtonWithout);
-        CheckBox checkBox = requireView().findViewById(R.id.sortByTimeCheckBox);
-
-
-        checkBox.setChecked(GlobalSort.getInstance().getSortByTime());
-        checkBox.setOnClickListener(view -> GlobalSort.getInstance().setSortByTime(checkBox.isChecked()));
-        //RadioButton buttonDESC = (RadioButton) requireView().findViewById(R.id.radioButtonDESC);
 
         if (GlobalSort.getInstance().getSortByPricePosition()!=null){
             radioGroup.check(GlobalSort.getInstance().getSortByPricePosition());
@@ -53,9 +48,9 @@ public class SortFragment extends Fragment {
             selectedId = radioGroup.getCheckedRadioButtonId();
             GlobalSort.getInstance().setSortByPricePosition(selectedId);
             if (buttonASC.isChecked()){
-                GlobalSort.getInstance().setSortByPriceString("sortByPriceASC");
+                GlobalSort.getInstance().setSortByPriceString("price ASC");
             }else if (buttonDESK.isChecked()){
-                GlobalSort.getInstance().setSortByPriceString("sortByPriceDESK");
+                GlobalSort.getInstance().setSortByPriceString("price DESC");
             }else {
                 GlobalSort.getInstance().setSortByPriceString("NO");
             }
@@ -78,6 +73,11 @@ public class SortFragment extends Fragment {
 
                 GlobalSort.getInstance().setSpinnerItemPosition(selectedItemPosition);
                 GlobalSort.getInstance().setSpinnerSortItemNameCategory(choose[selectedItemPosition]);
+                if (choose[selectedItemPosition].equals("None")){
+                    GlobalSort.getInstance().setWhereFlag(false);
+                }else {
+                    GlobalSort.getInstance().setWhereFlag(true);
+                }
             }
             public void onNothingSelected(AdapterView<?> parent) {
             }

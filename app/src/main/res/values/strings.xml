@@ -28,6 +28,7 @@
     <string name="sort_by_time">Сортировать по новизне</string>
 
     <string-array name="categories">
+        <item>None</item>
         <item>Clothes</item>
         <item>Souvenirs</item>
     </string-array>

@@ -21,6 +21,8 @@ public final class GlobalSort {
 
     private Boolean sortByTime = false;
 
+    private Boolean whereFlag = false;
+
     public static GlobalSort getInstance() {
         if (instance == null) {
             instance = new GlobalSort();

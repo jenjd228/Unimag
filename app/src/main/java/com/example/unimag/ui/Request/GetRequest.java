@@ -52,7 +52,7 @@ public class GetRequest extends AsyncTask<Void, Void, String> {
             }
             case "getList":{
                 request = new Request.Builder()
-                        .url("http://"+ GlobalVar.ip +":8080/getList/"+currentNumberList +"/"+GlobalSort.getInstance().getRequest())
+                        .url("http://"+ GlobalVar.ip +":8080/getList/"+currentNumberList +"/"+GlobalSort.getInstance().getSpinnerSortItemNameCategory()+"/"+GlobalSort.getInstance().getSortByPriceString()+"/"+GlobalSort.getInstance().getWhereFlag())
                         .get()
                         .build();
                 break;
