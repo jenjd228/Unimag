@@ -17,7 +17,6 @@ import com.example.unimag.R;
 
 public class FeedbackFragment extends Fragment {
 
-    private Button buttonSend;
     private EditText textSubject;
     private EditText textMessage;
 
@@ -31,9 +30,9 @@ public class FeedbackFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        buttonSend =  getView().findViewById(R.id.buttonSend); //Кнопка "Отправить"
-        textSubject =  getView().findViewById(R.id.editTextSubject); //Тема письма
-        textMessage =  getView().findViewById(R.id.editTextMessage); //Сообщение письма
+        Button buttonSend = requireView().findViewById(R.id.buttonSend); //Кнопка "Отправить"
+        textSubject =  requireView().findViewById(R.id.editTextSubject); //Тема письма
+        textMessage =  requireView().findViewById(R.id.editTextMessage); //Сообщение письма
 
         buttonSend.setOnClickListener(v -> {
             new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();

@@ -1,5 +1,6 @@
 package com.example.unimag.ui.partner_program;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,74 +13,57 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
 import com.example.unimag.R;
 import com.example.unimag.ui.GlobalVar;
+import com.example.unimag.ui.Request.CheckRequest;
+import com.example.unimag.ui.SqLite.DataDBHelper;
 import com.example.unimag.ui.ThreadCheckingConnection;
-import com.example.unimag.ui.pay.RegisterOrderFragment;
+
+import lombok.SneakyThrows;
 
 
 public class InformationAboutPartnerFragment extends Fragment {
 
-    String imageName; //Название картинки партнера (напр.: adidas.png)
-    String titlePartner; //Имя партнера
-    int price; //Цены оформления подписки на партнера
-    String descriptionPartner; //Описание акции партнера
+    private DataDBHelper dataDbHelper;
 
-
-    //Конструктор класса
-    public InformationAboutPartnerFragment(String imageName, String titlePartner, int price, String descriptionPartner){
-        this.imageName = imageName;
-        this.titlePartner = titlePartner;
-        this.price = price;
-        this.descriptionPartner = descriptionPartner;
-    }
-
-
-    //Установка основной информации о партнере
-    private void setInformationAboutPartner(String imageName, String titlePartner, int price, String descriptionPartner) {
-        ImageView image = getView().findViewById(R.id.image_info_partner);
-        Glide.with(getView()).load("http://"+ GlobalVar.ip+":8080/upload/image_partner/"+imageName).into(image);
-
-        TextView titlePartnerView = getView().findViewById(R.id.text_title_info_partner);
-        titlePartnerView.setText(titlePartner);
-
-        TextView pricePartnerView = getView().findViewById(R.id.price_partner);
-        pricePartnerView.setText(String.valueOf(price) + " рублей");
-
-        TextView descriptionPartnerView = getView().findViewById(R.id.text_description_partner);
-        descriptionPartnerView.setText(descriptionPartner);
-    }
-
+    private String secureKod = "";
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_information_about_partner, container, false);
 
         new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute(); //Если дисконект
-
+        if (dataDbHelper!=null){
+            secureKod = dataDbHelper.getSecureKod(dataDbHelper);
+        }
         return root;
     }
 
 
+    @SneakyThrows
+    @SuppressLint("SetTextI18n")
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //Заполняем поля
-        setInformationAboutPartner(imageName, titlePartner, price, descriptionPartner);
+        Button button_in_info_partner = requireView().findViewById(R.id.button_in_info_partner); //Кнопка "Оформить подписку"/"Использовать"
 
-        Button button_in_info_partner = getView().findViewById(R.id.button_in_info_partner); //Кнопка "Оформить подписку"/"Использовать"
+        ImageView image =  requireView().findViewById(R.id.image_info_partner);
+        TextView titlePartnerView =  requireView().findViewById(R.id.text_title_info_partner);
+        TextView pricePartnerView =  requireView().findViewById(R.id.price_partner);
+        TextView descriptionPartnerView =  requireView().findViewById(R.id.text_description_partner);
 
-        //Сделать проверку (отправляем на сервер запрос к БД и смотрим офрмлена ли подписка у чела)
-        //В соответствии с этим устанавливаем setText для кнопки
-        /**
-         * ...
-         */
+        Glide.with(requireView()).load("http://"+ GlobalVar.ip+":8080/upload/image_partner/"+InformationAboutPartnerFragmentArgs.fromBundle(requireArguments()).getImageName()).into(image);
+        titlePartnerView.setText(InformationAboutPartnerFragmentArgs.fromBundle(requireArguments()).getTitle());
+        pricePartnerView.setText(InformationAboutPartnerFragmentArgs.fromBundle(requireArguments()).getPrice() + " рублей");
+        descriptionPartnerView.setText(InformationAboutPartnerFragmentArgs.fromBundle(requireArguments()).getDescription());
 
-        if (!GlobalVar.isBuy) {
+
+        CheckRequest checkRequest = new CheckRequest(secureKod,"userIsSub");
+        checkRequest.execute();
+
+        if (checkRequest.get().equals("ACCESS_CLOSED") || secureKod.equals("")) {
 
             //Временно
             button_in_info_partner.setText("Оформить подписку");
@@ -100,8 +84,6 @@ public class InformationAboutPartnerFragment extends Fragment {
                     transaction.replace(InformationAboutPartnerFragment.this.getId(), new RegisterOrderFragment());
                     transaction.addToBackStack(null);
                     transaction.commit();*/
-
-                    GlobalVar.isBuy = true;
                 }
             });
 

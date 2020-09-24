@@ -101,7 +101,9 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
         Button b = getView().findViewById(R.id.button_add_basket);
         b.setOnClickListener(e -> {
             if (secureKod==null){
-
+                Toast toast = Toast.makeText(getContext(),
+                        "Доступ к корзине открывается после создания аккаунта", Toast.LENGTH_SHORT);
+                toast.show();
             }else {
                 AddRequest addRequest = new AddRequest(productId,secureKod,"addToBasket");
                 addRequest.execute();

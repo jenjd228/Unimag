@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_navigation_catalog_to_productFragment2"
             app:destination="@id/productFragment" />
+        <action
+            android:id="@+id/action_navigation_catalog_to_sortFragment2"
+            app:destination="@id/sortFragment2" />
     </fragment>
 
     <fragment
@@ -67,6 +70,9 @@
         <action
             android:id="@+id/action_partnerProgramFragment_to_categoryFragment"
             app:destination="@id/categoryFragment" />
+        <action
+            android:id="@+id/action_partnerProgramFragment_to_informationAboutPartnerFragment"
+            app:destination="@id/informationAboutPartnerFragment" />
     </fragment>
     <fragment
         android:id="@+id/myCabinetFragment"
@@ -159,4 +165,28 @@
             android:name="list"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/informationAboutPartnerFragment"
+        android:name="com.example.unimag.ui.partner_program.InformationAboutPartnerFragment"
+        android:label="InformationAboutPartnerFragment" >
+        <argument
+            android:name="imageName"
+            app:argType="string" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <argument
+            android:name="description"
+            app:argType="string" />
+        <argument
+            android:name="price"
+            app:argType="java.math.BigDecimal" />
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/sortFragment2"
+        android:name="com.example.unimag.ui.sort.SortFragment"
+        android:label="SortFragment" />
 </navigation>

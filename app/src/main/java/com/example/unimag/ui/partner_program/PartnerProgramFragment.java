@@ -1,5 +1,6 @@
 package com.example.unimag.ui.partner_program;
 
+import android.app.Notification;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,18 +10,19 @@ import android.widget.GridView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
 import com.example.unimag.ui.DTO.PartnerProgramDTO;
-import com.example.unimag.ui.ProductFragment;
+import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.ThreadCheckingConnection;
-import com.example.unimag.ui.catalog.CatalogFragment;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import lombok.SneakyThrows;
 
 public class PartnerProgramFragment extends Fragment {
 
@@ -36,37 +38,20 @@ public class PartnerProgramFragment extends Fragment {
     }
 
 
+    @SneakyThrows
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         //Находим GridView
-        gridView = getView().findViewById(R.id.recycler_view_partner_program);
-
+        gridView = requireView().findViewById(R.id.recycler_view_partner_program);
+        GetRequest getRequest = new GetRequest("getPartner");
+        getRequest.execute();
         //Тестовый список партнеров
-        ArrayList<PartnerProgramDTO> dataList = new ArrayList<PartnerProgramDTO>();
+        ArrayList<PartnerProgramDTO> dataList;
 
-        PartnerProgramDTO p1 = new PartnerProgramDTO();
-        p1.setTitle("Adidas");
-        p1.setDescription("Скидка 10% на первую покупку\n(Акция действет ежемесячно)");
-        p1.setImageName("adidas.png");
-        p1.setPrice(200);
-
-        PartnerProgramDTO p2 = new PartnerProgramDTO();
-        p2.setTitle("Red Bull");
-        p2.setDescription("Скидка 5%\nПри подписке на срок более 3х месяцев скидка 8% на любую покупку");
-        p2.setImageName("red_bull.png");
-        p2.setPrice(150);
-
-        PartnerProgramDTO p3 = new PartnerProgramDTO();
-        p3.setTitle("Nike");
-        p3.setDescription("Верните до 15% при покупке от 3000 рублей\nАкция дейстительна до 27.09.2020");
-        p3.setImageName("nike.png");
-        p3.setPrice(250);
-
-        dataList.add(p1);
-        dataList.add(p2);
-        dataList.add(p3);
+        ObjectMapper objectMapper = new ObjectMapper();
+        dataList = objectMapper.readValue(getRequest.get(), new TypeReference<List<PartnerProgramDTO>>(){});
 
         //Создаем адаптер, исходя из нашего списка партнеров
         GridAdapterPartnerProgram partnerAdapter = new GridAdapterPartnerProgram(this.getContext(), dataList);
@@ -81,16 +66,13 @@ public class PartnerProgramFragment extends Fragment {
             Object item = gridView.getItemAtPosition(position);
             PartnerProgramDTO partner = (PartnerProgramDTO) item;
 
-            //Настраиваем переход
-            FragmentManager manager = PartnerProgramFragment.this.getFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-            transaction.replace(PartnerProgramFragment.this.getId(), new InformationAboutPartnerFragment(
-                    partner.getImageName(),
-                    partner.getTitle(),
-                    partner.getPrice(),
-                    partner.getDescription()));
-            transaction.addToBackStack(null);
-            transaction.commit();
+            PartnerProgramFragmentDirections.ActionPartnerProgramFragmentToInformationAboutPartnerFragment action =
+                    PartnerProgramFragmentDirections.actionPartnerProgramFragmentToInformationAboutPartnerFragment(partner.getImageName(), partner.getTitle(),
+                            partner.getDescription(),
+                            partner.getPrice(),
+                            partner.getId());
+
+            Navigation.findNavController(v).navigate(action);
         });
 
     }

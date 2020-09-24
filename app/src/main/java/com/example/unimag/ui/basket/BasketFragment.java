@@ -1,8 +1,5 @@
 package com.example.unimag.ui.basket;
 
-import android.annotation.SuppressLint;
-import android.app.Notification;
-import android.drm.DrmStore;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,34 +13,23 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
 import com.example.unimag.ui.DTO.BasketProductDTO;
 import com.example.unimag.ui.DTO.PayDTO;
-import com.example.unimag.ui.Product.GridAdapterOrder;
 import com.example.unimag.ui.DTO.ProductDTO;
-import com.example.unimag.ui.ProductFragment;
-import com.example.unimag.ui.Request.AddRequest;
+import com.example.unimag.ui.Product.GridAdapterOrder;
 import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
 import com.example.unimag.ui.ThreadCheckingConnection;
-import com.example.unimag.ui.pay.GridAdapterForPay;
-import com.example.unimag.ui.register.RegisterFragmentDirections;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 import lombok.SneakyThrows;
 

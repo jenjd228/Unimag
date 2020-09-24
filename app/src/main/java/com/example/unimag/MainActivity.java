@@ -4,6 +4,7 @@ import android.view.MenuItem;
 
 
 import com.example.unimag.ui.SqLite.DataDBHelper;
+import com.example.unimag.ui.sort.GlobalSort;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -19,6 +20,7 @@ import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity implements  BottomNavigationView.OnNavigationItemSelectedListener {
     //private DataDBHelper dataDbHelper;
+    GlobalSort globalSort = new GlobalSort();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -3,6 +3,7 @@ package com.example.unimag.ui.Request;
 import android.os.AsyncTask;
 
 import com.example.unimag.ui.GlobalVar;
+import com.example.unimag.ui.sort.GlobalSort;
 
 import java.io.IOException;
 
@@ -29,7 +30,6 @@ public class GetRequest extends AsyncTask<Void, Void, String> {
         this.methodName = methodName;
     }
 
-
     @Override
     protected String doInBackground(Void... voids) {
         OkHttpClient client = new OkHttpClient();
@@ -52,7 +52,7 @@ public class GetRequest extends AsyncTask<Void, Void, String> {
             }
             case "getList":{
                 request = new Request.Builder()
-                        .url("http://"+ GlobalVar.ip +":8080/getList/"+currentNumberList)
+                        .url("http://"+ GlobalVar.ip +":8080/getList/"+currentNumberList +"/"+GlobalSort.getInstance().getRequest())
                         .get()
                         .build();
                 break;
@@ -60,6 +60,13 @@ public class GetRequest extends AsyncTask<Void, Void, String> {
             case "getUser":{
                 request = new Request.Builder()
                         .url("http://"+ GlobalVar.ip +":8080/getUser/"+secureKod)
+                        .get()
+                        .build();
+                break;
+            }
+            case "getPartner":{
+                request = new Request.Builder()
+                        .url("http://"+ GlobalVar.ip +":8080/getPartner/")
                         .get()
                         .build();
                 break;

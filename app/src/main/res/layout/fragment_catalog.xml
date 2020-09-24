@@ -19,7 +19,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:gravity="center"
-        android:text="Одежда"
+        android:text="Сортировка"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:paddingTop="5dp"

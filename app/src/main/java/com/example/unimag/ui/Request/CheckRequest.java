@@ -63,6 +63,13 @@ public class CheckRequest extends AsyncTask<Void, Void, String> {
                         .build();
                 break;
             }
+            case "userIsSub":{
+                request = new Request.Builder()
+                        .url("http://"+ GlobalVar.ip +":8080/userIsSub/"+secureKod)
+                        .get()
+                        .build();
+                break;
+            }
             case "checkByKod":{
                 RequestBody formBody = new FormBody.Builder()
                         .add("kod",  kodOrSecureKod)

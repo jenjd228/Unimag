@@ -1,5 +1,7 @@
 package com.example.unimag.ui.DTO;
 
+import java.math.BigDecimal;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PartnerProgramDTO {
 
-    private Integer idPartner; //id партнера
+    private Integer id; //id партнера
 
     private String imageName; //Название картинки с логотипом партнера
 
@@ -17,6 +19,6 @@ public class PartnerProgramDTO {
 
     private String description; //Описание скидки партнера
 
-    private int price; //Цена подписки
+    private BigDecimal price; //Цена подписки
 
 }

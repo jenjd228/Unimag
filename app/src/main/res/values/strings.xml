@@ -21,4 +21,14 @@
     <string name="title_basket">Корзина</string>
     <string name="allowed_symbols">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ()@_-*#:;!?.,\'\"{}[]0123456789\\/</string>
     <string name="allowed_numbers">0123456789</string>
+
+    <string name="sort_price_by_DESC">Сортировать цену по убыванию</string>
+    <string name="sort_price_by_ASC">Сортировать цену по возрастанию</string>
+    <string name="without_sorting">Отменить сортировку</string>
+    <string name="sort_by_time">Сортировать по новизне</string>
+
+    <string-array name="categories">
+        <item>Clothes</item>
+        <item>Souvenirs</item>
+    </string-array>
 </resources>

@@ -1,43 +1,33 @@
 package com.example.unimag.ui.catalog;
 
-import android.app.Notification;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
-import com.example.unimag.ui.CategoryFragment;
 import com.example.unimag.ui.DTO.ProductDTO;
-import com.example.unimag.ui.ProductFragment;
 import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.ThreadCheckingConnection;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 import lombok.SneakyThrows;
@@ -75,7 +65,7 @@ public class CatalogFragment extends Fragment {
         gridView = view.findViewById(R.id.gridView);
 
         try {
-            getRequest = new GetRequest(currentNumberList,"getList");
+            getRequest = new GetRequest(currentNumberList,"getList"); //
             getRequest.execute();
 
             if (customGridAdapter == null){
@@ -106,8 +96,8 @@ public class CatalogFragment extends Fragment {
             Object o = gridView.getItemAtPosition(position);
             ProductDTO productDTO = (ProductDTO) o;
 
-            CatalogFragmentDirections.ActionNavigationCatalogToProductFragment2 action= CatalogFragmentDirections.actionNavigationCatalogToProductFragment2(productDTO.getImageName(), productDTO.getTitle(), productDTO.getDescriptions(), productDTO.getPrice(), productDTO.getId());
-            Navigation.findNavController(v).navigate(action);
+             CatalogFragmentDirections.ActionNavigationCatalogToProductFragment2 action= CatalogFragmentDirections.actionNavigationCatalogToProductFragment2(productDTO.getImageName(), productDTO.getTitle(), productDTO.getDescriptions(), productDTO.getPrice(), productDTO.getId());
+             Navigation.findNavController(v).navigate(action);
         });
 
         return view;
@@ -127,7 +117,8 @@ public class CatalogFragment extends Fragment {
         viewCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_navigation_catalog_to_categoryFragment);
+                NavDirections action = CatalogFragmentDirections.actionNavigationCatalogToSortFragment2();
+                Navigation.findNavController(v).navigate(action);
             }
         });
 
@@ -151,7 +142,6 @@ public class CatalogFragment extends Fragment {
 
                     //Если разница равна нулю - добавляем товары
                     if (diff == 0) {
-
                         //Проигрыш анимации
                         loading.setVisibility(View.VISIBLE); //Делаем видимым ImageView
                         animation.setOneShot(false); //Зацикливаем анимацию
@@ -162,11 +152,11 @@ public class CatalogFragment extends Fragment {
                         try {
                             String otvet = getRequest.get();
 
+                            //Делаем невидимым ImageView
+                            //Останавливаем анимацию
                             if (otvet.equals("Error!")) {
                                 isEnd = true; //Товары закончились
                                 //Завершение анимации
-                                animation.stop(); //Останавливаем анимацию
-                                loading.setVisibility(View.INVISIBLE); //Делаем невидимым ImageView
                             } else {
                                 List<ProductDTO> participantJsonList;
                                 ObjectMapper objectMapper = new ObjectMapper();
@@ -175,9 +165,9 @@ public class CatalogFragment extends Fragment {
                                 customGridAdapter.addList(participantJsonList);
                                 currentNumberList++;
                                 //Завершение анимации
-                                animation.stop(); //Останавливаем анимацию
-                                loading.setVisibility(View.INVISIBLE); //Делаем невидимым ImageView
                             }
+                            animation.stop(); //Останавливаем анимацию
+                            loading.setVisibility(View.INVISIBLE); //Делаем невидимым ImageView
                         } catch (Exception ex) {
                             ex.getStackTrace();
                         }
@@ -189,17 +179,5 @@ public class CatalogFragment extends Fragment {
         });
 
 
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        System.out.println("onDestroy");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        System.out.println("onPause");
     }
 }

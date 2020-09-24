@@ -190,7 +190,7 @@ public class RegisterFragment2 extends Fragment {
         String birthYearPravilo = "^[0-9]+$";
         Pattern pattern = Pattern.compile(birthYearPravilo);
         Matcher matcher = pattern.matcher(birthYear);
-        if (!matcher.find()){ //передалать switch case
+        if (!matcher.find()){
             return "false";
         }else {
             int intBirthYear = Integer.parseInt(birthYear);
@@ -205,7 +205,7 @@ public class RegisterFragment2 extends Fragment {
     private void update(String email, String fio, String birthData){
         SendOrUpdateRequest sendOrUpdateRequest = new SendOrUpdateRequest(email,fio,birthData,"userUpdate");
         sendOrUpdateRequest.execute();
-        if(sendOrUpdateRequest.get().equals("ok")){
+        if(sendOrUpdateRequest.get().equals("OK")){
             goToLK();
         } else {
             Toast toast = Toast.makeText(getContext(),
