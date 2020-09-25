@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:insetBottom="7dp"
+    android:insetLeft="4dp"
+    android:insetRight="4dp"
+    android:insetTop="4dp">
+    <ripple android:color="?attr/colorControlHighlight"
+        tools:targetApi="lollipop">
+        <item>
+            <shape android:shape="rectangle"
+                android:tint="#65000000">
+                <corners android:radius="8dp"/>
+                <padding android:left="5dp"/>
+                <padding android:right="5dp"/>
+            </shape>
+        </item>
+    </ripple>
+</inset>

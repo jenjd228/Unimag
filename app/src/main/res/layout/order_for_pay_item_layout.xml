@@ -37,14 +37,14 @@
                     android:gravity="center_vertical"
                     android:text="Название: "
                     android:textColor="#000000"
-                    android:textStyle="bold"></TextView>
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/title_order"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:textColor="#383a3b"
-                    android:gravity="center_vertical"></TextView>
+                    android:gravity="center_vertical"/>
             </LinearLayout>
 
             <LinearLayout
@@ -59,14 +59,14 @@
                     android:gravity="center_vertical"
                     android:text="Кол-во: "
                     android:textColor="#000000"
-                    android:textStyle="bold"></TextView>
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/count"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:textColor="#383a3b"
-                    android:gravity="center_vertical"></TextView>
+                    android:gravity="center_vertical"/>
             </LinearLayout>
 
             <LinearLayout
@@ -81,14 +81,14 @@
                     android:gravity="center_vertical"
                     android:text="Стоимость: "
                     android:textColor="#000000"
-                    android:textStyle="bold"></TextView>
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/cost"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:textColor="#383a3b"
-                    android:gravity="center_vertical"></TextView>
+                    android:gravity="center_vertical"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

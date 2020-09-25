@@ -3,15 +3,11 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 
-import com.example.unimag.ui.SqLite.DataDBHelper;
 import com.example.unimag.ui.sort.GlobalSort;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;

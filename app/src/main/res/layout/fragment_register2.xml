@@ -15,20 +15,20 @@
         android:textSize="30sp" />
 
     <EditText
-        android:id="@+id/name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/register_text_margin"
-        android:hint="@string/name"
-        android:backgroundTint="@color/colorPrimary"
-        android:maxLength="32"/>
-
-    <EditText
         android:id="@+id/surname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/register_text_margin"
         android:hint="@string/surname"
+        android:backgroundTint="@color/colorPrimary"
+        android:maxLength="32"/>
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/register_text_margin"
+        android:hint="@string/name"
         android:backgroundTint="@color/colorPrimary"
         android:maxLength="32"/>
 

@@ -6,23 +6,20 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
 
-import com.bumptech.glide.Glide;
 import com.example.unimag.R;
 import com.example.unimag.ui.Request.AddRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
-import com.example.unimag.ui.basket.BasketFragmentDirections;
-import com.example.unimag.ui.catalog.CatalogFragmentDirections;
+import com.example.unimag.ui.productFragment.ProductAdapter;
 
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 
@@ -74,10 +71,14 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
     }
 
     public void setImageProduct(String url){ //Функция установки изображения продукта
-        //setImageURI(Uri uri) — загружает изображение по его URI
-        ImageView imageProduct = getView().findViewById(R.id.image_product);
+        //ImageView imageProduct = getView().findViewById(R.id.image_product);
+        //Glide.with(getView()).load("http://"+GlobalVar.ip+":8080/upload/"+url).into(imageProduct);
 
-        Glide.with(getView()).load("http://"+GlobalVar.ip+":8080/upload/"+url).into(imageProduct);
+        ViewPager viewPager = getView().findViewById(R.id.pagerProduct); //Находим пэйджер
+        ProductAdapter adapter = new ProductAdapter(ProductFragment.this.getContext(), new String[]{url, "5.jpg", "6.jpg"}); //Заполняем его данными о товаре
+        viewPager.setAdapter(adapter); //Устанавливаем адаптер
+        viewPager.setCurrentItem(0); //Устанавливаем "курсор" на первую картинку
+
     }
 
     public void setDescriptionProduct(String description){ //Функция установки значения описания продукта

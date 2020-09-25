@@ -8,18 +8,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
 import com.example.unimag.ui.Request.CheckRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
-import com.example.unimag.ui.LoginFragment;
 import com.example.unimag.ui.ThreadCheckingConnection;
 
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 import lombok.SneakyThrows;
