@@ -1,5 +1,6 @@
 package com.example.unimag.ui.catalog;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,18 +14,32 @@ import com.example.unimag.R;
 import com.example.unimag.ui.DTO.ProductDTO;
 import com.example.unimag.ui.GlobalVar;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class CustomGridAdapter  extends BaseAdapter {
+public final class CustomGridAdapter  extends BaseAdapter {
 
-    private List<ProductDTO> listData;
+    private static List<ProductDTO> listData;
     private LayoutInflater layoutInflater;
-    private Context context;
+    private static CustomGridAdapter instance;
 
-    public CustomGridAdapter(Context aContext,  List<ProductDTO> listData) {
-        this.context = aContext;
-        this.listData = listData;
-        layoutInflater = LayoutInflater.from(aContext);
+    public CustomGridAdapter (Context context) {
+        layoutInflater = LayoutInflater.from(context);
+        listData = new ArrayList<>();
+    }
+
+    public static CustomGridAdapter setContext(Context context) {
+        if (instance == null) {
+            instance = new CustomGridAdapter(context);
+        }
+        return instance;
+    }
+
+    public static CustomGridAdapter getInstance() {
+        if (instance != null) {
+            return instance;
+        }
+        return null;
     }
 
     @Override
@@ -42,20 +57,21 @@ public class CustomGridAdapter  extends BaseAdapter {
         return position;
     }
 
+    @SuppressLint({"InflateParams", "SetTextI18n"})
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.catalog_item_layout, null);
             holder = new ViewHolder();
-            holder.flagView = (ImageView) convertView.findViewById(R.id.imageView_flag);
-            holder.productTitle= (TextView) convertView.findViewById(R.id.textView_productTitle);
-            holder.productDescription = (TextView) convertView.findViewById(R.id.textView_productDescription);
+            holder.flagView = convertView.findViewById(R.id.imageView_flag);
+            holder.productTitle= convertView.findViewById(R.id.textView_productTitle);
+            holder.productDescription = convertView.findViewById(R.id.textView_productDescription);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        ProductDTO productDTO = this.listData.get(position);
+        ProductDTO productDTO = listData.get(position);
         holder.productTitle.setText(productDTO.getTitle());
         holder.productDescription.setText("" + productDTO.getPrice());
 
@@ -75,9 +91,13 @@ public class CustomGridAdapter  extends BaseAdapter {
         Log.i("CustomGridView", "Res Name: "+ resName+"==> Res ID = "+ resID);
         return resID;
     }*/
+    public void cleanList(){
+        listData.clear();
+        notifyDataSetChanged();
+    }
 
-    public void addList(List<ProductDTO> listData){
-        this.listData.addAll(listData);
+    public void addList(List<ProductDTO> listData2){
+        listData.addAll(listData2);
         notifyDataSetChanged();
     }
 

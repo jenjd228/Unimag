@@ -1,5 +1,6 @@
 package com.example.unimag.ui.catalog;
 
+import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
@@ -23,55 +23,81 @@ import com.example.unimag.R;
 import com.example.unimag.ui.DTO.ProductDTO;
 import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.ThreadCheckingConnection;
+import com.example.unimag.ui.sort.GlobalSort;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.ArrayList;
 import java.util.List;
-
 
 import lombok.SneakyThrows;
 
 public class CatalogFragment extends Fragment {
 
-    private CatalogViewModel catalogViewModel;
-
     private GridView gridView;
 
     private Integer currentNumberList = 0;
-
-    private CustomGridAdapter customGridAdapter;
 
     private GetRequest getRequest;
 
     private Boolean isEnd = false; //Переменная отвечающая за "товары закончились"
 
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) { super.onCreate(savedInstanceState); }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @SneakyThrows
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
-        catalogViewModel =
-                ViewModelProviders.of(this).get(CatalogViewModel.class);
+        //CatalogViewModel catalogViewModel = ViewModelProviders.of(this).get(CatalogViewModel.class);
         View view = inflater.inflate(R.layout.fragment_catalog, container, false);
         gridView = view.findViewById(R.id.gridView);
 
+        if (CustomGridAdapter.getInstance() == null){
+            System.out.println("Адаптер установлен");
+            CustomGridAdapter.setContext(requireContext());
+        }
+
         try {
-            getRequest = new GetRequest(currentNumberList,"getList"); //
-            getRequest.execute();
 
-            if (customGridAdapter == null){
-                gridView.setAdapter(customGridAdapter = new CustomGridAdapter(this.getContext(), new ArrayList<>()));
+            if (GlobalSort.getInstance().getUpdateFlag()){
+                System.out.println("флаг сброшен");
+                CustomGridAdapter.getInstance().cleanList();
+                currentNumberList = 0;
+                GlobalSort.getInstance().setUpdateFlag(false);
+                isEnd = false;
+            }
 
-                String otvet = getRequest.get();
+            if (CustomGridAdapter.getInstance().getCount() == 0) {
+                getRequest = new GetRequest(currentNumberList,"getList");
+                getRequest.execute();
+                //gridView.setAdapter(customGridAdapter);
+                String response = getRequest.get();
+
+                if (response.equals("Error!")) {
+                    Toast toast = Toast.makeText(getContext(),
+                            "Товары закончились!", Toast.LENGTH_SHORT);
+                    toast.show();
+                    System.out.println("Ошибка");
+                } else {
+                    List<ProductDTO> participantJsonList;
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    participantJsonList = objectMapper.readValue(response, new TypeReference<List<ProductDTO>>() {
+                    });
+                    CustomGridAdapter.getInstance().addList(participantJsonList);
+                    currentNumberList++;
+                    System.out.println("Лист установлен");
+                    //System.out.println(CustomGridAdapter.getInstance().getCount());
+                    gridView.setAdapter(CustomGridAdapter.getInstance());
+                }
+            }else {
+                gridView.setAdapter(CustomGridAdapter.getInstance());
+            }
+            System.out.println(CustomGridAdapter.getInstance().getCount());
+            //gridView.setAdapter(CustomGridAdapter.getInstance());
+
+            /*if (customGridAdapter == null){
+                //gridView.setAdapter(customGridAdapter = new CustomGridAdapter(this.getContext(), new ArrayList<>()));
+
+               // String otvet = getRequest.get();
 
                 if(otvet.equals("Error!")){
                     Toast toast = Toast.makeText(getContext(),
@@ -88,7 +114,7 @@ public class CatalogFragment extends Fragment {
                 }
             }else {
                 gridView.setAdapter(customGridAdapter);
-            }
+            }*/
         }catch (Exception e){e.getMessage();}
 
 
@@ -108,73 +134,69 @@ public class CatalogFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        TextView viewCategory = getView().findViewById(R.id.text_category); //Кнопка категории и сортировки
-        ImageView loading = getView().findViewById(R.id.view_loading); //Элемент анимации во фаргменте каталога
+        TextView viewCategory = requireView().findViewById(R.id.text_category); //Кнопка категории и сортировки
+        ImageView loading = requireView().findViewById(R.id.view_loading); //Элемент анимации во фаргменте каталога
         AnimationDrawable animation = (AnimationDrawable) loading.getBackground(); //Говорим что фон - это анимация
 
 
         //Listener для кнопки с категорией
-        viewCategory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavDirections action = CatalogFragmentDirections.actionNavigationCatalogToSortFragment2();
-                Navigation.findNavController(v).navigate(action);
-            }
+        viewCategory.setOnClickListener(v -> {
+            NavDirections action = CatalogFragmentDirections.actionNavigationCatalogToSortFragment2();
+            Navigation.findNavController(v).navigate(action);
         });
 
         //Автообновление каталога
-        gridView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                //Если товары еще не закончились
-                if (!isEnd) {
-                    View lastElement = (View) gridView.getChildAt(gridView.getChildCount() - 1); //Определяем последний товар
+        gridView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            //Если товары еще не закончились
+            if (!isEnd) {
+                View lastElement = gridView.getChildAt(gridView.getChildCount() - 1); //Определяем последний товар
 
-                    //Обработка возможного исключения с GridView
-                    int xLastElement;
-                    if (gridView.getChildCount() == 0) {
-                        xLastElement = 0;
-                    } else {
-                        xLastElement = lastElement.getBottom();
-                    }
+                //Обработка возможного исключения с GridView
+                int xLastElement;
+                if (gridView.getChildCount() == 0) {
+                    xLastElement = 0;
+                } else {
+                    xLastElement = lastElement.getBottom();
+                }
 
-                    int diff = (xLastElement - (gridView.getHeight() + gridView.getScrollY())); //Определяем разницу в пикселях
+                int diff = (xLastElement - (gridView.getHeight() + gridView.getScrollY())); //Определяем разницу в пикселях
 
-                    //Если разница равна нулю - добавляем товары
-                    if (diff == 0) {
-                        //Проигрыш анимации
-                        loading.setVisibility(View.VISIBLE); //Делаем видимым ImageView
-                        animation.setOneShot(false); //Зацикливаем анимацию
-                        animation.start(); //Начинаем проигрывать анимацию
+                //Если разница равна нулю - добавляем товары
+                if (diff == 0) {
+                    System.out.println("Соут после дифа -"+diff);
+                    //Проигрыш анимации
+                    loading.setVisibility(View.VISIBLE); //Делаем видимым ImageView
+                    animation.setOneShot(false); //Зацикливаем анимацию
+                    animation.start(); //Начинаем проигрывать анимацию
 
-                        getRequest = new GetRequest(currentNumberList, "getList");
-                        getRequest.execute();
-                        try {
-                            String otvet = getRequest.get();
+                    getRequest = new GetRequest(currentNumberList, "getList");
+                    getRequest.execute();
+                    try {
+                        String otvet = getRequest.get();
 
-                            //Делаем невидимым ImageView
-                            //Останавливаем анимацию
-                            if (otvet.equals("Error!")) {
-                                isEnd = true; //Товары закончились
-                                //Завершение анимации
-                            } else {
-                                List<ProductDTO> participantJsonList;
-                                ObjectMapper objectMapper = new ObjectMapper();
-                                participantJsonList = objectMapper.readValue(otvet, new TypeReference<List<ProductDTO>>() {
-                                });
-                                customGridAdapter.addList(participantJsonList);
-                                currentNumberList++;
-                                //Завершение анимации
-                            }
-                            animation.stop(); //Останавливаем анимацию
-                            loading.setVisibility(View.INVISIBLE); //Делаем невидимым ImageView
-                        } catch (Exception ex) {
-                            ex.getStackTrace();
+                        //Делаем невидимым ImageView
+                        //Останавливаем анимацию
+                        if (otvet.equals("Error!")) {
+                            isEnd = true; //Товары закончились
+                            //Завершение анимации
+                        } else {
+                            List<ProductDTO> participantJsonList;
+                            ObjectMapper objectMapper = new ObjectMapper();
+                            participantJsonList = objectMapper.readValue(otvet, new TypeReference<List<ProductDTO>>() {
+                            });
+                            CustomGridAdapter.getInstance().addList(participantJsonList);
+                            System.out.println("Добавлен лист");
+                            currentNumberList++;
+                            //Завершение анимации
                         }
-
+                        animation.stop(); //Останавливаем анимацию
+                        loading.setVisibility(View.INVISIBLE); //Делаем невидимым ImageView
+                    } catch (Exception ex) {
+                        ex.getStackTrace();
                     }
 
                 }
+
             }
         });
 

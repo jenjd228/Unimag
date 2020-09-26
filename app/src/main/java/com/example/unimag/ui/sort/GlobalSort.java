@@ -19,9 +19,9 @@ public final class GlobalSort {
 
     private String spinnerSortItemNameCategory = "null"; // категории
 
-    private Boolean sortByTime = false;
-
     private Boolean whereFlag = false;
+
+    private Boolean updateFlag = false;
 
     public static GlobalSort getInstance() {
         if (instance == null) {
@@ -29,4 +29,6 @@ public final class GlobalSort {
         }
         return instance;
     }
+
+
 }

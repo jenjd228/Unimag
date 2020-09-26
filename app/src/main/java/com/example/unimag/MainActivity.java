@@ -3,6 +3,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 
+import com.example.unimag.ui.catalog.CustomGridAdapter;
 import com.example.unimag.ui.sort.GlobalSort;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
