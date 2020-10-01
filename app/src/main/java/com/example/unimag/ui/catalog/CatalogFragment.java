@@ -41,6 +41,13 @@ public class CatalogFragment extends Fragment {
 
     private Boolean isEnd = false; //Переменная отвечающая за "товары закончились"
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(CustomGridAdapter.getInstance() != null){
+            CustomGridAdapter.getInstance().cleanList();
+        }
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @SneakyThrows
