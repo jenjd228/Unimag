@@ -11,6 +11,8 @@ import android.widget.GridView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.unimag.R;
@@ -47,11 +49,16 @@ public class OrderFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        actionBar.setTitle("Мои заказы");
+        actionBar.setDisplayHomeAsUpEnabled(false);
+
         new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
+
         View root = inflater.inflate(R.layout.fragment_orders, container, false);
 
         gridView = root.findViewById(R.id.grid_view_orders);
-
         gridView.setAdapter(gridAdapterOrder = new GridAdapterOrder(this.getContext(), new ArrayList<>()));
 
         try{

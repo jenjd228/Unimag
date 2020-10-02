@@ -26,10 +26,12 @@
     <string name="sort_price_by_ASC">Сортировать цену по возрастанию</string>
     <string name="without_sorting">Отменить сортировку</string>
     <string name="sort_by_time">Сортировать по новизне</string>
+    <string name="sort_date_by_DESC">Показать сначала новые товары</string>
 
     <string-array name="categories">
-        <item>None</item>
-        <item>Clothes</item>
-        <item>Souvenirs</item>
+        <item>Все товары</item>
+        <item>Одежда</item>
+        <item>Сувениры</item>
     </string-array>
+
 </resources>

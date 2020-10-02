@@ -18,6 +18,8 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.unimag.R;
@@ -38,6 +40,11 @@ public class EditProfileFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        actionBar.setTitle("Редактирование профиля");
+        actionBar.setDisplayHomeAsUpEnabled(false);
+
         new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
         return inflater.inflate(R.layout.fragment_edit_profile, container, false);
     }

@@ -26,9 +26,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Категория"
-                android:textSize="26sp"
+                android:textSize="48sp"
                 android:textStyle="bold"
-                android:padding="10dp"
+                android:padding="20dp"
                 android:textColor="@color/black"
                 android:background="@color/normal_black" />
 
@@ -36,15 +36,15 @@
                 android:id="@+id/sortSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"/>
+                android:padding="20dp"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Дополнительная фильтрация"
-                android:textSize="18sp"
+                android:textSize="40sp"
                 android:textStyle="bold"
-                android:padding="10dp"
+                android:padding="20dp"
                 android:textColor="@color/black"
                 android:background="@color/normal_black" />
 
@@ -52,9 +52,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Сортировка по цене"
-                android:textSize="16sp"
+                android:textSize="38sp"
                 android:textStyle="bold"
-                android:padding="10dp"
+                android:padding="20dp"
                 android:textColor="@color/black"
                 android:background="@color/light_black" />
 
@@ -67,24 +67,30 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginLeft="10dp">
+                android:layout_marginLeft="20dp">
 
                 <RadioButton
                     android:id="@+id/radioButtonASC"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="34sp"
+                    android:layout_marginTop="10dp"
                     android:text="@string/sort_price_by_ASC" />
 
                 <RadioButton
                     android:id="@+id/radioButtonDESC"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="34sp"
+                    android:layout_marginTop="10dp"
                     android:text="@string/sort_price_by_DESC" />
 
                 <RadioButton
                     android:id="@+id/radioButtonWithout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="34sp"
+                    android:layout_marginTop="10dp"
                     android:text="@string/without_sorting"
                     android:checked="true"/>
             </RadioGroup>
@@ -93,9 +99,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Сортировка по времени"
-                android:textSize="16sp"
+                android:textSize="38sp"
                 android:textStyle="bold"
-                android:padding="10dp"
+                android:padding="20dp"
                 android:textColor="@color/black"
                 android:background="@color/light_black" />
 
@@ -108,12 +114,14 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginLeft="10dp">
+                android:layout_marginLeft="20dp">
 
                 <RadioButton
                     android:id="@+id/radioButtonNewOld"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textSize="34sp"
                     android:text="@string/sort_date_by_DESC" />
 
                 <RadioButton
@@ -121,6 +129,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/without_sorting"
+                    android:layout_marginTop="10dp"
+                    android:textSize="34sp"
                     android:checked="true"/>
             </RadioGroup>
 
@@ -138,7 +148,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/scroll_category"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"/>
+        android:textSize="34sp"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

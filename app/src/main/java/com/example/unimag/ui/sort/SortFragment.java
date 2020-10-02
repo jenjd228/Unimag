@@ -1,5 +1,6 @@
 package com.example.unimag.ui.sort;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,16 +9,22 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.example.unimag.MainActivity;
 import com.example.unimag.R;
+import com.example.unimag.ui.GlobalVar;
 import com.example.unimag.ui.ThreadCheckingConnection;
 import com.example.unimag.ui.catalog.CustomGridAdapter;
 
@@ -36,6 +43,11 @@ public class SortFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        actionBar.setTitle("Фильтрация товаров");
+        actionBar.setDisplayHomeAsUpEnabled(false);
+
         View view = inflater.inflate(R.layout.fragment_sort, container, false);
 
         new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute(); //Если дисконект
@@ -59,6 +71,19 @@ public class SortFragment extends Fragment {
             radioGroup.check(GlobalSort.getInstance().getSortByPricePosition());
         }
 
+        /**System.out.println("============\n" + GlobalSort.getInstance().getSortByPriceString());
+        //Повторная установка прошлых флажков
+        if (GlobalSort.getInstance().getSortByPriceString() == "price ASC") {
+            buttonASC.setChecked(true);
+        } else if (GlobalSort.getInstance().getSortByPriceString() == "price DESC") {
+            buttonDESK.setChecked(true);
+        } else if (GlobalSort.getInstance().getSortByPriceString() == "NO") {
+            buttonWithoutSort.setChecked(true);
+        }*/
+
+        //Обновляем флаги
+        buttonWithoutSort.setChecked(true);
+
         radioGroup.setOnCheckedChangeListener((arg0, selectedId) -> {
             selectedId = radioGroup.getCheckedRadioButtonId();
             //GlobalSort.getInstance().setSortByPricePosition(selectedId);
@@ -75,9 +100,13 @@ public class SortFragment extends Fragment {
             }
         });
 
-        ArrayAdapter<?> adapter =
-                ArrayAdapter.createFromResource(requireContext(), R.array.categories, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //ArrayAdapter<?> adapter =
+        //        ArrayAdapter.createFromResource(requireContext(), R.array.categories, android.R.layout.simple_spinner_item);
+        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        String[] categories = getResources().getStringArray(R.array.categories); //Берем массив с названиями категорий
+        AdapterForSpinner adapter = new AdapterForSpinner(requireContext(), R.layout.row_spinner, categories); //Класс указан ниже
+
 
         spinner.setAdapter(adapter);
 
@@ -92,9 +121,15 @@ public class SortFragment extends Fragment {
                 //GlobalSort.getInstance().setSpinnerItemPosition(selectedItemPosition);
                 //GlobalSort.getInstance().setSpinnerSortItemNameCategory(choose[selectedItemPosition]);
                 spinnerItemPosition = selectedItemPosition;
-                spinnerSortItemNameCategory = choose[selectedItemPosition];
 
-                if (choose[selectedItemPosition].equals("None")){
+                //Сортируем по категории
+                if (choose[selectedItemPosition].equals("Одежда")){
+                    spinnerSortItemNameCategory = "Clothes";
+                } else if (choose[selectedItemPosition].equals("Сувениры")) {
+                    spinnerSortItemNameCategory = "Souvenirs";
+                }
+
+                if (choose[selectedItemPosition].equals("Все товары")){
                     //GlobalSort.getInstance().setWhereFlag(false);
                     whereFlag = false;
                 }else {
@@ -130,6 +165,65 @@ public class SortFragment extends Fragment {
         });
 
 
+
+    }
+
+    /** АДАПТЕР ДЛЯ СПИННЕРА
+     *
+     *
+     *
+     * */
+    public class AdapterForSpinner extends ArrayAdapter<String> {
+
+        String[] categories; //Массив с названиями категорий
+
+        //Конструктор класса
+        public AdapterForSpinner(Context context, int textViewResourceId,
+                                 String[] objects) {
+            super(context, textViewResourceId, objects);
+            categories = objects;
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView,
+                                    ViewGroup parent) {
+
+            return getCustomView(position, convertView, parent);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            return getCustomView(position, convertView, parent);
+        }
+
+
+        public View getCustomView(int position, View convertView,
+                                  ViewGroup parent) {
+
+            LayoutInflater inflater = getLayoutInflater();
+            View row = inflater.inflate(R.layout.row_spinner, parent, false);
+            TextView label = (TextView) row.findViewById(R.id.text_spinner);
+            label.setText(categories[position]);
+
+            ImageView icon = (ImageView) row.findViewById(R.id.image_spinner);
+
+            switch (categories[position]) {
+                case "Все товары":
+                    icon.setImageResource(R.drawable.all_products);
+                    break;
+                case "Одежда":
+                    icon.setImageResource(R.drawable.clothes);
+                    break;
+                case "Сувениры":
+                    icon.setImageResource(R.drawable.souvenirs);
+                    break;
+                default:
+                    break;
+            }
+
+            return row;
+        }
 
     }
 
