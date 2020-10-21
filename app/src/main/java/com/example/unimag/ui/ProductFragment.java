@@ -1,5 +1,6 @@
 package com.example.unimag.ui;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -101,6 +102,7 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
         setDescriptionProduct(descriptions);
     }
 
+    @SuppressLint("ShowToast")
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -117,11 +119,17 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
                 AddRequest addRequest = new AddRequest(productId,secureKod,"addToBasket");
                 addRequest.execute();
                 try {
-                    if(addRequest.get().equals("ok")){
+                    String otvet = addRequest.get();
+                    System.out.println(otvet);
+                    if(otvet.equals("OK")){
                         Toast toast = Toast.makeText(getContext(),
                                 "Товар добавлен!", Toast.LENGTH_SHORT);
                         toast.show();
-                    } else {
+                    } else if (otvet.equals("PRODUCT_IS_PRESENT")){
+                        Toast toast = Toast.makeText(getContext(),
+                                "Этот товар уже в корзине!", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }else {
                         Toast toast = Toast.makeText(getContext(),
                                 "Ошибка!", Toast.LENGTH_SHORT);
                         toast.show();

@@ -26,7 +26,7 @@ public class PersonalAreaFragment extends Fragment {
     View root;
     String secureKod;
 
-    private com.example.unimag.ui.personal_area.PersonalAreaViewModel personalAreaViewModel;
+    private PersonalAreaViewModel personalAreaViewModel;
 
     @SneakyThrows
     @Override
@@ -47,8 +47,6 @@ public class PersonalAreaFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
         //Создание View-Model для данного фрагмента (передаем данные Activity)
-        personalAreaViewModel =
-                ViewModelProviders.of(this).get(com.example.unimag.ui.personal_area.PersonalAreaViewModel.class);
 //        //Создание View-элемента из XML-файла
         root = inflater.inflate(R.layout.fragment_personal_area, container, false);
         return root;

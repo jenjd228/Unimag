@@ -11,7 +11,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/layout_card"
         android:text="Реквизиты карты"
         android:background="@color/light_black"
         android:paddingTop="10dp"
@@ -21,53 +20,23 @@
         android:textStyle="bold"
         android:gravity="center" />
 
-    <LinearLayout
-        android:id="@+id/layout_card"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_requisites"
-        app:layout_constraintBottom_toTopOf="@id/text_register_order"
-        android:padding="10dp"
-        android:orientation="vertical">
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:maxLength="16"
-            android:hint="Номер карты"
-            android:inputType="number"
-            android:digits="@string/allowed_numbers"/>
-
-        <EditText
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:maxLength="3"
-            android:hint="Секретный код"
-            android:inputType="numberPassword"
-            android:digits="@string/allowed_numbers"/>
-
-    </LinearLayout>
-
     <TextView
         android:id="@+id/text_register_order"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_card"
-        android:text="Детали заказа"
         android:background="@color/light_black"
+        android:gravity="center"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:textSize="22dp"
+        android:text="Детали заказа"
         android:textColor="@color/black"
+        android:textSize="22dp"
         android:textStyle="bold"
-        android:gravity="center" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/text_requisites" />
+
+    <!-- НАСТОЛЬКО ВРЕМЕННО ЧТО ВАМ ДАЖЕ НЕ СНИЛОСЬ-->
 
     <!-- НАСТОЛЬКО ВРЕМЕННО ЧТО ВАМ ДАЖЕ НЕ СНИЛОСЬ-->
 
@@ -79,10 +48,10 @@
         android:stretchMode="columnWidth"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_register_order" />
-
-    <!-- НАСТОЛЬКО ВРЕМЕННО ЧТО ВАМ ДАЖЕ НЕ СНИЛОСЬ-->
+        app:layout_constraintTop_toBottomOf="@+id/text_register_order"
+        app:layout_constraintVertical_bias="0.0" />
 
     <LinearLayout
         android:id="@+id/linearLayout"

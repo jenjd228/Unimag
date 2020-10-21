@@ -1,5 +1,6 @@
-package com.example.unimag.ui.Product;
+package com.example.unimag.ui.Order;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.unimag.R;
-import com.example.unimag.ui.DTO.OrderDTO;
+import com.example.unimag.ui.DTO.OrdersDTO;
 import com.example.unimag.ui.DTO.ProductDTO;
 import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
@@ -27,6 +28,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import lombok.SneakyThrows;
 
 
 public class OrderFragment extends Fragment {
@@ -45,16 +48,18 @@ public class OrderFragment extends Fragment {
         dataDbHelper = new DataDBHelper(getActivity());
         secureKod = dataDbHelper.getSecureKod(dataDbHelper);
         dataDbHelper.close();
+
     }
 
+    @SuppressLint("ShowToast")
+    @SneakyThrows
     @RequiresApi(api = Build.VERSION_CODES.N)
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
 
         ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
         actionBar.setTitle("Мои заказы");
         actionBar.setDisplayHomeAsUpEnabled(false);
-
-        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
 
         View root = inflater.inflate(R.layout.fragment_orders, container, false);
 
@@ -65,17 +70,20 @@ public class OrderFragment extends Fragment {
             GetRequest getRequest = new GetRequest(secureKod,"getOrdersList");
             getRequest.execute();
             String result = getRequest.get();
-            if (result.equals("BAD_REQUEST") || result.equals("Error!")){
+
+            if (result.isEmpty()){
 
             }else {
-                List<OrderDTO> participantJsonList;
+                List<OrdersDTO> participantJsonList;
                 ObjectMapper objectMapper = new ObjectMapper();
-                participantJsonList = objectMapper.readValue(getRequest.get(), new TypeReference<List<OrderDTO>>(){});
+                participantJsonList = objectMapper.readValue(getRequest.get(), new TypeReference<List<OrdersDTO>>(){});
                 gridAdapterOrder.addList(participantJsonList);
             }
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
+
+        System.out.println(gridAdapterOrder.getListData() +" это лист");
 
         return root;
     }
@@ -94,7 +102,7 @@ public class OrderFragment extends Fragment {
         //gridView.setAdapter(gridAdapterOrder = new GridAdapterOrder(this.getContext(),products));
 
         //Установка onClickListenera для каждого элемента item
-        ArrayList<OrderDTO> listData = new ArrayList<OrderDTO>();
+       /* ArrayList<OrderDTO> listData = new ArrayList<OrderDTO>();
 
         OrderDTO p1 = new OrderDTO();
         p1.setTitle("Часы ЮФУ ясень");
@@ -104,7 +112,7 @@ public class OrderFragment extends Fragment {
         listData.add(p1);
 
         GridAdapterOrder adapter = new GridAdapterOrder(this.getContext(), listData);
-        gridView.setAdapter(adapter);
+        gridView.setAdapter(adapter);*/
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override

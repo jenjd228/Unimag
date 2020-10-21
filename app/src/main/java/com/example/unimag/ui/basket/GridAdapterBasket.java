@@ -30,7 +30,7 @@ import java.util.concurrent.ExecutionException;
 public class GridAdapterBasket  extends BaseAdapter {
 
     private List<BasketProductDTO> listData;
-    private List<BasketProductDTO> listProduct;
+    private List<BasketProductDTO> listProductForPay = new ArrayList<>();;
     private LayoutInflater layoutInflater;
     private Context context;
     private String secureKod = null;
@@ -64,21 +64,20 @@ public class GridAdapterBasket  extends BaseAdapter {
         secureKod = dataDbHelper.getSecureKod(dataDbHelper);
         dataDbHelper.close();
 
-        listProduct = new ArrayList<>();
         GridAdapterBasket.ViewHolder holder;
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.basket_product_item_layout, null);
             holder = new GridAdapterBasket.ViewHolder();
-            holder.basketLayout = (LinearLayout) convertView.findViewById(R.id.basket_product);
-            holder.imageView = (ImageView) convertView.findViewById(R.id.image_basket_product);
-            holder.productPrice = (TextView) convertView.findViewById(R.id.price_basket_product);
-            holder.productTitle= (TextView) convertView.findViewById(R.id.title_basket_product);
-            holder.productDescription = (TextView) convertView.findViewById(R.id.description_basket_product);
-            holder.itemCheckBox = (CheckBox) convertView.findViewById(R.id.checkBoxBasket);
-            holder.deleteButton = (Button) convertView.findViewById(R.id.deleteButton);
-            holder.addProductCountButton = (Button) convertView.findViewById(R.id.addProductCountButton);
-            holder.deleteProductCountButton = (Button) convertView.findViewById(R.id.deleteProductCountButton);
-            holder.productCount = (TextView) convertView.findViewById(R.id.productCount);
+            holder.basketLayout = convertView.findViewById(R.id.basket_product);
+            holder.imageView = convertView.findViewById(R.id.image_basket_product);
+            holder.productPrice = convertView.findViewById(R.id.price_basket_product);
+            holder.productTitle= convertView.findViewById(R.id.title_basket_product);
+            holder.productDescription = convertView.findViewById(R.id.description_basket_product);
+            holder.itemCheckBox = convertView.findViewById(R.id.checkBoxBasket);
+            holder.deleteButton = convertView.findViewById(R.id.deleteButton);
+            holder.addProductCountButton = convertView.findViewById(R.id.addProductCountButton);
+            holder.deleteProductCountButton = convertView.findViewById(R.id.deleteProductCountButton);
+            holder.productCount = convertView.findViewById(R.id.productCount);
             convertView.setTag(holder);
         } else {
             holder = (GridAdapterBasket.ViewHolder) convertView.getTag();
@@ -179,9 +178,9 @@ public class GridAdapterBasket  extends BaseAdapter {
                             "Выбран товар с id = " + id+" - "+holder.itemCheckBox.isChecked(), Toast.LENGTH_SHORT);
                     toast.show();
                     if (holder.itemCheckBox.isChecked()) {
-                        listProduct.add(product);
+                        listProductForPay.add(product);
                     }else {
-                        listProduct.remove(product);
+                        listProductForPay.remove(product);
                     }
                 }
         );
@@ -203,8 +202,17 @@ public class GridAdapterBasket  extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public List<BasketProductDTO> getProductList(){
-        return listProduct;
+    public boolean findProductInBasketList(Integer id){
+        for (BasketProductDTO basketProduct : listData){
+            if (basketProduct.getProductId().equals(id)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public List<BasketProductDTO> getProductForPayList(){
+        return listProductForPay;
     }
 
     static class ViewHolder {

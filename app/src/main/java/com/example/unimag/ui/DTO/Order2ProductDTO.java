@@ -7,16 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PayDTO {
-
+public class Order2ProductDTO {
     private Integer productId;
-
-    private String imageName;
-
-    private Integer price;
-
-    private String title;
-
-    private Integer count;
-
 }

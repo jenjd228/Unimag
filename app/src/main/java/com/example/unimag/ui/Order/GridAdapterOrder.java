@@ -1,5 +1,6 @@
-package com.example.unimag.ui.Product;
+package com.example.unimag.ui.Order;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
@@ -14,21 +15,19 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
-import com.bumptech.glide.Glide;
 import com.example.unimag.R;
-import com.example.unimag.ui.DTO.BasketProductDTO;
-import com.example.unimag.ui.DTO.OrderDTO;
-import com.example.unimag.ui.GlobalVar;
+import com.example.unimag.ui.DTO.OrdersDTO;
 
 import java.util.List;
 
+
 public class GridAdapterOrder extends BaseAdapter {
 
-    private List<OrderDTO> listData;
+    private List<OrdersDTO> listData;
     private LayoutInflater layoutInflater;
     private Context context;
 
-    public GridAdapterOrder(Context aContext,  List<OrderDTO> listData) { //Конструктор нашего Grid'a
+    public GridAdapterOrder(Context aContext,  List<OrdersDTO> listData) { //Конструктор нашего Grid'a
         this.context = aContext;
         this.listData = listData;
         layoutInflater = LayoutInflater.from(aContext);
@@ -49,27 +48,29 @@ public class GridAdapterOrder extends BaseAdapter {
         return position;
     }
 
+    @SuppressLint("SetTextI18n")
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.order_item_layout, null);
             holder = new ViewHolder();
             //Поиск всех нужных элементов
-            holder.orderView = (LinearLayout) convertView.findViewById(R.id.order_layout);
-            holder.imageOrderView = (ImageView) convertView.findViewById(R.id.image_order);
-            holder.titleView = (TextView) convertView.findViewById(R.id.title_order);
-            holder.dataOfOrderView = (TextView) convertView.findViewById(R.id.data_of_order);
-            holder.statusView = (TextView) convertView.findViewById(R.id.status_of_order);
+            holder.orderView = convertView.findViewById(R.id.order_layout);
+            holder.imageOrderView = convertView.findViewById(R.id.image_order);
+            holder.orderIdView = convertView.findViewById(R.id.id_order);
+            holder.dataOfOrderView = convertView.findViewById(R.id.data_of_order);
+            holder.statusView = convertView.findViewById(R.id.status_of_order);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        OrderDTO order = this.listData.get(position);
+        OrdersDTO mainOrder = this.listData.get(position);
         //Установка нужных значений для наших элементов
-        holder.titleView.setText(order.getTitle());
-        holder.dataOfOrderView.setText("" + order.getDataOfOrder());
-        holder.statusView.setText("" + order.getStatus());
+        System.out.println(mainOrder);
+        holder.orderIdView.setText("" +mainOrder.getOrderId());
+        holder.dataOfOrderView.setText("" + mainOrder.getDataOfOrder());
+        holder.statusView.setText("" + mainOrder.getStatus());
 
         //Перекрас фона Item'а
         if(position%2==0) {
@@ -80,13 +81,13 @@ public class GridAdapterOrder extends BaseAdapter {
         //int imageId = this.getMipmapResIdByName(order.getImageName());
         //Вставка изображения
         //holder.imageOrderView.setImageResource(imageId);
-        Glide.with(convertView).load("http://"+ GlobalVar.ip +":8080/upload/"+order.getImageName()).into(holder.imageOrderView);
+        //Glide.with(convertView).load("http://"+ GlobalVar.ip +":8080/upload/"+mainOrder.getImageName()).into(holder.imageOrderView);
 
         return convertView;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void addList(List<OrderDTO> listData){
+    public void addList(List<OrdersDTO> listData){
         this.listData.addAll(listData);
         notifyDataSetChanged();
     }
@@ -101,7 +102,7 @@ public class GridAdapterOrder extends BaseAdapter {
         return resID;
     }
 
-    public List<OrderDTO> getListData() {
+    public List<OrdersDTO> getListData() {
         return listData;
     }
 
@@ -109,7 +110,7 @@ public class GridAdapterOrder extends BaseAdapter {
     static class ViewHolder {
         LinearLayout orderView;
         ImageView imageOrderView;
-        TextView titleView;
+        TextView orderIdView;
         TextView dataOfOrderView;
         TextView statusView;
     }

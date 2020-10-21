@@ -22,9 +22,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import com.example.unimag.MainActivity;
 import com.example.unimag.R;
-import com.example.unimag.ui.GlobalVar;
 import com.example.unimag.ui.ThreadCheckingConnection;
 import com.example.unimag.ui.catalog.CustomGridAdapter;
 

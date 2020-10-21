@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 // как пример
 public class SendEmail {
-    public void sendEmail(){
+    /*public void sendEmail(){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://192.168.31.143:8080/addEmail") // Адрес сервера
                 .addConverterFactory(GsonConverterFactory.create()) // говорим ретрофиту что для сериализации необходимо использовать GSON
@@ -40,5 +40,5 @@ public class SendEmail {
                 // ошибка во время выполнения запроса
             }
         });
-    }
+    }*/
 }

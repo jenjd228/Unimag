@@ -34,4 +34,12 @@
         <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
 
+    <style name="CloudipspTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <item name="android:editTextStyle">@style/CloudipspEditText</item>
+    </style>
+
+    <style name="CloudipspEditText" parent="android:style/Widget.Holo.EditText">
+        <!--<item name="android:background">#ffff00</item>-->
+    </style>
+
 </resources>

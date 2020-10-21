@@ -9,13 +9,9 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
-import com.example.unimag.ui.catalog.CatalogFragment;
-import com.example.unimag.ui.partner_program.PartnerProgramFragment;
 
 
 public class CategoryFragment extends Fragment {

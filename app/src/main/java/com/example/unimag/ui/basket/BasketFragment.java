@@ -14,13 +14,14 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
 import com.example.unimag.ui.DTO.BasketProductDTO;
 import com.example.unimag.ui.DTO.PayDTO;
 import com.example.unimag.ui.DTO.ProductDTO;
-import com.example.unimag.ui.Product.GridAdapterOrder;
+import com.example.unimag.ui.Order.GridAdapterOrder;
 import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
 import com.example.unimag.ui.ThreadCheckingConnection;
@@ -71,20 +72,19 @@ public class BasketFragment extends Fragment {
         buttonReady.setOnClickListener(e -> {
 
             List<BasketProductDTO> products = new ArrayList<>();
-            List<PayDTO> payDTOList = new ArrayList<>();
-            if (gridAdapterBasket.getProductList()!=null){
-                products = gridAdapterBasket.getProductList();
+            List<PayDTO> payDTOIdList = new ArrayList<>();
+            if (gridAdapterBasket.getProductForPayList()!=null){
+                products = gridAdapterBasket.getProductForPayList();
                 for (BasketProductDTO basketProductDTO : products){
-                    payDTOList.add(new PayDTO(basketProductDTO.getImageName(),basketProductDTO.getPrice(),basketProductDTO.getTitle(),basketProductDTO.getCount()));
+                    payDTOIdList.add(new PayDTO(basketProductDTO.getProductId(),basketProductDTO.getImageName(),basketProductDTO.getPrice(),basketProductDTO.getTitle(),basketProductDTO.getCount()));
                 }
             }
 
             //Navigation.findNavController(requireView()).navigate(R.id.action_navigation_basket_to_registerOrderFragment);
             if (products.size()!=0){
 
-                String list = new Gson().toJson(payDTOList);
-                System.out.println(list + "-----");
-                BasketFragmentDirections.ActionNavigationBasketToRegisterOrderFragment action = BasketFragmentDirections.actionNavigationBasketToRegisterOrderFragment(list);
+                String list = new Gson().toJson(payDTOIdList);
+                NavDirections action = BasketFragmentDirections.actionNavigationBasketToRegisterOrderFragment(list);
                 Navigation.findNavController(requireView()).navigate(action);
 
                 /*StringBuilder stringBuilder = new StringBuilder();

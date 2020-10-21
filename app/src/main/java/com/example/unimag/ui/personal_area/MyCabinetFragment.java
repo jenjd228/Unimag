@@ -28,6 +28,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
+
 import com.example.unimag.ui.DTO.UserDTO;
 import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
@@ -103,13 +104,12 @@ public class MyCabinetFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
         actionBar.setTitle("Личный кабинет");
         actionBar.setDisplayHomeAsUpEnabled(false);
 
         new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
-        View root = inflater.inflate(R.layout.fragment_my_cabinet, container, false);
-        return root;
+        return inflater.inflate(R.layout.fragment_my_cabinet, container, false);
     }
 
     public Bitmap scaleCenterCrop(Bitmap source, int newHeight, int newWidth) { //Функция обрезания фото по центру до нужных размеров c сохранением размеров
@@ -130,8 +130,8 @@ public class MyCabinetFragment extends Fragment {
     }
 
 
-    private void setImageUser(String URL){ //Функция установки аватарки пользователя
-        ImageView imageUser = getView().findViewById(R.id.image_user);
+    private void setImageUser(){ //Функция установки аватарки пользователя
+        ImageView imageUser = requireView().findViewById(R.id.image_user);
 
         Bitmap startBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.user); //Наше изображение
         Bitmap bitmap = scaleCenterCrop(startBitmap, (int) getResources().getDimension(R.dimen.dp150), (int) getResources().getDimension(R.dimen.dp150));
@@ -172,7 +172,7 @@ public class MyCabinetFragment extends Fragment {
 
     private void setInformationAboutUser(String fio,String mail,Integer points){ //Функция установки всей информации о пользователе в ЛК
         setFIO(fio);
-        setImageUser("Какой-то URL");
+        setImageUser();
         setMail(mail);
         setBalls(points);
     }

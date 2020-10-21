@@ -34,11 +34,11 @@ public class GetRequest extends AsyncTask<Void, Void, String> {
     protected String doInBackground(Void... voids) {
         OkHttpClient client = new OkHttpClient();
         Request request = null;
-        Response response = null;
+        Response response;
         switch (methodName){
             case "getOrdersList":{
                 request = new Request.Builder()
-                        .url("http://"+ GlobalVar.ip +":8080/getOrders/"+secureKod)
+                        .url("http://"+ GlobalVar.ip +":8080/getOrdersList/"+secureKod)
                         .get()
                         .build();
                 break;

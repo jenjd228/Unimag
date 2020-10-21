@@ -17,6 +17,8 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
     private Integer productId;
     private String methodName;
     private String stringIds;
+    private String orderId;
+    private String totalMoney;
 
 
     public AddRequest(Integer productId,String secureKod,String methodName){
@@ -25,10 +27,12 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
         this.methodName = methodName;
     }
 
-    public AddRequest(String stringIds,String secureKod,String methodName){
+    public AddRequest(String stringIds,String secureKod,String orderId,String totalMoney, String methodName){
         this.stringIds = stringIds;
         this.secureKod = secureKod;
         this.methodName = methodName;
+        this.orderId = orderId;
+        this.totalMoney = totalMoney;
     }
 
 
@@ -53,6 +57,8 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
                 RequestBody formBody = new FormBody.Builder()
                         .add("secureKod", secureKod)
                         .add("stringIds",stringIds)
+                        .add("totalMoney",totalMoney)
+                        .add("orderId",orderId)
                         .build();
                 request = new Request.Builder()
                         .url("http://"+ GlobalVar.ip +":8080/addToOrders")

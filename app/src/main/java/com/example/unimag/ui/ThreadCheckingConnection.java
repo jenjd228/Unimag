@@ -7,7 +7,7 @@ import android.os.Bundle;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.unimag.ui.catalog.CatalogFragment;
+
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;

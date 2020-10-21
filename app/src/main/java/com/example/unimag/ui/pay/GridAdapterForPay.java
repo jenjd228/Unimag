@@ -3,25 +3,19 @@ package com.example.unimag.ui.pay;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.unimag.R;
-import com.example.unimag.ui.DTO.BasketProductDTO;
 import com.example.unimag.ui.DTO.PayDTO;
 import com.example.unimag.ui.GlobalVar;
-import com.example.unimag.ui.basket.GridAdapterBasket;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GridAdapterForPay extends BaseAdapter {
@@ -52,19 +46,19 @@ public class GridAdapterForPay extends BaseAdapter {
     }
 
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "InflateParams"})
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
         GridAdapterForPay.ViewHolder holder;
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.order_for_pay_item_layout, null);
             holder = new GridAdapterForPay.ViewHolder();
-            holder.orderLayout = (LinearLayout) convertView.findViewById(R.id.order_layout);
-            holder.imageView = (ImageView) convertView.findViewById(R.id.image_order);
-            holder.productPrice = (TextView) convertView.findViewById(R.id.cost);
-            holder.productTitle= (TextView) convertView.findViewById(R.id.title_order);
+            holder.orderLayout = convertView.findViewById(R.id.order_layout);
+            holder.imageView = convertView.findViewById(R.id.image_order);
+            holder.productPrice = convertView.findViewById(R.id.cost);
+            holder.productTitle= convertView.findViewById(R.id.title_order);
             //holder.productDescription = (TextView) convertView.findViewById(R.id.description_basket_product);
-            holder.productCount = (TextView) convertView.findViewById(R.id.count);
+            holder.productCount = convertView.findViewById(R.id.count);
             convertView.setTag(holder);
         } else {
             holder = (GridAdapterForPay.ViewHolder) convertView.getTag();

@@ -1,11 +1,7 @@
 package com.example.unimag;
+
 import android.os.Bundle;
 import android.view.MenuItem;
-
-
-import com.example.unimag.ui.catalog.CustomGridAdapter;
-import com.example.unimag.ui.sort.GlobalSort;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +9,9 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import com.example.unimag.ui.sort.GlobalSort;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 public class MainActivity extends AppCompatActivity implements  BottomNavigationView.OnNavigationItemSelectedListener {
@@ -23,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements  BottomNavigation
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         //dataDbHelper = new DataDBHelper(this);
         //String secureKod = dataDbHelper.getSecureKod(dataDbHelper);
         //dataDbHelper.close();
@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity implements  BottomNavigation
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        System.out.println("Нажата кнопка меню");
         switch (item.getItemId()) {
             case R.id.navigation_catalog: Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.navigation_catalog);break;
             case R.id.navigation_news: Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.navigation_news);break;

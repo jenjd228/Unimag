@@ -1,5 +1,7 @@
 package com.example.unimag.ui.pay;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,17 +13,20 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
+
+import com.example.unimag.SimpleExampleActivity;
 import com.example.unimag.ui.DTO.PayDTO;
 import com.example.unimag.ui.SqLite.DataDBHelper;
 import com.example.unimag.ui.ThreadCheckingConnection;
-import com.example.unimag.ui.catalog.CatalogFragment;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -56,7 +61,7 @@ public class RegisterOrderFragment extends Fragment {
         dataDbHelper = new DataDBHelper(getActivity());
         secureKod = dataDbHelper.getSecureKod(dataDbHelper);
         dataDbHelper.close();
-        list = RegisterOrderFragmentArgs.fromBundle(requireArguments()).getList();
+         list = RegisterOrderFragmentArgs.fromBundle(requireArguments()).getList();
     }
 
     @SneakyThrows
@@ -81,6 +86,7 @@ public class RegisterOrderFragment extends Fragment {
         return view;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -88,22 +94,22 @@ public class RegisterOrderFragment extends Fragment {
         Button button_register_order = requireView().findViewById(R.id.button_register_order);
         TextView totalMoney = requireView().findViewById(R.id.money);
         totalMoney.setText(String.valueOf(gridAdapterForPay.getTheCostOfProducts()));
+        List<Integer> idProductList = new ArrayList<>();
+        gridAdapterForPay.getProductList().forEach(object -> idProductList.add(object.getProductId()));
+        button_register_order.setOnClickListener(v -> {
+            //NavDirections action = RegisterOrderFragmentDirections.actionRegisterOrderFragmentToSimpleExampleActivity();
+            //Navigation.findNavController(v).navigate(action);
 
-        button_register_order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Временно
-                Toast toast = Toast.makeText(RegisterOrderFragment.this.getContext(),
-                        "Покупка оплачена!\nСтатус доставки можно посмотреть в личном кабинете", Toast.LENGTH_LONG);
-                toast.show();
+            Intent intent = new Intent(getActivity(), SimpleExampleActivity.class);
+            intent.putExtra("Amount",totalMoney.getText());
+            intent.putExtra("IdProductList",idProductList.toString());
+            intent.putExtra("secureKod",secureKod);
+            startActivity(intent);
+            //Временно
+            Toast toast = Toast.makeText(RegisterOrderFragment.this.getContext(),
+                    "Покупка оплачена!\nСтатус доставки можно посмотреть в личном кабинете", Toast.LENGTH_LONG);
+            toast.show();
 
-                //Временно
-                FragmentManager manager = getFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                transaction.replace(RegisterOrderFragment.this.getId(), new CatalogFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
         });
 
     }

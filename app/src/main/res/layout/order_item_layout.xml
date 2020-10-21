@@ -36,12 +36,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:text="Название: "
+                    android:text="Id заказа: "
                     android:textColor="#000000"
                     android:textStyle="bold"/>
 
                 <TextView
-                    android:id="@+id/title_order"
+                    android:id="@+id/id_order"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:textColor="#383a3b"

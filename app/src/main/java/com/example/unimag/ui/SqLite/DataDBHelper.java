@@ -22,7 +22,6 @@ public class  DataDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        System.out.println(1);
         db.execSQL("create table " + TABLE_CONTACTS + "(" + KEY_ID
         + " integer primary key," + KEY_SECUREKOD + " text" + ")");
     }
