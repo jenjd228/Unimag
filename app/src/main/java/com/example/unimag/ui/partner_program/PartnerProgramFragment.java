@@ -72,8 +72,8 @@ public class PartnerProgramFragment extends Fragment {
             Object item = gridView.getItemAtPosition(position);
             PartnerProgramDTO partner = (PartnerProgramDTO) item;
 
-            PartnerProgramFragmentDirections.ActionPartnerProgramFragmentToInformationAboutPartnerFragment action =
-                    PartnerProgramFragmentDirections.actionPartnerProgramFragmentToInformationAboutPartnerFragment(partner.getImageName(), partner.getTitle(),
+            PartnerProgramFragmentDirections.ActionNavigationPartnerProgramToInformationAboutPartnerFragment action =
+                    PartnerProgramFragmentDirections.actionNavigationPartnerProgramToInformationAboutPartnerFragment(partner.getImageName(), partner.getTitle(),
                             partner.getDescription(),
                             partner.getPrice(),
                             partner.getId());

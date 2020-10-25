@@ -22,10 +22,14 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_news"
-        android:name="com.example.unimag.ui.news.NewsFragment"
-        android:label="@string/title_news"
-        tools:layout="@layout/fragment_news" />
+        android:id="@+id/navigation_partner_program"
+        android:name="com.example.unimag.ui.partner_program.PartnerProgramFragment"
+        android:label="@string/title_partner_program"
+        tools:layout="@layout/fragment_partner_program" >
+        <action
+            android:id="@+id/action_navigation_partner_program_to_informationAboutPartnerFragment"
+            app:destination="@id/informationAboutPartnerFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_basket"
@@ -59,20 +63,6 @@
         <action
             android:id="@+id/action_categoryFragment_to_navigation_catalog"
             app:destination="@id/navigation_catalog" />
-        <action
-            android:id="@+id/action_categoryFragment_to_partnerProgramFragment"
-            app:destination="@id/partnerProgramFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/partnerProgramFragment"
-        android:name="com.example.unimag.ui.partner_program.PartnerProgramFragment"
-        android:label="PartnerProgramFragment" >
-        <action
-            android:id="@+id/action_partnerProgramFragment_to_categoryFragment"
-            app:destination="@id/categoryFragment" />
-        <action
-            android:id="@+id/action_partnerProgramFragment_to_informationAboutPartnerFragment"
-            app:destination="@id/informationAboutPartnerFragment" />
     </fragment>
     <fragment
         android:id="@+id/myCabinetFragment"

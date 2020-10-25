@@ -36,25 +36,25 @@
             android:textSize="38sp" />
 
         <EditText
-            android:id="@+id/edit_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:hint="@string/name"
-            android:textSize="26sp"
-            android:backgroundTint="@color/colorPrimary"
-            android:digits="@string/allowed_symbols"
-            android:maxLength="32"/>
-
-        <EditText
             android:id="@+id/edit_surname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:textSize="26sp"
             android:hint="@string/surname"
+            android:textSize="26sp"
             android:backgroundTint="@color/colorPrimary"
-            android:digits="@string/allowed_symbols"
+            android:digits="@string/allowed_symbols_name"
+            android:maxLength="32"/>
+
+        <EditText
+            android:id="@+id/edit_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textSize="26sp"
+            android:hint="@string/name"
+            android:backgroundTint="@color/colorPrimary"
+            android:digits="@string/allowed_symbols_name"
             android:maxLength="32"/>
 
         <EditText
@@ -65,7 +65,7 @@
             android:textSize="26sp"
             android:hint="@string/secondSurname"
             android:backgroundTint="@color/colorPrimary"
-            android:digits="@string/allowed_symbols"
+            android:digits="@string/allowed_symbols_name"
             android:maxLength="32"/>
 
         <TextView

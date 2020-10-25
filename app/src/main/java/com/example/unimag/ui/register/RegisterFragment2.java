@@ -97,15 +97,15 @@ public class RegisterFragment2 extends Fragment {
 
             if(name2.equals("false")){
                 Toast toast = Toast.makeText(getContext(),
-                        "Имя должно начинаться с большой буквы!", Toast.LENGTH_SHORT);
+                        "Ошибка ввода имени!", Toast.LENGTH_SHORT);
                 toast.show();
             }else if(surname2.equals("false")){
                 Toast toast = Toast.makeText(getContext(),
-                        "Фамилия должна начинаться с большой буквы!", Toast.LENGTH_SHORT);
+                        "Ошибка ввода фамилии!", Toast.LENGTH_SHORT);
                 toast.show();
             }else if(secondSurname2.equals("false")){
                 Toast toast = Toast.makeText(getContext(),
-                        "Отчество должно начинаться с большой буквы!", Toast.LENGTH_SHORT);
+                        "Ошибка ввода отчества!", Toast.LENGTH_SHORT);
                 toast.show();
             }else if(birthDay2.equals("false")){
                 Toast toast = Toast.makeText(getContext(),
@@ -129,14 +129,20 @@ public class RegisterFragment2 extends Fragment {
                 toast.show();
             }else {
                 String birthData = birthDay2+"."+birthMonth2+"."+birthYear2;
-                String fio = name2+" "+surname2+" "+secondSurname2;
+                String fio = surname2+" "+name2+" "+secondSurname2;
                 update(email,fio,birthData);
             }
             });
     }
 
     private String checkString (String string){
-        String stringPravilo = "^[A-ZА-Я][a-zа-я]{2,}$";
+
+        //Если было с маленькой буквы - делаем в большую
+        if (Character.isLowerCase(string.charAt(0))) {
+            string = string.substring(0,1).toUpperCase() + string.substring(1);
+        }
+
+        String stringPravilo = "^[a-zа-яA-ZА-Я]{1,}$";
         Pattern pattern = Pattern.compile(stringPravilo);
         Matcher matcher = pattern.matcher(string);
         if(matcher.find()){
@@ -154,14 +160,16 @@ public class RegisterFragment2 extends Fragment {
             return "false";
         }else {
             int intBirthDay = Integer.parseInt(birthDay);
-                if (intBirthDay==0){
+            if (intBirthDay > 0 && intBirthDay <= 31) {
+                if (intBirthDay == 0) {
                     return "День рождения не может быть 0";
                 }
-            if (birthDay.length() == 1){
-                return "0"+ intBirthDay;
-            }
-            if (birthDay.substring(0,1).equals("0") && Integer.parseInt(birthDay.substring(1,2))>=1 || Integer.parseInt(birthDay.substring(1,2))>=1 && Integer.parseInt(birthDay.substring(1,2))<=9){
-                return Integer.toString(intBirthDay);
+                if (birthDay.length() == 1) {
+                    return "0" + intBirthDay;
+                }
+                if ((birthDay.substring(0, 1).equals("0") && Integer.parseInt(birthDay.substring(1, 2)) >= 1) || (Integer.parseInt(birthDay.substring(0, 1)) >= 1 && Integer.parseInt(birthDay.substring(1, 2)) <= 9)) {
+                    return Integer.toString(intBirthDay);
+                }
             }
         }
         return "false";
@@ -175,15 +183,17 @@ public class RegisterFragment2 extends Fragment {
             return "false";
         }else {
             int intBirthMonth = Integer.parseInt(birthMonth);
-            if (intBirthMonth==0){
-                return "Месяц не может быть 0";
-            }
-            if (birthMonth.length()==1){
-                return "0"+birthMonth;
-            }
-            if(birthMonth.length()>1){
-                if (birthMonth.substring(0,1).equals("0") && Integer.parseInt(birthMonth.substring(1,2))>=1 || Integer.parseInt(birthMonth.substring(1,2))>=1 && Integer.parseInt(birthMonth.substring(1,2))<=9){
-                    return birthMonth;
+            if (intBirthMonth >0 && intBirthMonth <= 12) {
+                if (intBirthMonth == 0) {
+                    return "Месяц не может быть 0";
+                }
+                if (birthMonth.length() == 1) {
+                    return "0" + birthMonth;
+                }
+                if (birthMonth.length() > 1) {
+                    if ((birthMonth.substring(0, 1).equals("0") && Integer.parseInt(birthMonth.substring(1, 2)) >= 1) || (Integer.parseInt(birthMonth.substring(0, 1)) == 1 && Integer.parseInt(birthMonth.substring(1, 2)) <= 2)) {
+                        return birthMonth;
+                    }
                 }
             }
         }

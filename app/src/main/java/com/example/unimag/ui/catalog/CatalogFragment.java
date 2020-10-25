@@ -54,6 +54,10 @@ public class CatalogFragment extends Fragment {
     @SneakyThrows
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+        /**Начало отсчета*/
+        long startTime = System.currentTimeMillis();
+
         new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
         //CatalogViewModel catalogViewModel = ViewModelProviders.of(this).get(CatalogViewModel.class);
         View view = inflater.inflate(R.layout.fragment_catalog, container, false);
@@ -123,6 +127,9 @@ public class CatalogFragment extends Fragment {
             }else {
                 gridView.setAdapter(customGridAdapter);
             }*/
+            /**Конец отсчета*/
+            long endTime = System.currentTimeMillis();
+            System.out.println("Время выполнения: " + String.valueOf(endTime - startTime));
         }catch (Exception e){e.getMessage();}
 
 

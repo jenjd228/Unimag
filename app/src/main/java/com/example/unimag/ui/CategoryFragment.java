@@ -55,14 +55,5 @@ public class CategoryFragment extends Fragment {
             }
         });
 
-        //Создание листенера для кнопки "Партнерская программа"
-        viewPartnerProgram.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Переход во вкладку партнерской программы
-                Navigation.findNavController(v).navigate(R.id.action_categoryFragment_to_partnerProgramFragment);
-            }
-        });
-
     }
 }
