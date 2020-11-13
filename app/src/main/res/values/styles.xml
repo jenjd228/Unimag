@@ -42,4 +42,9 @@
         <!--<item name="android:background">#ffff00</item>-->
     </style>
 
+    <style name="Dialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@null</item>
+    </style>
+
 </resources>

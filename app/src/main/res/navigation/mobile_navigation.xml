@@ -127,9 +127,10 @@
         android:name="com.example.unimag.ui.personal_area.EditProfileFragment"
         android:label="fragment_edit_profile"
         tools:layout="@layout/fragment_edit_profile" />
+
     <fragment
         android:id="@+id/productFragment"
-        android:name="com.example.unimag.ui.ProductFragment"
+        android:name="com.example.unimag.ui.product.ProductFragment"
         android:label="ProductFragment" >
         <argument
             android:name="imageName"
@@ -146,7 +147,11 @@
         <argument
             android:name="productId"
             app:argType="integer" />
+        <argument
+            android:name="category"
+            app:argType="string" />
     </fragment>
+
     <fragment
         android:id="@+id/registerOrderFragment"
         android:name="com.example.unimag.ui.pay.RegisterOrderFragment"

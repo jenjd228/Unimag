@@ -1,6 +1,5 @@
 package com.example.unimag.ui.catalog;
 
-import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,7 +19,6 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
-import com.example.unimag.ui.DTO.BasketProductDTO;
 import com.example.unimag.ui.DTO.ProductDTO;
 import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.ThreadCheckingConnection;
@@ -137,7 +135,7 @@ public class CatalogFragment extends Fragment {
             Object o = gridView.getItemAtPosition(position);
             ProductDTO productDTO = (ProductDTO) o;
 
-             CatalogFragmentDirections.ActionNavigationCatalogToProductFragment2 action= CatalogFragmentDirections.actionNavigationCatalogToProductFragment2(productDTO.getImageName(), productDTO.getTitle(), productDTO.getDescriptions(), productDTO.getPrice(), productDTO.getId());
+            CatalogFragmentDirections.ActionNavigationCatalogToProductFragment2 action= CatalogFragmentDirections.actionNavigationCatalogToProductFragment2(productDTO.getImageName(), productDTO.getTitle(), productDTO.getDescriptions(), productDTO.getPrice(), productDTO.getId(), productDTO.getCategory());
              Navigation.findNavController(v).navigate(action);
         });
 

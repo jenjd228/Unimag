@@ -145,7 +145,7 @@ public class BasketFragment extends Fragment {
             ProductDTO productDTO = (ProductDTO) o;
             /*Toast.makeText(getActivity(), "Selected :"
                     + " " + product +" "+id, Toast.LENGTH_LONG).show();*/
-            BasketFragmentDirections.ActionNavigationBasketToProductFragment action = BasketFragmentDirections.actionNavigationBasketToProductFragment(productDTO.getImageName(), productDTO.getTitle(), productDTO.getDescriptions(), productDTO.getPrice(), productDTO.getId());
+            BasketFragmentDirections.ActionNavigationBasketToProductFragment action = BasketFragmentDirections.actionNavigationBasketToProductFragment(productDTO.getImageName(), productDTO.getTitle(), productDTO.getDescriptions(), productDTO.getPrice(), productDTO.getId(), productDTO.getCategory());
             Navigation.findNavController(v).navigate(action);
 
         });
