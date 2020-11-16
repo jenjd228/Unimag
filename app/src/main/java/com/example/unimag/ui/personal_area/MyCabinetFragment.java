@@ -22,13 +22,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
-
 import com.example.unimag.ui.DTO.UserDTO;
 import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
@@ -104,9 +102,7 @@ public class MyCabinetFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
-        actionBar.setTitle("Личный кабинет");
-        actionBar.setDisplayHomeAsUpEnabled(false);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
         new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
         return inflater.inflate(R.layout.fragment_my_cabinet, container, false);

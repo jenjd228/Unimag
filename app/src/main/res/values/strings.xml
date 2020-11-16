@@ -20,6 +20,7 @@
     <string name="kod">Введите код, который был отправлен на вашу почту.</string>
     <string name="vvedite_kod">Введите код</string>
     <string name="title_basket">Корзина</string>
+    <string name="login">Вход</string>
     <string name="allowed_symbols">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ()@_-*#:;!?.,\'\"{}[]0123456789\\/</string>
     <string name="allowed_symbols_name">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя-_ </string>
     <string name="allowed_numbers">0123456789</string>
@@ -44,6 +45,16 @@
     <string name="e_invalid_description">Enter description</string>
     <string name="e_google_pay_unsupported">GooglePay is not supported</string>
     <string name="e_google_pay_canceled">GooglePay has been canceled</string>
+    <string name="sort_fragment">Фильтрация товаров</string>
+    <string name="myCabinetFragment">Личный кабинет</string>
+    <string name="feedbackFragment">Обратная связь</string>
+    <string name="orderFragment">Мои заказы</string>
+    <string name="registerFragment">Регистрация</string>
+    <string name="fragment_edit_profile">Редактирование профиля</string>
+    <string name="productFrafment">Информация о товаре</string>
+    <string name="registerOrderFragment">Оформление заказа</string>
+    <string name="informationAboutPartner">Партнер</string>
+    <string name="noConnectionFragment">Нет соединения</string>
 
 
     <string-array name="categories">

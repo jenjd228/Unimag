@@ -12,7 +12,6 @@ import android.widget.GridView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -24,7 +23,6 @@ import com.example.unimag.ui.SqLite.DataDBHelper;
 import com.example.unimag.ui.ThreadCheckingConnection;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,9 +55,7 @@ public class OrderFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
 
-        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
-        actionBar.setTitle("Мои заказы");
-        actionBar.setDisplayHomeAsUpEnabled(false);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
         View root = inflater.inflate(R.layout.fragment_orders, container, false);
 
