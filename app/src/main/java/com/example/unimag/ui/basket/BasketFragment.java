@@ -73,6 +73,7 @@ public class BasketFragment extends Fragment {
 
             List<BasketProductDTO> products = new ArrayList<>();
             List<PayDTO> payDTOIdList = new ArrayList<>();
+
             if (gridAdapterBasket.getProductForPayList()!=null){
                 products = gridAdapterBasket.getProductForPayList();
                 for (BasketProductDTO basketProductDTO : products){
@@ -143,9 +144,10 @@ public class BasketFragment extends Fragment {
         gridView.setOnItemClickListener((a, v, position, id) -> {
             Object o = gridView.getItemAtPosition(position);
             ProductDTO productDTO = (ProductDTO) o;
-            /*Toast.makeText(getActivity(), "Selected :"
-                    + " " + product +" "+id, Toast.LENGTH_LONG).show();*/
-            BasketFragmentDirections.ActionNavigationBasketToProductFragment action = BasketFragmentDirections.actionNavigationBasketToProductFragment(productDTO.getImageName(), productDTO.getTitle(), productDTO.getDescriptions(), productDTO.getPrice(), productDTO.getId(), productDTO.getCategory());
+            String imageString = "";
+
+
+            BasketFragmentDirections.ActionNavigationBasketToProductFragment action = BasketFragmentDirections.actionNavigationBasketToProductFragment(productDTO.getImageName(), productDTO.getTitle(), productDTO.getDescriptions(), productDTO.getPrice(), productDTO.getId(), productDTO.getListImage());
             Navigation.findNavController(v).navigate(action);
 
         });

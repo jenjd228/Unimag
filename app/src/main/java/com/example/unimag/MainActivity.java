@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements  BottomNavigation
         BottomNavigationView navView = findViewById(R.id.nav_view);
         //?Связывание пунктов меню с их id фрагментами (mobile_navigation.XML)
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_catalog, R.id.navigation_partner_program, R.id.navigation_basket, R.id.navigation_personal_area)
+                R.id.navigation_catalog, R.id.navigation_news, R.id.navigation_basket, R.id.navigation_personal_area)
                 .build();
         //??Создание области действия нашего контроллера для фрагмента nav_host_fragment(в activity_main.xml) - для всего экрана
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements  BottomNavigation
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.navigation_catalog: Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.navigation_catalog);break;
-            case R.id.navigation_partner_program: Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.navigation_partner_program);break;
+            case R.id.navigation_news: Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.navigation_news);break;
             case R.id.navigation_basket: Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.navigation_basket);break;
             case R.id.navigation_personal_area: Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.navigation_personal_area);break;
         }

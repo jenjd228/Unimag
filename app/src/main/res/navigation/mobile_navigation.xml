@@ -11,6 +11,9 @@
         android:label="@string/title_catalog"
         tools:layout="@layout/fragment_catalog" >
         <action
+            android:id="@+id/action_navigation_catalog_to_categoryFragment"
+            app:destination="@id/categoryFragment" />
+        <action
             android:id="@+id/action_navigation_catalog_to_productFragment2"
             app:destination="@id/productFragment" />
         <action
@@ -19,14 +22,10 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_partner_program"
-        android:name="com.example.unimag.ui.partner_program.PartnerProgramFragment"
-        android:label="@string/title_partner_program"
-        tools:layout="@layout/fragment_partner_program" >
-        <action
-            android:id="@+id/action_navigation_partner_program_to_informationAboutPartnerFragment"
-            app:destination="@id/informationAboutPartnerFragment" />
-    </fragment>
+        android:id="@+id/navigation_news"
+        android:name="com.example.unimag.ui.news.NewsFragment"
+        android:label="@string/title_news"
+        tools:layout="@layout/fragment_news" />
 
     <fragment
         android:id="@+id/navigation_basket"
@@ -44,7 +43,7 @@
     <fragment
         android:id="@+id/navigation_personal_area"
         android:name="com.example.unimag.ui.personal_area.PersonalAreaFragment"
-        android:label=""
+        android:label="@string/title_personal_area"
         tools:layout="@layout/fragment_personal_area" >
         <action
             android:id="@+id/action_navigation_personal_area_to_myCabinetFragment"
@@ -54,10 +53,31 @@
             app:destination="@id/loginFragment" />
     </fragment>
     <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.example.unimag.ui.CategoryFragment"
+        android:label="CategoryFragment" >
+        <action
+            android:id="@+id/action_categoryFragment_to_navigation_catalog"
+            app:destination="@id/navigation_catalog" />
+        <action
+            android:id="@+id/action_categoryFragment_to_partnerProgramFragment"
+            app:destination="@id/partnerProgramFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/partnerProgramFragment"
+        android:name="com.example.unimag.ui.partner_program.PartnerProgramFragment"
+        android:label="PartnerProgramFragment" >
+        <action
+            android:id="@+id/action_partnerProgramFragment_to_categoryFragment"
+            app:destination="@id/categoryFragment" />
+        <action
+            android:id="@+id/action_partnerProgramFragment_to_informationAboutPartnerFragment"
+            app:destination="@id/informationAboutPartnerFragment" />
+    </fragment>
+    <fragment
         android:id="@+id/myCabinetFragment"
         android:name="com.example.unimag.ui.personal_area.MyCabinetFragment"
-        android:label="@string/myCabinetFragment"
-        tools:layout="@layout/fragment_my_cabinet">
+        android:label="MyCabinetFragment" >
         <action
             android:id="@+id/action_myCabinetFragment_to_feedbackFragment"
             app:destination="@id/feedbackFragment" />
@@ -74,8 +94,8 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.unimag.ui.LoginFragment"
-        android:label="@string/login"
-        tools:layout="@layout/fragment_login">
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFragment_to_myCabinetFragment2"
             app:destination="@id/myCabinetFragment" />
@@ -86,17 +106,15 @@
     <fragment
         android:id="@+id/feedbackFragment"
         android:name="com.example.unimag.ui.FeedbackFragment"
-        android:label="@string/feedbackFragment"
-        tools:layout="@layout/fragment_feedback"/>
+        android:label="FeedbackFragment" />
     <fragment
         android:id="@+id/orderFragment"
         android:name="com.example.unimag.ui.Order.OrderFragment"
-        android:label="@string/orderFragment"
-        tools:layout="@layout/fragment_orders"/>
+        android:label="OrderFragment" />
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.example.unimag.ui.register.RegisterFragment"
-        android:label="@string/registerFragment"
+        android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action
             android:id="@+id/action_registerFragment3_to_registerFragment2"
@@ -105,7 +123,7 @@
     <fragment
         android:id="@+id/registerFragment2"
         android:name="com.example.unimag.ui.register.RegisterFragment2"
-        android:label="@string/registerFragment"
+        android:label="fragment_register2"
         tools:layout="@layout/fragment_register2" >
         <action
             android:id="@+id/action_registerFragment2_to_myCabinetFragment"
@@ -117,14 +135,12 @@
     <fragment
         android:id="@+id/editProfileFragment"
         android:name="com.example.unimag.ui.personal_area.EditProfileFragment"
-        android:label="@string/fragment_edit_profile"
+        android:label="fragment_edit_profile"
         tools:layout="@layout/fragment_edit_profile" />
-
     <fragment
         android:id="@+id/productFragment"
-        android:name="com.example.unimag.ui.product.ProductFragment"
-        android:label="@string/productFrafment"
-        tools:layout="@layout/fragment_product">
+        android:name="com.example.unimag.ui.ProductFragment"
+        android:label="ProductFragment" >
         <argument
             android:name="imageName"
             app:argType="string" />
@@ -141,15 +157,13 @@
             android:name="productId"
             app:argType="integer" />
         <argument
-            android:name="category"
+            android:name="listImage"
             app:argType="string" />
     </fragment>
-
     <fragment
         android:id="@+id/registerOrderFragment"
         android:name="com.example.unimag.ui.pay.RegisterOrderFragment"
-        android:label="@string/registerOrderFragment"
-        tools:layout="@layout/fragment_register_order">
+        android:label="RegisterOrderFragment" >
         <action
             android:id="@+id/action_registerOrderFragment_to_simpleExampleActivity"
             app:destination="@id/simpleExampleActivity" />
@@ -160,8 +174,7 @@
     <fragment
         android:id="@+id/informationAboutPartnerFragment"
         android:name="com.example.unimag.ui.partner_program.InformationAboutPartnerFragment"
-        android:label="@string/informationAboutPartner"
-        tools:layout="@layout/fragment_information_about_partner">
+        android:label="InformationAboutPartnerFragment" >
         <argument
             android:name="imageName"
             app:argType="string" />
@@ -181,15 +194,9 @@
     <fragment
         android:id="@+id/sortFragment2"
         android:name="com.example.unimag.ui.sort.SortFragment"
-        android:label="@string/sort_fragment"
-        tools:layout="@layout/fragment_sort"/>
+        android:label="SortFragment" />
     <activity
         android:id="@+id/simpleExampleActivity"
         android:name="com.example.unimag.ui.oplata.SimpleExampleActivity"
         android:label="SimpleExampleActivity" />
-    <fragment
-        android:id="@+id/noConnectionFragment"
-        android:name="com.example.unimag.ui.NoConnectionFragment"
-        android:label="@string/noConnectionFragment"
-        tools:layout="@layout/fragment_no_connection"/>
 </navigation>

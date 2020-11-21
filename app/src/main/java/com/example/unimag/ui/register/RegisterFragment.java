@@ -53,7 +53,9 @@ public class RegisterFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
+        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        actionBar.setTitle("Регистрация");
+        actionBar.setDisplayHomeAsUpEnabled(false);
 
         new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
         root = inflater.inflate(R.layout.fragment_register, container, false);
@@ -118,7 +120,7 @@ public class RegisterFragment extends Fragment {
                         "Некорректный пароль !", Toast.LENGTH_SHORT);
                 toast.show();
                 viewError.setTextColor(getResources().getColor(R.color.colorPrimary)); //Установка красного цвета
-                viewError.setText("Ошибка: некорректный пароль !\nПароль может содержать в себе латинский алфавит, цифры и нижнее подчеркивание\nДлина пароля не менее 6 символов.");
+                viewError.setText("Ошибка: некорректный пароль !\nПароль должен состоять из латинских букв и содержать как минимум 1 цифру, 1 знак, 1 заглавную букву и 1 маленькую букву.\nДлина пароля не менее 6 символов.");
             }
             if (!repPas){
                 Toast toast = Toast.makeText(this.getContext(),
@@ -145,8 +147,7 @@ public class RegisterFragment extends Fragment {
     }
 
     private boolean checkPassword(String password){
-        //String passwordPravilo = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^\\w\\s]).{6,}$";
-        String passwordPravilo = "^[a-zA-Z0-9\\_]{6,}$";
+        String passwordPravilo = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^\\w\\s]).{6,}$";
         Pattern pattern = Pattern.compile(passwordPravilo);
         Matcher matcher = pattern.matcher(password);
         return matcher.find();

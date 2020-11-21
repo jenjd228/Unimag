@@ -1,5 +1,6 @@
 package com.example.unimag.ui.catalog;
 
+import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
+import com.example.unimag.ui.DTO.BasketProductDTO;
 import com.example.unimag.ui.DTO.ProductDTO;
 import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.ThreadCheckingConnection;
@@ -52,10 +54,6 @@ public class CatalogFragment extends Fragment {
     @SneakyThrows
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
-        /**Начало отсчета*/
-        long startTime = System.currentTimeMillis();
-
         new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
         //CatalogViewModel catalogViewModel = ViewModelProviders.of(this).get(CatalogViewModel.class);
         View view = inflater.inflate(R.layout.fragment_catalog, container, false);
@@ -86,7 +84,6 @@ public class CatalogFragment extends Fragment {
                     Toast toast = Toast.makeText(getContext(),
                             "Товары закончились!", Toast.LENGTH_SHORT);
                     toast.show();
-                    System.out.println("Ошибка");
                 } else {
                     List<ProductDTO> participantJsonList;
                     ObjectMapper objectMapper = new ObjectMapper();
@@ -125,9 +122,6 @@ public class CatalogFragment extends Fragment {
             }else {
                 gridView.setAdapter(customGridAdapter);
             }*/
-            /**Конец отсчета*/
-            long endTime = System.currentTimeMillis();
-            System.out.println("Время выполнения: " + String.valueOf(endTime - startTime));
         }catch (Exception e){e.getMessage();}
 
 
@@ -135,7 +129,7 @@ public class CatalogFragment extends Fragment {
             Object o = gridView.getItemAtPosition(position);
             ProductDTO productDTO = (ProductDTO) o;
 
-            CatalogFragmentDirections.ActionNavigationCatalogToProductFragment2 action= CatalogFragmentDirections.actionNavigationCatalogToProductFragment2(productDTO.getImageName(), productDTO.getTitle(), productDTO.getDescriptions(), productDTO.getPrice(), productDTO.getId(), productDTO.getCategory());
+             CatalogFragmentDirections.ActionNavigationCatalogToProductFragment2 action= CatalogFragmentDirections.actionNavigationCatalogToProductFragment2(productDTO.getImageName(), productDTO.getTitle(), productDTO.getDescriptions(), productDTO.getPrice(), productDTO.getId(), productDTO.getListImage());
              Navigation.findNavController(v).navigate(action);
         });
 
@@ -176,7 +170,6 @@ public class CatalogFragment extends Fragment {
 
                 //Если разница равна нулю - добавляем товары
                 if (diff == 0) {
-                    System.out.println("Соут после дифа -"+diff);
                     //Проигрыш анимации
                     loading.setVisibility(View.VISIBLE); //Делаем видимым ImageView
                     animation.setOneShot(false); //Зацикливаем анимацию
@@ -198,7 +191,6 @@ public class CatalogFragment extends Fragment {
                             participantJsonList = objectMapper.readValue(otvet, new TypeReference<List<ProductDTO>>() {
                             });
                             CustomGridAdapter.getInstance().addList(participantJsonList);
-                            System.out.println("Добавлен лист");
                             currentNumberList++;
                             //Завершение анимации
                         }

@@ -1,10 +1,13 @@
 package com.example.unimag.ui;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -50,8 +53,8 @@ public class ThreadCheckingConnection extends AsyncTask<Void, Void, Boolean> {
             System.out.println("No Connect");
             FragmentManager manager = fragmentManager;
             FragmentTransaction transaction = manager.beginTransaction();
-            transaction.replace(fragmentManager.getFragments().get(0).getId(), new NoConnectionFragment()); //Переходим на новый фрагмент
-            transaction.addToBackStack("last_no_connection_fragment"); //Добавляем в стек
+            transaction.replace(fragmentManager.getFragments().get(0).getId(), new NoConnectionFragment());
+            transaction.addToBackStack(null);
             transaction.commit();
         }
     }
