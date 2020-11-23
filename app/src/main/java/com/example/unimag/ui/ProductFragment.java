@@ -1,12 +1,19 @@
 package com.example.unimag.ui;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +28,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.unimag.R;
 import com.example.unimag.ui.Request.AddRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
+import com.example.unimag.ui.ProductFragmentArgs;
 import com.example.unimag.ui.productFragment.ProductAdapter;
 
 import java.util.ArrayList;
@@ -38,7 +46,9 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
     private String descriptions;
     private Integer price;
     private String imageName;
+	private String category;
     private String secureKod = null;
+    private ArrayList<String> listSizeClothes = new ArrayList<String>(); //Лист с доступными размерами одежды для данной страницы
     private String listImage;
 
     public ProductFragment(){
@@ -58,8 +68,8 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
         descriptions = ProductFragmentArgs.fromBundle(requireArguments()).getDescriptions();
         price = ProductFragmentArgs.fromBundle(requireArguments()).getPrice();
         imageName = ProductFragmentArgs.fromBundle(requireArguments()).getImageName();
+        category = ProductFragmentArgs.fromBundle(requireArguments()).getCategory();
         listImage = ProductFragmentArgs.fromBundle(requireArguments()).getListImage();
-
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -124,6 +134,13 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
 
         setInformationAboutProduct(); //Получение информации о продукте
 
+        /**ВРЕМЕННО*/
+        listSizeClothes.add("42");
+        listSizeClothes.add("44");
+        listSizeClothes.add("46");
+        listSizeClothes.add("48");
+        listSizeClothes.add("50");
+
         Button b = getView().findViewById(R.id.button_add_basket);
         b.setOnClickListener(e -> {
             if (secureKod==null){
@@ -131,27 +148,119 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
                         "Доступ к корзине открывается после создания аккаунта", Toast.LENGTH_SHORT);
                 toast.show();
             }else {
-                AddRequest addRequest = new AddRequest(productId,secureKod,"addToBasket");
-                addRequest.execute();
-                try {
-                    String otvet = addRequest.get();
-                    if(otvet.equals("OK")){
-                        Toast toast = Toast.makeText(getContext(),
-                                "Товар добавлен!", Toast.LENGTH_SHORT);
-                        toast.show();
-                    } else if (otvet.equals("PRODUCT_IS_PRESENT")){
-                        Toast toast = Toast.makeText(getContext(),
-                                "Этот товар уже в корзине!", Toast.LENGTH_SHORT);
-                        toast.show();
-                    }else {
-                        Toast toast = Toast.makeText(getContext(),
-                                "Ошибка!", Toast.LENGTH_SHORT);
-                        toast.show();
+
+                /**--------------------------------------------------------------------
+                 * Если категория = одежда добавляем всплывающее окно с выбором размера
+                 * --------------------------------------------------------------------*/
+                if (category.equals("Clothes")) {
+
+                    //Делаем из листа - массив
+                    //Integer[] arraySizeClothes = listSizeClothes.toArray(new Integer[0]);
+                    //System.out.println(arraySizeClothes[0]);
+                    String[] arraySizeClothes = listSizeClothes.toArray(new String[0]);
+
+                    //Всплывающее окно
+                    Dialog dialog = new Dialog(getActivity(), R.style.Dialog); //Создаем диалоговое окно
+                    dialog.setContentView(R.layout.dialog_additional_information_for_clothes); //Устанавливаем разметку в окне
+                    WindowManager.LayoutParams params = dialog.getWindow().getAttributes(); //Получаем текущие атрибуты
+                    //Устанавливаем атрибуты
+                    params.width = LinearLayout.LayoutParams.MATCH_PARENT;
+                    params.height = getActivity().getWindowManager().getDefaultDisplay().getHeight()*3/4;
+                    params.gravity = Gravity.BOTTOM;
+                    dialog.getWindow().setAttributes(params);
+
+                    //Создаем спиннер для одежды
+                    //Получаем экземпляр элемента Spinner
+                    LayoutInflater inflater = this.getLayoutInflater(); //Для поиска вне данной разметки
+                    Spinner spinner = (Spinner) dialog.findViewById(R.id.spinnerSizeClothes); //Ищем спиннер
+                    System.out.println("SPINNER:");
+                    System.out.println(spinner);
+
+                    //Настраиваем адаптер
+                    AdapterForSpinner adapter = new AdapterForSpinner(requireContext(), R.layout.spinner_row, arraySizeClothes);
+                    spinner.setAdapter(adapter);
+                    spinner.setSelection(1);
+
+                    dialog.show(); //Отображаем окно
+
+                    //Устанавливаем Листенер для кнопки "Добавить"
+                    Button button_cancel = dialog.findViewById(R.id.button_add_basket_2);
+                    button_cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            /**Здесь должна быть отправка размера*/
+                            dialog.dismiss();
+                        }
+                    });
+                } else {
+                    //Иначе если не одежда то просто запрос
+                    AddRequest addRequest = new AddRequest(productId, secureKod, "addToBasket");
+                    addRequest.execute();
+                    try {
+                        String otvet = addRequest.get();
+                        System.out.println(otvet);
+                        if (otvet.equals("OK")) {
+                            Toast toast = Toast.makeText(getContext(),
+                                    "Товар добавлен!", Toast.LENGTH_SHORT);
+                            toast.show();
+                        } else if (otvet.equals("PRODUCT_IS_PRESENT")) {
+                            Toast toast = Toast.makeText(getContext(),
+                                    "Этот товар уже в корзине!", Toast.LENGTH_SHORT);
+                            toast.show();
+                        } else {
+                            Toast toast = Toast.makeText(getContext(),
+                                    "Ошибка!", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    } catch (ExecutionException | InterruptedException ex) {
+                        ex.printStackTrace();
                     }
-                } catch (ExecutionException | InterruptedException ex) {
-                    ex.printStackTrace();
                 }
             }
         });
+    }
+
+
+    /** АДАПТЕР ДЛЯ СПИННЕРА
+     *
+     *
+     *
+     * */
+    public class AdapterForSpinner extends ArrayAdapter<String> {
+
+        String[] array; //Массив с размерами одежды
+
+        //Конструктор класса
+        public AdapterForSpinner(Context context, int textViewResourceId,
+                                 String[] objects) {
+            super(context, textViewResourceId, objects);
+            array = objects;
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView,
+                                    ViewGroup parent) {
+
+            return getCustomView(position, convertView, parent);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            return getCustomView(position, convertView, parent);
+        }
+
+
+        public View getCustomView(int position, View convertView,
+                                  ViewGroup parent) {
+
+            LayoutInflater inflater = getLayoutInflater();
+            View row = inflater.inflate(R.layout.spinner_row, parent, false);
+            TextView label = (TextView) row.findViewById(R.id.row_spinner_size_text);
+            label.setText(array[position]);
+
+            return row;
+        }
+
     }
 }

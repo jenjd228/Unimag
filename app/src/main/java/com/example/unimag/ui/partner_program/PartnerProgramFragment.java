@@ -1,6 +1,5 @@
 package com.example.unimag.ui.partner_program;
 
-import android.app.Notification;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.widget.GridView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -34,9 +32,7 @@ public class PartnerProgramFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_partner_program, container, false);
 
-        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
-        actionBar.setTitle("Партнерская программа");
-        actionBar.setDisplayHomeAsUpEnabled(false);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
         new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute(); //Если дисконект
 
@@ -51,35 +47,41 @@ public class PartnerProgramFragment extends Fragment {
 
         //Находим GridView
         gridView = requireView().findViewById(R.id.recycler_view_partner_program);
-        GetRequest getRequest = new GetRequest("getPartner");
-        getRequest.execute();
-        //Тестовый список партнеров
-        ArrayList<PartnerProgramDTO> dataList;
+        try {
+            GetRequest getRequest = new GetRequest("getPartner");
+            getRequest.execute();
+            //Тестовый список партнеров
+            ArrayList<PartnerProgramDTO> dataList;
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        dataList = objectMapper.readValue(getRequest.get(), new TypeReference<List<PartnerProgramDTO>>(){});
+            ObjectMapper objectMapper = new ObjectMapper();
+            dataList = objectMapper.readValue(getRequest.get(), new TypeReference<List<PartnerProgramDTO>>() {
+            });
 
-        //Создаем адаптер, исходя из нашего списка партнеров
-        GridAdapterPartnerProgram partnerAdapter = new GridAdapterPartnerProgram(this.getContext(), dataList);
+            //Создаем адаптер, исходя из нашего списка партнеров
+            GridAdapterPartnerProgram partnerAdapter = new GridAdapterPartnerProgram(this.getContext(), dataList);
 
-        //Передаем в GridView наш адаптер с данными
-        gridView.setAdapter(partnerAdapter);
+            //Передаем в GridView наш адаптер с данными
+            gridView.setAdapter(partnerAdapter);
 
 
-        //Устанавливаем Listener для элементов GridView
-        gridView.setOnItemClickListener((a, v, position, id) -> {
-            //Получаем данный элемент
-            Object item = gridView.getItemAtPosition(position);
-            PartnerProgramDTO partner = (PartnerProgramDTO) item;
+            //Устанавливаем Listener для элементов GridView
+            gridView.setOnItemClickListener((a, v, position, id) -> {
+                //Получаем данный элемент
+                Object item = gridView.getItemAtPosition(position);
+                PartnerProgramDTO partner = (PartnerProgramDTO) item;
 
-            PartnerProgramFragmentDirections.ActionPartnerProgramFragmentToInformationAboutPartnerFragment action =
-                    PartnerProgramFragmentDirections.actionPartnerProgramFragmentToInformationAboutPartnerFragment(partner.getImageName(), partner.getTitle(),
-                            partner.getDescription(),
-                            partner.getPrice(),
-                            partner.getId());
+                PartnerProgramFragmentDirections.ActionNavigationPartnerProgramToInformationAboutPartnerFragment action =
+                        PartnerProgramFragmentDirections.actionNavigationPartnerProgramToInformationAboutPartnerFragment(partner.getImageName(), partner.getTitle(),
+                                partner.getDescription(),
+                                partner.getPrice(),
+                                partner.getId());
 
-            Navigation.findNavController(v).navigate(action);
-        });
+                Navigation.findNavController(v).navigate(action);
+            });
+
+        } catch (Exception e){
+            e.getMessage();
+        }
 
     }
 

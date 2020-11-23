@@ -129,7 +129,7 @@ public class CatalogFragment extends Fragment {
             Object o = gridView.getItemAtPosition(position);
             ProductDTO productDTO = (ProductDTO) o;
 
-             CatalogFragmentDirections.ActionNavigationCatalogToProductFragment2 action= CatalogFragmentDirections.actionNavigationCatalogToProductFragment2(productDTO.getImageName(), productDTO.getTitle(), productDTO.getDescriptions(), productDTO.getPrice(), productDTO.getId(), productDTO.getListImage());
+             CatalogFragmentDirections.ActionNavigationCatalogToProductFragment2 action= CatalogFragmentDirections.actionNavigationCatalogToProductFragment2(productDTO.getImageName(), productDTO.getTitle(), productDTO.getDescriptions(), productDTO.getPrice(), productDTO.getId(), productDTO.getCategory(), productDTO.getListImage());
              Navigation.findNavController(v).navigate(action);
         });
 

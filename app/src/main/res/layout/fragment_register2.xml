@@ -21,6 +21,7 @@
         android:layout_margin="@dimen/register_text_margin"
         android:hint="@string/surname"
         android:backgroundTint="@color/colorPrimary"
+        android:digits="@string/allowed_symbols_name"
         android:maxLength="32"/>
 
     <EditText
@@ -30,6 +31,7 @@
         android:layout_margin="@dimen/register_text_margin"
         android:hint="@string/name"
         android:backgroundTint="@color/colorPrimary"
+        android:digits="@string/allowed_symbols_name"
         android:maxLength="32"/>
 
     <EditText
@@ -39,6 +41,7 @@
         android:layout_margin="@dimen/register_text_margin"
         android:hint="@string/secondSurname"
         android:backgroundTint="@color/colorPrimary"
+        android:digits="@string/allowed_symbols_name"
         android:maxLength="32"/>
 
     <TextView
