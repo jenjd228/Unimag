@@ -48,7 +48,7 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
     private String imageName;
 	private String category;
     private String secureKod = null;
-    private ArrayList<String> listSizeClothes = new ArrayList<String>(); //Лист с доступными размерами одежды для данной страницы
+    private ArrayList<Integer> listSizeClothes = new ArrayList<Integer>(); //Лист с доступными размерами одежды для данной страницы
     private String listImage;
 
     public ProductFragment(){
@@ -135,11 +135,11 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
         setInformationAboutProduct(); //Получение информации о продукте
 
         /**ВРЕМЕННО*/
-        listSizeClothes.add("42");
-        listSizeClothes.add("44");
-        listSizeClothes.add("46");
-        listSizeClothes.add("48");
-        listSizeClothes.add("50");
+        listSizeClothes.add(42);
+        listSizeClothes.add(44);
+        listSizeClothes.add(46);
+        listSizeClothes.add(48);
+        listSizeClothes.add(50);
 
         Button b = getView().findViewById(R.id.button_add_basket);
         b.setOnClickListener(e -> {
@@ -157,7 +157,7 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
                     //Делаем из листа - массив
                     //Integer[] arraySizeClothes = listSizeClothes.toArray(new Integer[0]);
                     //System.out.println(arraySizeClothes[0]);
-                    String[] arraySizeClothes = listSizeClothes.toArray(new String[0]);
+                    Integer[] arraySizeClothes = listSizeClothes.toArray(new Integer[0]);
 
                     //Всплывающее окно
                     Dialog dialog = new Dialog(getActivity(), R.style.Dialog); //Создаем диалоговое окно
@@ -189,6 +189,30 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
                         @Override
                         public void onClick(View v) {
                             /**Здесь должна быть отправка размера*/
+                            Integer selectedSize = Integer.parseInt(spinner.getSelectedItem().toString());
+                            AddRequest addRequest = new AddRequest(productId, secureKod, "", selectedSize, "addToBasket"); //Отправляем дополнительно размер
+                            addRequest.execute();
+
+                            try {
+                                String otvet = addRequest.get();
+                                System.out.println(otvet);
+                                if (otvet.equals("OK")) {
+                                    Toast toast = Toast.makeText(getContext(),
+                                            "Товар добавлен!", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                } else if (otvet.equals("PRODUCT_IS_PRESENT")) {
+                                    Toast toast = Toast.makeText(getContext(),
+                                            "Этот товар уже в корзине!", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                } else {
+                                    Toast toast = Toast.makeText(getContext(),
+                                            "Ошибка!", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                }
+                            } catch (ExecutionException | InterruptedException ex) {
+                                ex.printStackTrace();
+                            }
+
                             dialog.dismiss();
                         }
                     });
@@ -226,13 +250,13 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
      *
      *
      * */
-    public class AdapterForSpinner extends ArrayAdapter<String> {
+    public class AdapterForSpinner extends ArrayAdapter<Integer> {
 
-        String[] array; //Массив с размерами одежды
+        Integer[] array; //Массив с размерами одежды
 
         //Конструктор класса
         public AdapterForSpinner(Context context, int textViewResourceId,
-                                 String[] objects) {
+                                 Integer[] objects) {
             super(context, textViewResourceId, objects);
             array = objects;
         }
@@ -257,7 +281,7 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
             LayoutInflater inflater = getLayoutInflater();
             View row = inflater.inflate(R.layout.spinner_row, parent, false);
             TextView label = (TextView) row.findViewById(R.id.row_spinner_size_text);
-            label.setText(array[position]);
+            label.setText(array[position].toString());
 
             return row;
         }

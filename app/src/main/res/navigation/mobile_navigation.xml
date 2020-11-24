@@ -189,7 +189,7 @@
     <activity
         android:id="@+id/simpleExampleActivity"
         android:name="com.example.unimag.ui.oplata.SimpleExampleActivity"
-        android:label="SimpleExampleActivity" />
+        android:label="@string/fragment_oplata" />
     <fragment
         android:id="@+id/noConnectionFragment"
         android:name="com.example.unimag.ui.NoConnectionFragment"

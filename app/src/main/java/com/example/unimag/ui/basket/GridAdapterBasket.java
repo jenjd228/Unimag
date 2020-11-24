@@ -72,12 +72,13 @@ public class GridAdapterBasket  extends BaseAdapter {
             holder.imageView = convertView.findViewById(R.id.image_basket_product);
             holder.productPrice = convertView.findViewById(R.id.price_basket_product);
             holder.productTitle= convertView.findViewById(R.id.title_basket_product);
-            holder.productDescription = convertView.findViewById(R.id.description_basket_product);
+            //holder.productDescription = convertView.findViewById(R.id.description_basket_product);
             holder.itemCheckBox = convertView.findViewById(R.id.checkBoxBasket);
             holder.deleteButton = convertView.findViewById(R.id.deleteButton);
             holder.addProductCountButton = convertView.findViewById(R.id.addProductCountButton);
             holder.deleteProductCountButton = convertView.findViewById(R.id.deleteProductCountButton);
             holder.productCount = convertView.findViewById(R.id.productCount);
+            holder.productAddInformational = convertView.findViewById(R.id.additional_info_basket);
             convertView.setTag(holder);
         } else {
             holder = (GridAdapterBasket.ViewHolder) convertView.getTag();
@@ -85,9 +86,14 @@ public class GridAdapterBasket  extends BaseAdapter {
 
         BasketProductDTO product = this.listData.get(position);
         holder.productTitle.setText(product.getTitle());
-        holder.productDescription.setText("" + product.getDescriptions());
+        //holder.productDescription.setText("" + product.getDescriptions());
         holder.productPrice.setText("" + product.getPrice()*product.getCount());
         holder.productCount.setText("" + product.getCount());
+        if (product.getSize() != null) {
+            holder.productAddInformational.setText("" + product.getColor() + String.valueOf(product.getSize()) + " размер ");
+        } else {
+            holder.productAddInformational.setText("" + product.getColor());
+        }
 
         Integer id = product.getProductId();
 
@@ -219,9 +225,10 @@ public class GridAdapterBasket  extends BaseAdapter {
         ImageView imageView;
 
         TextView productTitle;
-        TextView productDescription;
+        //TextView productDescription;
         TextView productPrice;
         TextView productCount;
+        TextView productAddInformational;
 
         LinearLayout basketLayout;
 

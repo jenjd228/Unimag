@@ -34,12 +34,12 @@
     <string name="btn_simple_example">Simple Example</string>
     <string name="btn_flexible_example">Flexible Example</string>
 
-    <string name="lbl_amount">Amount:</string>
-    <string name="lbl_ccy">Currency:</string>
+    <string name="lbl_amount">Цена:</string>
+    <string name="lbl_ccy">Валюта:</string>
     <string name="lbl_email">Email:</string>
-    <string name="lbl_description">Description:</string>
+    <string name="lbl_description">Описание:</string>
     <string name="btn_pay_google">GooglePay</string>
-    <string name="btn_pay_card">Pay by Card</string>
+    <string name="btn_pay_card">Оплатить картой</string>
     <string name="e_invalid_amount">Invalid amount</string>
     <string name="e_invalid_email">Invalid email</string>
     <string name="e_invalid_description">Enter description</string>
@@ -55,6 +55,7 @@
     <string name="registerOrderFragment">Оформление заказа</string>
     <string name="informationAboutPartner">Партнер</string>
     <string name="noConnectionFragment">Нет соединения</string>
+    <string name="fragment_oplata">Оплата</string>
 
 
     <string-array name="categories">

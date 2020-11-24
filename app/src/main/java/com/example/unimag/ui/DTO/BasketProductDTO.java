@@ -22,4 +22,8 @@ public class BasketProductDTO {
     private String descriptions;
 
     private Integer count;
+
+    private String color;
+
+    private Integer size;
 }

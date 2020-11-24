@@ -19,11 +19,22 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
     private String stringIds;
     private String orderId;
     private String totalMoney;
+    private String color;
+    private Integer size;
 
-
-    public AddRequest(Integer productId,String secureKod,String methodName){
+    public AddRequest(Integer productId,String secureKod, String methodName){
         this.productId = productId;
         this.secureKod = secureKod;
+        this.methodName = methodName;
+        color = "";
+        size = null;
+    }
+
+    public AddRequest(Integer productId,String secureKod,String color,int size, String methodName){
+        this.productId = productId;
+        this.secureKod = secureKod;
+        this.color = color;
+        this.size = size;
         this.methodName = methodName;
     }
 
@@ -33,6 +44,8 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
         this.methodName = methodName;
         this.orderId = orderId;
         this.totalMoney = totalMoney;
+        color = "";
+        size = null;
     }
 
 
@@ -45,6 +58,8 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
             case "addToBasket":{
                 RequestBody formBody = new FormBody.Builder()
                         .add("id", productId.toString())
+                        .add("color", color)
+                        .add("size", String.valueOf(size))
                         .add("secureKod",secureKod)
                         .build();
                 request = new Request.Builder()
