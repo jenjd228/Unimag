@@ -17,5 +17,7 @@ public class OrdersDTO {
 
     private String status;
 
+    private String pickUpPoint;
+
     private List<Order2ProductDTO> order2ProductsList;
 }

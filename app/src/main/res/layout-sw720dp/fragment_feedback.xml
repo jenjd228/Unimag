@@ -79,6 +79,42 @@
             android:backgroundTint="@color/colorPrimary"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/layout_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/layout_messege_letter"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Номер телефона"
+            android:textSize="42sp"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <EditText
+            android:id="@+id/editTextPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:inputType="phone"
+            android:textSize="38sp"
+            android:hint="+71234567890"
+            android:backgroundTint="@color/colorPrimary"
+            android:maxLength="12"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:textSize="30sp"
+            android:text="@string/feedback_podskazka"/>
+    </LinearLayout>
+
     <Button
         android:id="@+id/buttonSend"
         style="@style/ButtonStyle"

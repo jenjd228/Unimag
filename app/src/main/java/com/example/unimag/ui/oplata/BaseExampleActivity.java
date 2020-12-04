@@ -52,6 +52,7 @@ abstract public class BaseExampleActivity extends Activity implements
     private String secureKod;
     private String orderId;
     private String totalMoney;
+    private String pickUpPoint;
 
     private Cloudipsp cloudipsp;
     private GooglePayCall googlePayCall;// <- this should be serialized on saving instance state
@@ -78,6 +79,7 @@ abstract public class BaseExampleActivity extends Activity implements
         editAmount.setText(getIntent().getStringExtra("Amount"));
         idProductList = getIntent().getStringExtra("IdProductList");
         secureKod =  getIntent().getStringExtra("secureKod");
+        pickUpPoint = getIntent().getStringExtra("pickUpPoint");
 
 
 
@@ -195,7 +197,7 @@ abstract public class BaseExampleActivity extends Activity implements
 
     @Override
     public void onPaidProcessed(Receipt receipt) {
-        AddRequest addRequest = new AddRequest(idProductList,secureKod,orderId, totalMoney,"addToOrders");
+        AddRequest addRequest = new AddRequest(idProductList,secureKod,orderId, totalMoney,pickUpPoint,"addToOrders");
         addRequest.execute();
         Toast.makeText(this, "Paid " + receipt.status.name() + "\nPaymentId:" + receipt.paymentId, Toast.LENGTH_LONG).show();
         //this.onDestroy();

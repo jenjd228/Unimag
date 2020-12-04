@@ -19,6 +19,7 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
     private String stringIds;
     private String orderId;
     private String totalMoney;
+    private String pickUpPoint;
     private String color;
     private Integer size;
 
@@ -38,12 +39,13 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
         this.methodName = methodName;
     }
 
-    public AddRequest(String stringIds,String secureKod,String orderId,String totalMoney, String methodName){
+    public AddRequest(String stringIds,String secureKod,String orderId,String totalMoney, String pickUpPoint, String methodName){
         this.stringIds = stringIds;
         this.secureKod = secureKod;
         this.methodName = methodName;
         this.orderId = orderId;
         this.totalMoney = totalMoney;
+        this.pickUpPoint = pickUpPoint;
         color = "";
         size = null;
     }
@@ -74,6 +76,7 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
                         .add("stringIds",stringIds)
                         .add("totalMoney",totalMoney)
                         .add("orderId",orderId)
+                        .add("pickUpPoint", pickUpPoint)
                         .build();
                 request = new Request.Builder()
                         .url("http://"+ GlobalVar.ip +":8080/addToOrders")
