@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
@@ -23,8 +25,10 @@ import com.example.unimag.R;
 import com.example.unimag.ui.DTO.BasketProductDTO;
 import com.example.unimag.ui.DTO.PayDTO;
 import com.example.unimag.ui.DTO.ProductDTO;
+import com.example.unimag.ui.NoConnectionFragment;
 import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
+import com.example.unimag.ui.TechnicalWorkFragment;
 import com.example.unimag.ui.ThreadCheckingConnection;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -105,7 +109,7 @@ public class BasketFragment extends Fragment {
     @SneakyThrows
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
+        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState, requireContext()); //Проверка на подключение к интернету
         basketViewModel =
                 ViewModelProviders.of(this).get(BasketViewModel.class);
         View view = inflater.inflate(R.layout.fragment_basket, container, false);
@@ -117,16 +121,19 @@ public class BasketFragment extends Fragment {
             GetRequest getRequest = new GetRequest(secureKod, "getBasketList");
             getRequest.execute();
             String result = getRequest.get();
-            if (result.equals("BAD_REQUEST") || result.equals("Error!")) {
-                Toast toast = Toast.makeText(getContext(),
+            if (result.equals("BAD_REQUEST") || result.equals("ERROR")) {
+                System.out.println("ERROR");
+                /*Toast toast = Toast.makeText(getContext(),
                         "Ошибка!", Toast.LENGTH_LONG);
-                toast.show();
+                toast.show();*/
             } else {
                 List<BasketProductDTO> participantJsonList;
                 ObjectMapper objectMapper = new ObjectMapper();
                 participantJsonList = objectMapper.readValue(getRequest.get(), new TypeReference<List<BasketProductDTO>>() {
                 });
-                gridAdapterBasket.addList(participantJsonList);
+                if (participantJsonList.size() != 0) {
+                    gridAdapterBasket.addList(participantJsonList);
+                }
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());

@@ -37,7 +37,7 @@ public class InformationAboutPartnerFragment extends Fragment {
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
-        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute(); //Если дисконект
+        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState, requireContext()); //Проверка на подключение к интернету
         if (dataDbHelper!=null){
             secureKod = dataDbHelper.getSecureKod(dataDbHelper);
         }
@@ -76,8 +76,6 @@ public class InformationAboutPartnerFragment extends Fragment {
             button_in_info_partner.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute(); //Если дисконект
 
                     //Сделать проверку (отправляем на сервер запрос к БД и смотрим офрмлена ли подписка у чела)
                     //В соответствии с этим устанавливаем setText для кнопки

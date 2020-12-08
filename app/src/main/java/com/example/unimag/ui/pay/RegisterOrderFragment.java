@@ -19,6 +19,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.unimag.R;
 import com.example.unimag.SimpleExampleActivity;
@@ -26,10 +28,12 @@ import com.example.unimag.ui.DTO.PayDTO;
 import com.example.unimag.ui.DTO.UserDTO;
 import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
+import com.example.unimag.ui.TechnicalWorkFragment;
 import com.example.unimag.ui.ThreadCheckingConnection;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -73,7 +77,7 @@ public class RegisterOrderFragment extends Fragment {
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
-        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute(); //Если дисконект
+        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState, requireContext()); //Проверка на подключение к интернету
 
         gridView = view.findViewById(R.id.grid_view_order);
         if (list!=null){
@@ -98,51 +102,58 @@ public class RegisterOrderFragment extends Fragment {
         Spinner spinner = (Spinner) requireView().findViewById(R.id.spinnerPickUpPoint); //Ищем спиннер
         totalMoney.setText(String.valueOf(gridAdapterForPay.getTheCostOfProducts()));
 
-        GetRequest getPickUpPointRequest = new GetRequest("getPickUpPointList");
-        getPickUpPointRequest.execute();
+        try {
+            GetRequest getPickUpPointRequest = new GetRequest("getPickUpPointList");
+            getPickUpPointRequest.execute();
 
-        GetRequest getUser = new GetRequest(secureKod,"getUser");
-        getUser.execute();
+            GetRequest getUser = new GetRequest(secureKod, "getUser");
+            getUser.execute();
 
-        String userS = getUser.get();
+            String userS = getUser.get();
 
-        List<Integer> idProductList = new ArrayList<>();
-        gridAdapterForPay.getProductList().forEach(object -> idProductList.add(object.getProductId()));
+            List<Integer> idProductList = new ArrayList<>();
+            gridAdapterForPay.getProductList().forEach(object -> idProductList.add(object.getProductId()));
 
-        List<String> listPickUpPoints = new ObjectMapper().readValue(getPickUpPointRequest.get(), new TypeReference<List<String>>(){});
+            List<String> listPickUpPoints = new ObjectMapper().readValue(getPickUpPointRequest.get(), new TypeReference<List<String>>() {
+            });
 
-        UserDTO user = new UserDTO();
-        user.setEmail("");
+            UserDTO user = new UserDTO();
+            user.setEmail("");
 
-        if (!userS.equals("Error!")){
-             user = new ObjectMapper().readValue(getUser.get(), new TypeReference<UserDTO>(){});
-        }
-
-        String[] arrayPickUpPoints = listPickUpPoints.toArray(new String[0]);
-
-        //Настраиваем адаптер
-        AdapterForSpinner adapter = new AdapterForSpinner(requireContext(), R.layout.spinner_row, arrayPickUpPoints);
-        spinner.setAdapter(adapter);
-        spinner.setSelection(0);
-
-        UserDTO finalUser = user;
-
-        button_register_order.setOnClickListener(v -> {
-            //NavDirections action = RegisterOrderFragmentDirections.actionRegisterOrderFragmentToSimpleExampleActivity();
-            //Navigation.findNavController(v).navigate(action);
-
-            if(secureKod != null ){
-                Intent intent = new Intent(getActivity(), SimpleExampleActivity.class);
-                intent.putExtra("Amount",totalMoney.getText());
-                intent.putExtra("IdProductList",idProductList.toString());
-                intent.putExtra("secureKod",secureKod);
-                intent.putExtra("pickUpPoint", spinner.getSelectedItem().toString());
-                intent.putExtra("email", finalUser.getEmail());
-
-                startActivity(intent);
+            if (!userS.equals("Error!")) {
+                user = new ObjectMapper().readValue(getUser.get(), new TypeReference<UserDTO>() {
+                });
             }
 
-        });
+            String[] arrayPickUpPoints = listPickUpPoints.toArray(new String[0]);
+
+            //Настраиваем адаптер
+            AdapterForSpinner adapter = new AdapterForSpinner(requireContext(), R.layout.spinner_row, arrayPickUpPoints);
+            spinner.setAdapter(adapter);
+            spinner.setSelection(0);
+
+            UserDTO finalUser = user;
+
+            button_register_order.setOnClickListener(v -> {
+                //NavDirections action = RegisterOrderFragmentDirections.actionRegisterOrderFragmentToSimpleExampleActivity();
+                //Navigation.findNavController(v).navigate(action);
+
+                if (secureKod != null) {
+                    Intent intent = new Intent(getActivity(), SimpleExampleActivity.class);
+                    intent.putExtra("Amount", totalMoney.getText());
+                    intent.putExtra("IdProductList", idProductList.toString());
+                    intent.putExtra("secureKod", secureKod);
+                    intent.putExtra("pickUpPoint", spinner.getSelectedItem().toString());
+                    intent.putExtra("email", finalUser.getEmail());
+
+                    startActivity(intent);
+                }
+
+            });
+
+        } catch (IOException e) {
+            e.getMessage();
+        }
 
     }
 

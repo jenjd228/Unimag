@@ -8,12 +8,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
 import com.example.unimag.ui.Request.CheckRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
+import com.example.unimag.ui.TechnicalWorkFragment;
 import com.example.unimag.ui.ThreadCheckingConnection;
 
 import java.util.concurrent.ExecutionException;
@@ -45,7 +48,7 @@ public class PersonalAreaFragment extends Fragment {
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
+        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState, requireContext()); //Проверка на подключение к интернету
         //Создание View-Model для данного фрагмента (передаем данные Activity)
 //        //Создание View-элемента из XML-файла
         root = inflater.inflate(R.layout.fragment_personal_area, container, false);

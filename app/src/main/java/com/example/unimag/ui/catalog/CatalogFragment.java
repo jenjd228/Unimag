@@ -15,12 +15,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
 import com.example.unimag.ui.DTO.ProductDTO;
 import com.example.unimag.ui.Request.GetRequest;
+import com.example.unimag.ui.TechnicalWorkFragment;
 import com.example.unimag.ui.ThreadCheckingConnection;
 import com.example.unimag.ui.sort.GlobalSort;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -52,7 +55,7 @@ public class CatalogFragment extends Fragment {
     @SneakyThrows
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
+        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState, requireContext()); //Проверка на подключение к интернету
         //CatalogViewModel catalogViewModel = ViewModelProviders.of(this).get(CatalogViewModel.class);
         View view = inflater.inflate(R.layout.fragment_catalog, container, false);
         gridView = view.findViewById(R.id.gridView);
@@ -116,7 +119,7 @@ public class CatalogFragment extends Fragment {
             }else {
                 gridView.setAdapter(customGridAdapter);
             }*/
-        }catch (Exception e){e.getMessage();}
+        }catch (Exception e){e.getMessage(); }
 
 
         gridView.setOnItemClickListener((a, v, position, id) -> {

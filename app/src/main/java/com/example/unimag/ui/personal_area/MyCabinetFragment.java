@@ -24,12 +24,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
 import com.example.unimag.ui.DTO.UserDTO;
 import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
+import com.example.unimag.ui.TechnicalWorkFragment;
 import com.example.unimag.ui.ThreadCheckingConnection;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -85,17 +88,21 @@ public class MyCabinetFragment extends Fragment {
         if (secureKod==null){
 
         }else {
-            GetRequest getRequest = new GetRequest(secureKod,"getUser");
-            getRequest.execute();
-            if(getRequest.get().equals("Error!")){
-                Toast toast = Toast.makeText(getContext(),
-                        "Ошибка!", Toast.LENGTH_SHORT);
-                toast.show();
+            try {
+                GetRequest getRequest = new GetRequest(secureKod, "getUser");
+                getRequest.execute();
+                if (getRequest.get().equals("Error!")) {
+                    Toast toast = Toast.makeText(getContext(),
+                            "Ошибка!", Toast.LENGTH_SHORT);
+                    toast.show();
 
-            } else {
-                ObjectMapper objectMapper = new ObjectMapper();
-                UserDTO userDTO = objectMapper.readValue(getRequest.get(), new TypeReference<UserDTO>(){});
-                setInformationAboutUser(userDTO.getFio(),userDTO.getEmail(),userDTO.getPoints());
+                } else {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    UserDTO userDTO = objectMapper.readValue(getRequest.get(), new TypeReference<UserDTO>() {
+                    });
+                    setInformationAboutUser(userDTO.getFio(), userDTO.getEmail(), userDTO.getPoints());
+                }
+            } catch (IOException e) {
             }
         }
     }
@@ -104,7 +111,7 @@ public class MyCabinetFragment extends Fragment {
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
-        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
+        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState, requireContext()); //Проверка на подключение к интернету
         return inflater.inflate(R.layout.fragment_my_cabinet, container, false);
     }
 

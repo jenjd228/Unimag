@@ -18,13 +18,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
 import com.example.unimag.ui.Request.SendOrUpdateRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
+import com.example.unimag.ui.TechnicalWorkFragment;
 import com.example.unimag.ui.ThreadCheckingConnection;
 
+import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
@@ -55,7 +59,7 @@ public class RegisterFragment extends Fragment {
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
-        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
+        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState, requireContext()); //Проверка на подключение к интернету
         root = inflater.inflate(R.layout.fragment_register, container, false);
         dataDbHelper = new DataDBHelper(Objects.requireNonNull(container).getContext());
         return root;
@@ -93,7 +97,6 @@ public class RegisterFragment extends Fragment {
         });
 
         b.setOnClickListener(e -> {
-            new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
             String email2 = String.valueOf(email.getText());
             String password2 = String.valueOf(password.getText());
             String repeatPassword2 = String.valueOf(repeatPassword.getText());
@@ -160,15 +163,18 @@ public class RegisterFragment extends Fragment {
     }
 
     private void firstUpdate(String email,String password) throws ExecutionException, InterruptedException {
-        SendOrUpdateRequest sendOrUpdateRequest = new SendOrUpdateRequest(email,password,"firstUpdate");
-        sendOrUpdateRequest.execute();
-        String otvet = sendOrUpdateRequest.get();
-        if (otvet.equals("yes")){
+        try {
+            SendOrUpdateRequest sendOrUpdateRequest = new SendOrUpdateRequest(email, password, "firstUpdate");
+            sendOrUpdateRequest.execute();
+            String otvet = sendOrUpdateRequest.get();
+        if (otvet.equals("yes")) {
             Toast toast = Toast.makeText(getContext(),
                     "Такой email уже зарегистрирован !", Toast.LENGTH_SHORT);
             toast.show();
-        }else {
+        } else {
             addToSqLite(otvet);
+        }
+    } catch(Exception e) {
         }
     }
 

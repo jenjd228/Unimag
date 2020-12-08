@@ -44,7 +44,7 @@ public class SortFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_sort, container, false);
 
-        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute(); //Если дисконект
+        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState, requireContext()); //Проверка на подключение к интернету
 
         return view;
     }

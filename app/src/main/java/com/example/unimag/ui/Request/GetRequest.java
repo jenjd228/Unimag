@@ -21,7 +21,7 @@ public class GetRequest extends AsyncTask<Void, Void, String> {
         this.methodName = methodName;
     }
 
-    public GetRequest(Integer currentNumberList,String methodName){
+    public GetRequest(Integer currentNumberList, String methodName){
         this.currentNumberList = currentNumberList;
         this.methodName = methodName;
     }

@@ -22,6 +22,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 
@@ -78,7 +80,7 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
         actionBar.setTitle("Информация о товаре");
         actionBar.setDisplayHomeAsUpEnabled(false);
 
-        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
+        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState, requireContext()); //Проверка на подключение к интернету
         View root = inflater.inflate(R.layout.fragment_product, container, false);
         return root;
     }

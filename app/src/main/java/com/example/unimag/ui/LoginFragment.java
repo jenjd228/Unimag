@@ -17,12 +17,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
 import com.example.unimag.ui.Request.CheckRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 public class LoginFragment extends Fragment {
@@ -33,7 +36,7 @@ public class LoginFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
+        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState, requireContext()); //Проверка на подключение к интернету
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
@@ -73,11 +76,9 @@ public class LoginFragment extends Fragment {
         });
 
         register.setOnClickListener(e -> {
-            new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
             Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_registerFragment);
         });
         singIn.setOnClickListener(e -> {
-            new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
             String password = String.valueOf(this.password.getText());
             String email = String.valueOf(this.login.getText());
             if (!password.equals("") && !email.equals("")) {
@@ -111,8 +112,10 @@ public class LoginFragment extends Fragment {
                     }
                 } catch (ExecutionException ex) {
                     ex.printStackTrace();
+                    System.out.println("1111111111111");
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
+                    System.out.println("2222222222222");
                 }
             }else {
                 Toast toast = Toast.makeText(getContext(),

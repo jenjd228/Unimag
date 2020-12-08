@@ -13,13 +13,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
 import com.example.unimag.ui.Request.SendOrUpdateRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
+import com.example.unimag.ui.TechnicalWorkFragment;
 import com.example.unimag.ui.ThreadCheckingConnection;
 
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -50,7 +54,7 @@ public class RegisterFragment2 extends Fragment {
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
-        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
+        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState, requireContext()); //Проверка на подключение к интернету
         root = inflater.inflate(R.layout.fragment_register2, container, false);
         return root;
     }
@@ -83,7 +87,6 @@ public class RegisterFragment2 extends Fragment {
 
         Button b = getView().findViewById(R.id.register_button2);
         b.setOnClickListener(e -> {
-            new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
             String birthDay2 = checkDay(String.valueOf(birthDay.getText()));
             String birthMonth2 = checkBirthMonth(String.valueOf(birthMonth.getText()));
             String birthYear2 = checkBirthYear(String.valueOf(birthYear.getText()));
@@ -215,14 +218,17 @@ public class RegisterFragment2 extends Fragment {
 
     @SneakyThrows
     private void update(String email, String fio, String birthData){
-        SendOrUpdateRequest sendOrUpdateRequest = new SendOrUpdateRequest(email,fio,birthData,"userUpdate");
-        sendOrUpdateRequest.execute();
-        if(sendOrUpdateRequest.get().equals("OK")){
-            goToLK();
-        } else {
-            Toast toast = Toast.makeText(getContext(),
-                    "Ошибка!", Toast.LENGTH_SHORT);
-            toast.show();
+        try {
+            SendOrUpdateRequest sendOrUpdateRequest = new SendOrUpdateRequest(email, fio, birthData, "userUpdate");
+            sendOrUpdateRequest.execute();
+            if (sendOrUpdateRequest.get().equals("OK")) {
+                goToLK();
+            } else {
+                Toast toast = Toast.makeText(getContext(),
+                        "Ошибка!", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        } catch (Exception e) {
         }
     }
 

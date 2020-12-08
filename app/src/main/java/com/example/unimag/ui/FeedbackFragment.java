@@ -31,7 +31,7 @@ public class FeedbackFragment extends Fragment {
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
-        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
+        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState, requireContext()); //Проверка на подключение к интернету
         View root = inflater.inflate(R.layout.fragment_feedback, container, false);
         return root;
     }
@@ -64,7 +64,6 @@ public class FeedbackFragment extends Fragment {
 
         /**Листенер для кнопки отправить*/
         buttonSend.setOnClickListener(v -> {
-            new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
 
             String subject = textSubject.getText().toString();
             String message = textMessage.getText().toString();

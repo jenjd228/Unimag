@@ -12,9 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.unimag.R;
 import com.example.unimag.ui.Request.CheckRequest;
+import com.example.unimag.ui.TechnicalWorkFragment;
 import com.example.unimag.ui.ThreadCheckingConnection;
 
 import lombok.SneakyThrows;
@@ -55,7 +58,7 @@ public class RegisterKodFragment extends Fragment {
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
-        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
+        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState, requireContext()); //Проверка на подключение к интернету
         root = inflater.inflate(R.layout.fragment_register_kod, container, false);
         return root;
 
@@ -67,7 +70,6 @@ public class RegisterKodFragment extends Fragment {
 
         Button b = getView().findViewById(R.id.register_button_kod);
         b.setOnClickListener(e -> {
-            new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute();
             String kod1 = kod.getText().toString();
             /*String email = getArguments() != null ? getArguments().getString("email") : null;
             String password = getArguments() != null ? getArguments().getString("password") : null;*/
@@ -78,13 +80,16 @@ public class RegisterKodFragment extends Fragment {
     @SneakyThrows
     private void checkByKod(String kod, String email, String password) {
 
-        CheckRequest checkRequest = new CheckRequest(email,kod,password,"checkByKod");
-        checkRequest.execute();
-        String otvet = checkRequest.get();
-        if(otvet.equals("Wrong kod")){
-            Toast toast = Toast.makeText(getContext(),
-                    "Вы ввели неверный код!", Toast.LENGTH_SHORT);
-            toast.show();
+        try {
+            CheckRequest checkRequest = new CheckRequest(email, kod, password, "checkByKod");
+            checkRequest.execute();
+            String otvet = checkRequest.get();
+            if (otvet.equals("Wrong kod")) {
+                Toast toast = Toast.makeText(getContext(),
+                        "Вы ввели неверный код!", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        } catch (Exception e) {
         }
     }
 
