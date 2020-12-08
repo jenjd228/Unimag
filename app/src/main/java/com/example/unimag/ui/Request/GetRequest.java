@@ -78,6 +78,13 @@ public class GetRequest extends AsyncTask<Void, Void, String> {
                         .build();
                 break;
             }
+            case "getPickUpPointList":{
+                request = new Request.Builder()
+                        .url("http://"+ GlobalVar.ip +":8080/getPickUpPointList")
+                        .get()
+                        .build();
+                break;
+            }
         }
 
         try {

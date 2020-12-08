@@ -1,6 +1,5 @@
 package com.example.unimag.ui.catalog;
 
-import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,7 +19,6 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
-import com.example.unimag.ui.DTO.BasketProductDTO;
 import com.example.unimag.ui.DTO.ProductDTO;
 import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.ThreadCheckingConnection;
@@ -60,14 +58,12 @@ public class CatalogFragment extends Fragment {
         gridView = view.findViewById(R.id.gridView);
 
         if (CustomGridAdapter.getInstance() == null){
-            System.out.println("Адаптер установлен");
             CustomGridAdapter.setContext(requireContext());
         }
 
         try {
 
             if (GlobalSort.getInstance().getUpdateFlag()){
-                System.out.println("флаг сброшен");
                 CustomGridAdapter.getInstance().cleanList();
                 currentNumberList = 0;
                 GlobalSort.getInstance().setUpdateFlag(false);
@@ -77,7 +73,6 @@ public class CatalogFragment extends Fragment {
             if (CustomGridAdapter.getInstance().getCount() == 0) {
                 getRequest = new GetRequest(currentNumberList,"getList");
                 getRequest.execute();
-                //gridView.setAdapter(customGridAdapter);
                 String response = getRequest.get();
 
                 if (response.equals("Error!")) {
@@ -92,7 +87,6 @@ public class CatalogFragment extends Fragment {
                     CustomGridAdapter.getInstance().addList(participantJsonList);
                     currentNumberList++;
                     System.out.println("Лист установлен");
-                    //System.out.println(CustomGridAdapter.getInstance().getCount());
                     gridView.setAdapter(CustomGridAdapter.getInstance());
                 }
             }else {

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.GridView;
 
 import androidx.annotation.NonNull;
@@ -79,49 +78,17 @@ public class OrderFragment extends Fragment {
             System.out.println(e.getMessage());
         }
 
-        System.out.println(gridAdapterOrder.getListData() +" это лист");
-
         return root;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        gridView.setOnItemClickListener((a, v, position, id) -> {
 
-        //CreateAndSendRequast createAndSendRequast = new CreateAndSendRequast(secureKod);
-        //createAndSendRequast.execute();
+            Object o = gridView.getItemAtPosition(position);
+            ProductDTO productDTO = (ProductDTO) o;
 
-       // List<OrderDTO> products = new ArrayList<>();
-        //Создание нашего списка товаров с помощью функции getList()
-        //final GridView gridView = (GridView) getView().findViewById(R.id.grid_view_orders);
-        //Установление адаптера (что-то вроде прохождения по всем элементам)
-        //gridView.setAdapter(gridAdapterOrder = new GridAdapterOrder(this.getContext(),products));
-
-        //Установка onClickListenera для каждого элемента item
-       /* ArrayList<OrderDTO> listData = new ArrayList<OrderDTO>();
-
-        OrderDTO p1 = new OrderDTO();
-        p1.setTitle("Часы ЮФУ ясень");
-        p1.setImageName("29.jpg");
-        p1.setDataOfOrder("02.02.2020");
-        p1.setStatus("Не доставлено");
-        listData.add(p1);
-
-        GridAdapterOrder adapter = new GridAdapterOrder(this.getContext(), listData);
-        gridView.setAdapter(adapter);*/
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-                Object o = gridView.getItemAtPosition(position);
-                ProductDTO productDTO = (ProductDTO) o;
-
-                /*FragmentManager manager = OrderFragment.this.getFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                transaction.replace(OrderFragment.this.getId(), new ProductFragment(productDTO.getImageName(), productDTO.getTitle(), productDTO.getDescriptions(), productDTO.getPrice(), productDTO.getId()));
-                transaction.addToBackStack(null);
-                transaction.commit();*/
-            }
         });
 
     }

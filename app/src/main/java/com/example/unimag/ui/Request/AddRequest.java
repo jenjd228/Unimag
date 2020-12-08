@@ -27,8 +27,8 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
         this.productId = productId;
         this.secureKod = secureKod;
         this.methodName = methodName;
-        color = "";
-        size = null;
+        this.color = "";
+        this.size = null;
     }
 
     public AddRequest(Integer productId,String secureKod,String color,int size, String methodName){
@@ -46,8 +46,8 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
         this.orderId = orderId;
         this.totalMoney = totalMoney;
         this.pickUpPoint = pickUpPoint;
-        color = "";
-        size = null;
+        this.color = "";
+        this.size = null;
     }
 
 

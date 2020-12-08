@@ -14,7 +14,7 @@ import com.example.unimag.ui.sort.GlobalSort;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
-public class MainActivity extends AppCompatActivity implements  BottomNavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     //private DataDBHelper dataDbHelper;
     GlobalSort globalSort = new GlobalSort();
 
@@ -93,10 +93,18 @@ public class MainActivity extends AppCompatActivity implements  BottomNavigation
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.navigation_catalog: Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.navigation_catalog);break;
-            case R.id.navigation_partner_program: Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.navigation_partner_program);break;
-            case R.id.navigation_basket: Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.navigation_basket);break;
-            case R.id.navigation_personal_area: Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.navigation_personal_area);break;
+            case R.id.navigation_catalog:
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.navigation_catalog);
+                break;
+            case R.id.navigation_partner_program:
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.navigation_partner_program);
+                break;
+            case R.id.navigation_basket:
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.navigation_basket);
+                break;
+            case R.id.navigation_personal_area:
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.navigation_personal_area);
+                break;
         }
 
         return true;

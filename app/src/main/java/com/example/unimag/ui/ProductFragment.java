@@ -189,26 +189,13 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
                         @Override
                         public void onClick(View v) {
                             /**Здесь должна быть отправка размера*/
-                            Integer selectedSize = Integer.parseInt(spinner.getSelectedItem().toString());
+                            int selectedSize = Integer.parseInt(spinner.getSelectedItem().toString());
                             AddRequest addRequest = new AddRequest(productId, secureKod, "", selectedSize, "addToBasket"); //Отправляем дополнительно размер
                             addRequest.execute();
 
                             try {
                                 String otvet = addRequest.get();
-                                System.out.println(otvet);
-                                if (otvet.equals("OK")) {
-                                    Toast toast = Toast.makeText(getContext(),
-                                            "Товар добавлен!", Toast.LENGTH_SHORT);
-                                    toast.show();
-                                } else if (otvet.equals("PRODUCT_IS_PRESENT")) {
-                                    Toast toast = Toast.makeText(getContext(),
-                                            "Этот товар уже в корзине!", Toast.LENGTH_SHORT);
-                                    toast.show();
-                                } else {
-                                    Toast toast = Toast.makeText(getContext(),
-                                            "Ошибка!", Toast.LENGTH_SHORT);
-                                    toast.show();
-                                }
+                                showToast(otvet);
                             } catch (ExecutionException | InterruptedException ex) {
                                 ex.printStackTrace();
                             }
@@ -222,26 +209,29 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
                     addRequest.execute();
                     try {
                         String otvet = addRequest.get();
-                        System.out.println(otvet);
-                        if (otvet.equals("OK")) {
-                            Toast toast = Toast.makeText(getContext(),
-                                    "Товар добавлен!", Toast.LENGTH_SHORT);
-                            toast.show();
-                        } else if (otvet.equals("PRODUCT_IS_PRESENT")) {
-                            Toast toast = Toast.makeText(getContext(),
-                                    "Этот товар уже в корзине!", Toast.LENGTH_SHORT);
-                            toast.show();
-                        } else {
-                            Toast toast = Toast.makeText(getContext(),
-                                    "Ошибка!", Toast.LENGTH_SHORT);
-                            toast.show();
-                        }
+                        showToast(otvet);
                     } catch (ExecutionException | InterruptedException ex) {
                         ex.printStackTrace();
                     }
                 }
             }
         });
+    }
+
+    private void showToast(String otvet){
+        if (otvet.equals("OK")) {
+            Toast toast = Toast.makeText(getContext(),
+                    "Товар добавлен!", Toast.LENGTH_SHORT);
+            toast.show();
+        } else if (otvet.equals("PRODUCT_IS_PRESENT")) {
+            Toast toast = Toast.makeText(getContext(),
+                    "Этот товар уже в корзине!", Toast.LENGTH_SHORT);
+            toast.show();
+        } else {
+            Toast toast = Toast.makeText(getContext(),
+                    "Ошибка!", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
 

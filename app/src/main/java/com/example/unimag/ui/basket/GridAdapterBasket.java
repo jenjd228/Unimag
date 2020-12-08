@@ -3,6 +3,8 @@ package com.example.unimag.ui.basket;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
 
 import com.bumptech.glide.Glide;
 import com.example.unimag.R;
@@ -27,10 +31,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class GridAdapterBasket  extends BaseAdapter {
+public class GridAdapterBasket extends BaseAdapter {
 
     private List<BasketProductDTO> listData;
-    private List<BasketProductDTO> listProductForPay = new ArrayList<>();;
+    private List<BasketProductDTO> listProductForPay = new ArrayList<>();
+    ;
     private LayoutInflater layoutInflater;
     private Context context;
     private String secureKod = null;
@@ -58,20 +63,24 @@ public class GridAdapterBasket  extends BaseAdapter {
         return position;
     }
 
-    @SuppressLint("SetTextI18n")
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
     public View getView(int position, View convertView, ViewGroup parent) {
         dataDbHelper = new DataDBHelper(context);
         secureKod = dataDbHelper.getSecureKod(dataDbHelper);
         dataDbHelper.close();
 
         GridAdapterBasket.ViewHolder holder;
+        View view = layoutInflater.inflate(R.layout.fragment_basket, null);
+        ;
+
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.basket_product_item_layout, null);
             holder = new GridAdapterBasket.ViewHolder();
             holder.basketLayout = convertView.findViewById(R.id.basket_product);
             holder.imageView = convertView.findViewById(R.id.image_basket_product);
             holder.productPrice = convertView.findViewById(R.id.price_basket_product);
-            holder.productTitle= convertView.findViewById(R.id.title_basket_product);
+            holder.productTitle = convertView.findViewById(R.id.title_basket_product);
             //holder.productDescription = convertView.findViewById(R.id.description_basket_product);
             holder.itemCheckBox = convertView.findViewById(R.id.checkBoxBasket);
             holder.deleteButton = convertView.findViewById(R.id.deleteButton);
@@ -87,7 +96,7 @@ public class GridAdapterBasket  extends BaseAdapter {
         BasketProductDTO product = this.listData.get(position);
         holder.productTitle.setText(product.getTitle());
         //holder.productDescription.setText("" + product.getDescriptions());
-        holder.productPrice.setText("" + product.getPrice()*product.getCount());
+        holder.productPrice.setText("" + product.getPrice() * product.getCount());
         holder.productCount.setText("" + product.getCount());
         if (product.getSize() != null) {
             holder.productAddInformational.setText("" + product.getColor() + String.valueOf(product.getSize()) + " размер ");
@@ -97,23 +106,23 @@ public class GridAdapterBasket  extends BaseAdapter {
 
         Integer id = product.getProductId();
 
-        if(position%2==0) {
+        if (position % 2 == 0) {
             holder.basketLayout.setBackgroundColor(Color.parseColor("#dadfe0"));
         }
         //int imageId = this.getMipmapResIdByName("image");
 
         //holder.imageView.setImageResource(imageId);
-        Glide.with(convertView).load("http://"+ GlobalVar.ip +":8080/upload/"+product.getImageName()).into(holder.imageView);
+        Glide.with(convertView).load("http://" + GlobalVar.ip + ":8080/upload/" + product.getImageName()).into(holder.imageView);
 
         holder.deleteButton.setOnClickListener(v -> {
-            DeleteRequest deleteRequest = new DeleteRequest(secureKod,product.getProductId(),"deleteBasketProduct");
+            DeleteRequest deleteRequest = new DeleteRequest(secureKod, product.getProductId(), "deleteBasketProduct");
             deleteRequest.execute();
             try {
-                if(deleteRequest.get().equals("ok")){
+                if (deleteRequest.get().equals("ok")) {
                     Toast toast = Toast.makeText(context,
                             "Товар удален!", Toast.LENGTH_SHORT);
                     toast.show();
-                }else {
+                } else {
                     Toast toast = Toast.makeText(context,
                             "Ошибка!", Toast.LENGTH_SHORT);
                     toast.show();
@@ -125,20 +134,22 @@ public class GridAdapterBasket  extends BaseAdapter {
             }
             listData.remove(product);
             notifyDataSetChanged();
+
+
         });
 
         holder.addProductCountButton.setOnClickListener(v -> {
-            if (secureKod==null){
+            if (secureKod == null) {
 
-            }else {
-                AddRequest addRequest = new AddRequest(product.getProductId(),secureKod,"addOneProductToBasket");
+            } else {
+                AddRequest addRequest = new AddRequest(product.getProductId(), secureKod, "addOneProductToBasket");
                 addRequest.execute();
                 try {
-                    if(addRequest.get().equals("ok")){
+                    if (addRequest.get().equals("ok")) {
                         Toast toast = Toast.makeText(context,
                                 "Товар добавлен!", Toast.LENGTH_SHORT);
                         toast.show();
-                        listData.get(position).setCount(product.getCount()+1);
+                        listData.get(position).setCount(product.getCount() + 1);
                         notifyDataSetChanged();
                     } else {
                         Toast toast = Toast.makeText(context,
@@ -152,14 +163,14 @@ public class GridAdapterBasket  extends BaseAdapter {
         });
 
         holder.deleteProductCountButton.setOnClickListener(v -> {
-            if (listData.get(position).getCount()-1 ==0){
+            if (listData.get(position).getCount() - 1 == 0) {
 
-            }else {
-                if (secureKod!=null){
-                    DeleteRequest deleteRequest = new DeleteRequest(secureKod ,product.getProductId(),"deleteOneProductFromBasket");
+            } else {
+                if (secureKod != null) {
+                    DeleteRequest deleteRequest = new DeleteRequest(secureKod, product.getProductId(), "deleteOneProductFromBasket");
                     deleteRequest.execute();
                     try {
-                        if(deleteRequest.get().equals("ok")){
+                        if (deleteRequest.get().equals("ok")) {
                             Toast toast = Toast.makeText(context,
                                     "Товар удален!", Toast.LENGTH_SHORT);
                             toast.show();
@@ -172,7 +183,7 @@ public class GridAdapterBasket  extends BaseAdapter {
                         ex.printStackTrace();
                     }
                 }
-                listData.get(position).setCount(product.getCount()-1);
+                listData.get(position).setCount(product.getCount() - 1);
                 notifyDataSetChanged();
             }
         });
@@ -181,11 +192,11 @@ public class GridAdapterBasket  extends BaseAdapter {
         holder.itemCheckBox.setOnClickListener(
                 v -> {
                     Toast toast = Toast.makeText(context,
-                            "Выбран товар с id = " + id+" - "+holder.itemCheckBox.isChecked(), Toast.LENGTH_SHORT);
+                            "Выбран товар с id = " + id + " - " + holder.itemCheckBox.isChecked(), Toast.LENGTH_SHORT);
                     toast.show();
                     if (holder.itemCheckBox.isChecked()) {
                         listProductForPay.add(product);
-                    }else {
+                    } else {
                         listProductForPay.remove(product);
                     }
                 }
@@ -194,30 +205,30 @@ public class GridAdapterBasket  extends BaseAdapter {
     }
 
     // Find Image ID corresponding to the name of the image (in the directory mipmap).
-    public int getMipmapResIdByName(String resName)  {
+    public int getMipmapResIdByName(String resName) {
         String pkgName = context.getPackageName();
 
         // Return 0 if not found.
-        int resID = context.getResources().getIdentifier(resName , "mipmap", pkgName);
-        Log.i("CustomGridView", "Res Name: "+ resName+"==> Res ID = "+ resID);
+        int resID = context.getResources().getIdentifier(resName, "mipmap", pkgName);
+        Log.i("CustomGridView", "Res Name: " + resName + "==> Res ID = " + resID);
         return resID;
     }
 
-    public void addList(List<BasketProductDTO> listData){
+    public void addList(List<BasketProductDTO> listData) {
         this.listData.addAll(listData);
         notifyDataSetChanged();
     }
 
-    public boolean findProductInBasketList(Integer id){
-        for (BasketProductDTO basketProduct : listData){
-            if (basketProduct.getProductId().equals(id)){
+    public boolean findProductInBasketList(Integer id) {
+        for (BasketProductDTO basketProduct : listData) {
+            if (basketProduct.getProductId().equals(id)) {
                 return true;
             }
         }
         return false;
     }
 
-    public List<BasketProductDTO> getProductForPayList(){
+    public List<BasketProductDTO> getProductForPayList() {
         return listProductForPay;
     }
 

@@ -58,7 +58,6 @@ public class LoginFragment extends Fragment {
 
         //Создание листенера для кнопки "Показать пароль"
         showPassword.setOnClickListener(e -> {
-            //System.out.println(password.getInputType());
             //Если пароль невиден
             if (password.getInputType() == 131201) {
                 password.setInputType(1);

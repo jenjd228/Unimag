@@ -1,5 +1,7 @@
 package com.example.unimag.ui.basket;
 
+import android.annotation.SuppressLint;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,7 +23,6 @@ import com.example.unimag.R;
 import com.example.unimag.ui.DTO.BasketProductDTO;
 import com.example.unimag.ui.DTO.PayDTO;
 import com.example.unimag.ui.DTO.ProductDTO;
-import com.example.unimag.ui.Order.GridAdapterOrder;
 import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
 import com.example.unimag.ui.ThreadCheckingConnection;
@@ -47,9 +48,6 @@ public class BasketFragment extends Fragment {
 
     private GridAdapterBasket gridAdapterBasket;
 
-    private GridAdapterOrder gridAdapterOrder;
-
-
     @Override
     public void onStart() {
         super.onStart();
@@ -68,44 +66,35 @@ public class BasketFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        TextView buttonReady = requireView().findViewById(R.id.button_oformlenie_order);
-        buttonReady.setOnClickListener(e -> {
+        GridView gridView = requireView().findViewById(R.id.grid_view_basket);
 
+        TextView buttonReady = requireView().findViewById(R.id.button_oformlenie_order);
+
+        if (gridAdapterBasket.getCount() == 0) {
+            @SuppressLint("UseCompatLoadingForDrawables") Drawable drawable = requireActivity().getResources().getDrawable(R.drawable.unnamed);
+            gridView.setBackground(drawable);
+        } else {
+            gridView.setBackground(null);
+        }
+
+        buttonReady.setOnClickListener(e -> {
             List<BasketProductDTO> products = new ArrayList<>();
+
             List<PayDTO> payDTOIdList = new ArrayList<>();
 
-            if (gridAdapterBasket.getProductForPayList()!=null){
+            if (gridAdapterBasket.getProductForPayList() != null) {
                 products = gridAdapterBasket.getProductForPayList();
-                for (BasketProductDTO basketProductDTO : products){
-                    payDTOIdList.add(new PayDTO(basketProductDTO.getProductId(),basketProductDTO.getImageName(),basketProductDTO.getPrice(),basketProductDTO.getTitle(),basketProductDTO.getCount()));
+                for (BasketProductDTO basketProductDTO : products) {
+                    payDTOIdList.add(new PayDTO(basketProductDTO.getProductId(), basketProductDTO.getImageName(), basketProductDTO.getPrice(), basketProductDTO.getTitle(), basketProductDTO.getCount()));
                 }
             }
 
-            //Navigation.findNavController(requireView()).navigate(R.id.action_navigation_basket_to_registerOrderFragment);
-            if (products.size()!=0){
-
+            if (products.size() != 0) {
                 String list = new Gson().toJson(payDTOIdList);
                 NavDirections action = BasketFragmentDirections.actionNavigationBasketToRegisterOrderFragment(list);
                 Navigation.findNavController(requireView()).navigate(action);
 
-                /*StringBuilder stringBuilder = new StringBuilder();
-                for (int i = 0;i<products.size();i++){
-                    if (i == products.size()-1){
-                        stringBuilder.append(products.get(i).getProductId());
-                        break;
-                    }
-                    stringBuilder.append(products.get(i).getProductId()).append(",");
-                }
-                Navigation.findNavController(requireView()).navigate(R.id.action_navigation_basket_to_registerOrderFragment);
-                if (stringBuilder.length()!=0){
-                    AddRequest addRequest = new AddRequest(stringBuilder.toString(),secureKod,"addToOrders");
-                    addRequest.execute();
-
-                    /*Toast toast = Toast.makeText(getContext(),
-                            "Заказ оформлен!", Toast.LENGTH_LONG);
-                    toast.show();*/
-                //}
-            }else {
+            } else {
                 Toast toast = Toast.makeText(getContext(),
                         "Вы не выбрали товар!", Toast.LENGTH_LONG);
                 toast.show();
@@ -124,19 +113,22 @@ public class BasketFragment extends Fragment {
 
         gridView.setAdapter(gridAdapterBasket = new GridAdapterBasket(this.getContext(), new ArrayList<>()));
 
-        try{
-            GetRequest getRequest = new GetRequest(secureKod,"getBasketList");
+        try {
+            GetRequest getRequest = new GetRequest(secureKod, "getBasketList");
             getRequest.execute();
             String result = getRequest.get();
-            if (result.equals("BAD_REQUEST") || result.equals("Error!")){
-
-            }else {
+            if (result.equals("BAD_REQUEST") || result.equals("Error!")) {
+                Toast toast = Toast.makeText(getContext(),
+                        "Ошибка!", Toast.LENGTH_LONG);
+                toast.show();
+            } else {
                 List<BasketProductDTO> participantJsonList;
                 ObjectMapper objectMapper = new ObjectMapper();
-                participantJsonList = objectMapper.readValue(getRequest.get(), new TypeReference<List<BasketProductDTO>>(){});
+                participantJsonList = objectMapper.readValue(getRequest.get(), new TypeReference<List<BasketProductDTO>>() {
+                });
                 gridAdapterBasket.addList(participantJsonList);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
@@ -144,12 +136,9 @@ public class BasketFragment extends Fragment {
         gridView.setOnItemClickListener((a, v, position, id) -> {
             Object o = gridView.getItemAtPosition(position);
             ProductDTO productDTO = (ProductDTO) o;
-            String imageString = "";
-
 
             BasketFragmentDirections.ActionNavigationBasketToProductFragment action = BasketFragmentDirections.actionNavigationBasketToProductFragment(productDTO.getImageName(), productDTO.getTitle(), productDTO.getDescriptions(), productDTO.getPrice(), productDTO.getId(), productDTO.getCategory(), productDTO.getListImage());
             Navigation.findNavController(v).navigate(action);
-
         });
 
         return view;

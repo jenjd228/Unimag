@@ -60,17 +60,19 @@ public class GridAdapterOrder extends BaseAdapter {
             holder.orderIdView = convertView.findViewById(R.id.id_order);
             holder.dataOfOrderView = convertView.findViewById(R.id.data_of_order);
             holder.statusView = convertView.findViewById(R.id.status_of_order);
+            holder.pickUpPoint = convertView.findViewById(R.id.pick_up_point);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
         OrdersDTO mainOrder = this.listData.get(position);
-        //Установка нужных значений для наших элементов
-        System.out.println(mainOrder);
+
+        //Установка нужных значений для элементов
         holder.orderIdView.setText("" +mainOrder.getOrderId());
         holder.dataOfOrderView.setText("" + mainOrder.getDataOfOrder());
         holder.statusView.setText("" + mainOrder.getStatus());
+        holder.pickUpPoint.setText("" + mainOrder.getPickUpPoint());
 
         //Перекрас фона Item'а
         if(position%2==0) {
@@ -113,6 +115,7 @@ public class GridAdapterOrder extends BaseAdapter {
         TextView orderIdView;
         TextView dataOfOrderView;
         TextView statusView;
+        TextView pickUpPoint;
     }
 
 }

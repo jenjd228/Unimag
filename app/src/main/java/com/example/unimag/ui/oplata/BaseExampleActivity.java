@@ -80,13 +80,16 @@ abstract public class BaseExampleActivity extends Activity implements
         idProductList = getIntent().getStringExtra("IdProductList");
         secureKod =  getIntent().getStringExtra("secureKod");
         pickUpPoint = getIntent().getStringExtra("pickUpPoint");
+        String email = getIntent().getStringExtra("email");
 
-
+        editEmail.setText(email);
 
         webView = findViewById(R.id.web_view);
         cloudipsp = new Cloudipsp(1396424, webView);
 
         spinnerCcy.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Currency.values()));
+        spinnerCcy.setSelection(1);
+        spinnerCcy.setEnabled(false);
 
         if (savedInstanceState != null) {
             googlePayCall = savedInstanceState.getParcelable(K_GOOGLE_PAY_CALL);

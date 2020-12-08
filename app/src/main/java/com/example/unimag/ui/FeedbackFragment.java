@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -108,7 +107,6 @@ public class FeedbackFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        //System.out.println(1);
             outState.putString("textMessage",textMessage.getText().toString());
     }
 
@@ -116,7 +114,6 @@ public class FeedbackFragment extends Fragment {
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         if (savedInstanceState!=null){
-            //System.out.println(2+" "+savedInstanceState.getString("textMessage"));
             textMessage.setText(savedInstanceState.getString("textMessage"));
         }
     }

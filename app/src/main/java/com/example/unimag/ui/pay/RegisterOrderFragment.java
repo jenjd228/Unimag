@@ -23,6 +23,8 @@ import androidx.fragment.app.Fragment;
 import com.example.unimag.R;
 import com.example.unimag.SimpleExampleActivity;
 import com.example.unimag.ui.DTO.PayDTO;
+import com.example.unimag.ui.DTO.UserDTO;
+import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
 import com.example.unimag.ui.ThreadCheckingConnection;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -30,6 +32,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import lombok.SneakyThrows;
 
@@ -45,7 +48,7 @@ public class RegisterOrderFragment extends Fragment {
 
     private String list;
 
-    private ArrayList<String> listPickUpPoints = new ArrayList<String>();
+    private ArrayList<String> listPickUpPoints = new ArrayList<>();
 
    public RegisterOrderFragment(){
 
@@ -84,6 +87,7 @@ public class RegisterOrderFragment extends Fragment {
         return view;
     }
 
+    @SneakyThrows
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -93,36 +97,50 @@ public class RegisterOrderFragment extends Fragment {
         TextView totalMoney = requireView().findViewById(R.id.money);
         Spinner spinner = (Spinner) requireView().findViewById(R.id.spinnerPickUpPoint); //Ищем спиннер
         totalMoney.setText(String.valueOf(gridAdapterForPay.getTheCostOfProducts()));
+
+        GetRequest getPickUpPointRequest = new GetRequest("getPickUpPointList");
+        getPickUpPointRequest.execute();
+
+        GetRequest getUser = new GetRequest(secureKod,"getUser");
+        getUser.execute();
+
+        String userS = getUser.get();
+
         List<Integer> idProductList = new ArrayList<>();
         gridAdapterForPay.getProductList().forEach(object -> idProductList.add(object.getProductId()));
 
-        /**......................ВРЕМЕННО.....................................*/
-        listPickUpPoints.add("Ростов-на-Дону, ул.Благодатная, 161/1, \"Южный меридиан\"");
-        listPickUpPoints.add("Таганрог, ул.Пашмена, д.777");
+        List<String> listPickUpPoints = new ObjectMapper().readValue(getPickUpPointRequest.get(), new TypeReference<List<String>>(){});
+
+        UserDTO user = new UserDTO();
+        user.setEmail("");
+
+        if (!userS.equals("Error!")){
+             user = new ObjectMapper().readValue(getUser.get(), new TypeReference<UserDTO>(){});
+        }
+
         String[] arrayPickUpPoints = listPickUpPoints.toArray(new String[0]);
-        /**DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD*/
 
         //Настраиваем адаптер
         AdapterForSpinner adapter = new AdapterForSpinner(requireContext(), R.layout.spinner_row, arrayPickUpPoints);
         spinner.setAdapter(adapter);
         spinner.setSelection(0);
 
+        UserDTO finalUser = user;
 
         button_register_order.setOnClickListener(v -> {
             //NavDirections action = RegisterOrderFragmentDirections.actionRegisterOrderFragmentToSimpleExampleActivity();
             //Navigation.findNavController(v).navigate(action);
 
-            Intent intent = new Intent(getActivity(), SimpleExampleActivity.class);
-            intent.putExtra("Amount",totalMoney.getText());
-            intent.putExtra("IdProductList",idProductList.toString());
-            intent.putExtra("secureKod",secureKod);
-            intent.putExtra("pickUpPoint", spinner.getSelectedItem().toString());
+            if(secureKod != null ){
+                Intent intent = new Intent(getActivity(), SimpleExampleActivity.class);
+                intent.putExtra("Amount",totalMoney.getText());
+                intent.putExtra("IdProductList",idProductList.toString());
+                intent.putExtra("secureKod",secureKod);
+                intent.putExtra("pickUpPoint", spinner.getSelectedItem().toString());
+                intent.putExtra("email", finalUser.getEmail());
 
-            startActivity(intent);
-            //Временно
-            Toast toast = Toast.makeText(RegisterOrderFragment.this.getContext(),
-                    "Покупка оплачена!\nСтатус доставки можно посмотреть в личном кабинете", Toast.LENGTH_LONG);
-            toast.show();
+                startActivity(intent);
+            }
 
         });
 
