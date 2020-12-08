@@ -11,4 +11,12 @@
         android:gravity="center">
     </item>
 
+    <item
+        android:gravity="bottom|center_horizontal"
+        android:width="133dp"
+        android:height="22dp"
+        android:bottom="7dp"
+        android:drawable="@drawable/version">
+    </item>
+
 </layer-list>

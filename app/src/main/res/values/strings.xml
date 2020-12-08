@@ -57,6 +57,7 @@
     <string name="noConnectionFragment">Нет соединения</string>
     <string name="fragment_oplata">Оплата</string>
     <string name="feedback_podskazka">*Номер телефона необходим, чтобы наш менджер смог связаться с Вами при необходимости</string>
+    <string name="technicalWorkFragment">Технические работы</string>
 
 
     <string-array name="categories">

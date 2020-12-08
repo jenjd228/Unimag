@@ -5,42 +5,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
-        android:id="@+id/image_no_connection"
+        android:id="@+id/image_technical_work"
         android:layout_width="200dp"
         android:layout_height="200dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="300dp"
-        android:src="@drawable/ic_no_connection"
-        android:background="@null" />
+        android:layout_marginBottom="200dp"
+        android:src="@drawable/technical_work"
+        android:background="@null"/>
 
     <TextView
-        android:id="@+id/textview_about_connection"
+        android:id="@+id/textview1_technical_work"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_no_connection"
-        app:layout_constraintBottom_toTopOf="@id/button_update_connection"
+        app:layout_constraintTop_toBottomOf="@+id/image_technical_work"
+        app:layout_constraintBottom_toTopOf="@id/textview2_technical_work"
         android:layout_marginTop="14dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:gravity="center_horizontal"
+        android:textStyle="bold"
         android:textSize="28sp"
-        android:textColor="@color/colorPrimary"
-        android:text="Отстутствует Интеренет подключение" />
+        android:textColor="@color/black"
+        android:text="Идут технические работы" />
 
-    <Button
-        android:id="@+id/button_update_connection"
-        style="@style/ButtonStyle"
+    <TextView
+        android:id="@+id/textview2_technical_work"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview_about_connection"
-        android:textSize="22sp"
-        android:padding="20dp"
-        android:layout_marginTop="28dp"
-        android:text="Переподключиться" />
-
+        app:layout_constraintTop_toBottomOf="@id/textview1_technical_work"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:gravity="center_horizontal"
+        android:textSize="28sp"
+        android:textColor="@color/black"
+        android:text="Приносим извинения за доставленные неудобства" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

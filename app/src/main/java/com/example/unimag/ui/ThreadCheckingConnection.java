@@ -1,5 +1,8 @@
 package com.example.unimag.ui;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -21,7 +24,30 @@ public class ThreadCheckingConnection extends AsyncTask<Void, Void, Boolean> {
     public ThreadCheckingConnection(FragmentManager fragmentManager, Bundle savedInstanceState) { //Констуркутор класса
         this.fragmentManager = fragmentManager;
         this.savedInstanceState = savedInstanceState;
+
+        //Если нет подключения к интернету
+        /**if(!isConnect(context)) {
+            FragmentManager manager = fragmentManager;
+            FragmentTransaction transaction = manager.beginTransaction();
+            transaction.replace(fragmentManager.getFragments().get(0).getId(), new NoConnectionFragment()); //Переходим на новый фрагмент
+            transaction.addToBackStack("last_no_connection_fragment"); //Добавляем в стек
+            transaction.commit();
+        }*/
     }
+
+
+    //Проверка подключения к интернету
+    public static boolean isConnect(Context context)
+    {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     @Override
     protected Boolean doInBackground(Void... params) {
