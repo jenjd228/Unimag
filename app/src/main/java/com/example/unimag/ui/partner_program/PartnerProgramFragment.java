@@ -37,7 +37,7 @@ public class PartnerProgramFragment extends Fragment {
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
-        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState, requireContext()); //Проверка на подключение к интернету
+        new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
 
         return root;
     }
@@ -51,7 +51,7 @@ public class PartnerProgramFragment extends Fragment {
         //Находим GridView
         gridView = requireView().findViewById(R.id.recycler_view_partner_program);
         try {
-            GetRequest getRequest = new GetRequest("getPartner");
+            GetRequest getRequest = new GetRequest(requireContext(),getFragmentManager(),"getPartner");
             getRequest.execute();
             //Тестовый список партнеров
             ArrayList<PartnerProgramDTO> dataList;

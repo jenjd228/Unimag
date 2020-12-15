@@ -89,7 +89,7 @@ public class MyCabinetFragment extends Fragment {
 
         }else {
             try {
-                GetRequest getRequest = new GetRequest(secureKod, "getUser");
+                GetRequest getRequest = new GetRequest(requireContext(),getFragmentManager(), secureKod, "getUser");
                 getRequest.execute();
                 if (getRequest.get().equals("Error!")) {
                     Toast toast = Toast.makeText(getContext(),
@@ -111,7 +111,7 @@ public class MyCabinetFragment extends Fragment {
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
-        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState, requireContext()); //Проверка на подключение к интернету
+        new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
         return inflater.inflate(R.layout.fragment_my_cabinet, container, false);
     }
 

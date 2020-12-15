@@ -10,4 +10,5 @@
     <dimen name="register_kod_margin">50dp</dimen>
     <dimen name="dp150">150dp</dimen>
     <dimen name="dp20">20dp</dimen>
+    <dimen name="margin_basket">10dp</dimen>
 </resources>

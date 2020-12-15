@@ -31,7 +31,7 @@ public class FeedbackFragment extends Fragment {
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
-        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState, requireContext()); //Проверка на подключение к интернету
+        new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
         View root = inflater.inflate(R.layout.fragment_feedback, container, false);
         return root;
     }

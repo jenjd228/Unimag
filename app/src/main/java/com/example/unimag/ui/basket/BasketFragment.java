@@ -1,22 +1,20 @@
 package com.example.unimag.ui.basket;
 
-import android.annotation.SuppressLint;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
@@ -25,10 +23,8 @@ import com.example.unimag.R;
 import com.example.unimag.ui.DTO.BasketProductDTO;
 import com.example.unimag.ui.DTO.PayDTO;
 import com.example.unimag.ui.DTO.ProductDTO;
-import com.example.unimag.ui.NoConnectionFragment;
 import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
-import com.example.unimag.ui.TechnicalWorkFragment;
 import com.example.unimag.ui.ThreadCheckingConnection;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -75,8 +71,20 @@ public class BasketFragment extends Fragment {
         TextView buttonReady = requireView().findViewById(R.id.button_oformlenie_order);
 
         if (gridAdapterBasket.getCount() == 0) {
-            @SuppressLint("UseCompatLoadingForDrawables") Drawable drawable = requireActivity().getResources().getDrawable(R.drawable.unnamed);
-            gridView.setBackground(drawable);
+            ConstraintLayout layout = getView().findViewById(R.id.layout_basket);
+
+            //Выводим картинку о том, что товары закончились
+            ImageView imageView = new ImageView(requireContext());
+            imageView.setImageResource(R.drawable.empty_basket);
+            ConstraintLayout.LayoutParams imageViewLayoutParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
+            imageViewLayoutParams.bottomToTop = R.id.button_oformlenie_order;
+            imageViewLayoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+            imageViewLayoutParams.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
+            imageViewLayoutParams.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID;
+            imageView.setBackgroundResource(0);
+            imageView.setLayoutParams(imageViewLayoutParams);
+
+            layout.addView(imageView);
         } else {
             gridView.setBackground(null);
         }
@@ -109,16 +117,16 @@ public class BasketFragment extends Fragment {
     @SneakyThrows
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState, requireContext()); //Проверка на подключение к интернету
+        new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
         basketViewModel =
                 ViewModelProviders.of(this).get(BasketViewModel.class);
         View view = inflater.inflate(R.layout.fragment_basket, container, false);
         gridView = view.findViewById(R.id.grid_view_basket);
 
-        gridView.setAdapter(gridAdapterBasket = new GridAdapterBasket(this.getContext(), new ArrayList<>()));
+        gridView.setAdapter(gridAdapterBasket = new GridAdapterBasket(this.getContext(),getFragmentManager(), new ArrayList<>()));
 
         try {
-            GetRequest getRequest = new GetRequest(secureKod, "getBasketList");
+            GetRequest getRequest = new GetRequest(requireContext(),getFragmentManager(), secureKod, "getBasketList");
             getRequest.execute();
             String result = getRequest.get();
             if (result.equals("BAD_REQUEST") || result.equals("ERROR")) {

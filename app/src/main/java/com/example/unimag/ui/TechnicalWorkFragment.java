@@ -32,6 +32,8 @@ public class TechnicalWorkFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        getActivity().findViewById(R.id.nav_view).setVisibility(View.INVISIBLE); //Убираем меню
+
         ImageView imageView = requireView().findViewById(R.id.image_technical_work);
         Animation animation = new AnimationUtils().loadAnimation(TechnicalWorkFragment.this.getContext(), R.anim.animation_rotate);
         imageView.startAnimation(animation);

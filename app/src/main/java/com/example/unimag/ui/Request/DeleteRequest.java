@@ -1,8 +1,15 @@
 package com.example.unimag.ui.Request;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.example.unimag.ui.GlobalVar;
+import com.example.unimag.ui.TechnicalWorkFragment;
 
 import java.io.IOException;
 
@@ -16,8 +23,12 @@ public class DeleteRequest extends AsyncTask<Void, Void, String> {
     private String secureKod;
     private Integer productId;
     private String methodName;
+    private FragmentManager manager;
+    private Context context;
 
-    public DeleteRequest(String secureKod,Integer productId,String methodName){
+    public DeleteRequest(Context context, FragmentManager manager, String secureKod,Integer productId,String methodName){
+        this.context = context;
+        this.manager = manager;
         this.secureKod = secureKod;
         this.productId = productId;
         this.methodName = methodName;
@@ -56,6 +67,14 @@ public class DeleteRequest extends AsyncTask<Void, Void, String> {
             return result;
         } catch (IOException e) {
             e.printStackTrace();
+
+            //Если инет есть - то значит идут технические работы
+            if(isConnect(context)) {
+                FragmentTransaction transaction = manager.beginTransaction();
+                transaction.replace(manager.getFragments().get(0).getId(), new TechnicalWorkFragment()); //Переходим на новый фрагмент
+                transaction.commit();
+            }
+
             return "";
         }
     }
@@ -63,5 +82,17 @@ public class DeleteRequest extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String response) {
         super.onPostExecute(response);
+    }
+
+    //Проверка подключения к интернету
+    public static boolean isConnect(Context context)
+    {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

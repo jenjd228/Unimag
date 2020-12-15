@@ -59,7 +59,7 @@ public class RegisterFragment extends Fragment {
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
-        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState, requireContext()); //Проверка на подключение к интернету
+        new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
         root = inflater.inflate(R.layout.fragment_register, container, false);
         dataDbHelper = new DataDBHelper(Objects.requireNonNull(container).getContext());
         return root;
@@ -164,7 +164,7 @@ public class RegisterFragment extends Fragment {
 
     private void firstUpdate(String email,String password) throws ExecutionException, InterruptedException {
         try {
-            SendOrUpdateRequest sendOrUpdateRequest = new SendOrUpdateRequest(email, password, "firstUpdate");
+            SendOrUpdateRequest sendOrUpdateRequest = new SendOrUpdateRequest(requireContext(),getFragmentManager(), email, password, "firstUpdate");
             sendOrUpdateRequest.execute();
             String otvet = sendOrUpdateRequest.get();
         if (otvet.equals("yes")) {

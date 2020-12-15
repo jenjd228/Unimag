@@ -80,7 +80,7 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
         actionBar.setTitle("Информация о товаре");
         actionBar.setDisplayHomeAsUpEnabled(false);
 
-        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState, requireContext()); //Проверка на подключение к интернету
+        new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
         View root = inflater.inflate(R.layout.fragment_product, container, false);
         return root;
     }
@@ -192,7 +192,7 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
                         public void onClick(View v) {
                             /**Здесь должна быть отправка размера*/
                             int selectedSize = Integer.parseInt(spinner.getSelectedItem().toString());
-                            AddRequest addRequest = new AddRequest(productId, secureKod, "", selectedSize, "addToBasket"); //Отправляем дополнительно размер
+                            AddRequest addRequest = new AddRequest(requireContext(),getFragmentManager(), productId, secureKod, "", selectedSize, "addToBasket"); //Отправляем дополнительно размер
                             addRequest.execute();
 
                             try {
@@ -207,7 +207,7 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
                     });
                 } else {
                     //Иначе если не одежда то просто запрос
-                    AddRequest addRequest = new AddRequest(productId, secureKod, "addToBasket");
+                    AddRequest addRequest = new AddRequest(requireContext(),getFragmentManager(), productId, secureKod, "addToBasket");
                     addRequest.execute();
                     try {
                         String otvet = addRequest.get();

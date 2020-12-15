@@ -36,7 +36,7 @@ public class LoginFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState, requireContext()); //Проверка на подключение к интернету
+        new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
@@ -82,7 +82,7 @@ public class LoginFragment extends Fragment {
             String password = String.valueOf(this.password.getText());
             String email = String.valueOf(this.login.getText());
             if (!password.equals("") && !email.equals("")) {
-                CheckRequest checkRequest = new CheckRequest(email, password, "checkUserForLoginIn");
+                CheckRequest checkRequest = new CheckRequest(requireContext(),getFragmentManager(), email, password, "checkUserForLoginIn");
                 checkRequest.execute();
                 try {
                     String response = checkRequest.get();

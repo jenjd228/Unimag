@@ -55,7 +55,7 @@ public class OrderFragment extends Fragment {
     @SneakyThrows
     @RequiresApi(api = Build.VERSION_CODES.N)
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState, requireContext()); //Проверка на подключение к интернету
+        new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
@@ -65,7 +65,7 @@ public class OrderFragment extends Fragment {
         gridView.setAdapter(gridAdapterOrder = new GridAdapterOrder(this.getContext(), new ArrayList<>()));
 
         try{
-            GetRequest getRequest = new GetRequest(secureKod,"getOrdersList");
+            GetRequest getRequest = new GetRequest(requireContext(),getFragmentManager(), secureKod,"getOrdersList");
             getRequest.execute();
             String result = getRequest.get();
 

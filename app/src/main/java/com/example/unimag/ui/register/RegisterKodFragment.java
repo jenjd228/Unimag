@@ -58,7 +58,7 @@ public class RegisterKodFragment extends Fragment {
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
-        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState, requireContext()); //Проверка на подключение к интернету
+        new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
         root = inflater.inflate(R.layout.fragment_register_kod, container, false);
         return root;
 
@@ -81,7 +81,7 @@ public class RegisterKodFragment extends Fragment {
     private void checkByKod(String kod, String email, String password) {
 
         try {
-            CheckRequest checkRequest = new CheckRequest(email, kod, password, "checkByKod");
+            CheckRequest checkRequest = new CheckRequest(requireContext(),getFragmentManager(), email, kod, password, "checkByKod");
             checkRequest.execute();
             String otvet = checkRequest.get();
             if (otvet.equals("Wrong kod")) {

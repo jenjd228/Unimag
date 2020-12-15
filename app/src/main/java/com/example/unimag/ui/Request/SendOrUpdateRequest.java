@@ -1,8 +1,15 @@
 package com.example.unimag.ui.Request;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.example.unimag.ui.GlobalVar;
+import com.example.unimag.ui.TechnicalWorkFragment;
 import com.example.unimag.ui.basket.GridAdapterBasket;
 import com.example.unimag.ui.catalog.CustomGridAdapter;
 
@@ -20,14 +27,20 @@ public class SendOrUpdateRequest extends AsyncTask<Void, Void, String> {
     private String birthDay;
     private String methodName;
     private String password;
+    private FragmentManager manager;
+    private Context context;
 
-    public SendOrUpdateRequest(String email,String password,String methodName){
+    public SendOrUpdateRequest(Context context, FragmentManager manager, String email,String password,String methodName){
+        this.context = context;
+        this.manager = manager;
         this.email = email;
         this.password = password;
         this.methodName = methodName;
     }
 
-    public SendOrUpdateRequest(String email,String fio,String birthDay,String methodName){
+    public SendOrUpdateRequest(Context context, FragmentManager manager, String email,String fio,String birthDay,String methodName){
+        this.context = context;
+        this.manager = manager;
         this.email = email;
         this.fio = fio;
         this.birthDay = birthDay;
@@ -82,6 +95,14 @@ public class SendOrUpdateRequest extends AsyncTask<Void, Void, String> {
             return result;
         } catch (IOException e) {
             e.printStackTrace();
+
+            //Если инет есть - то значит идут технические работы
+            if(isConnect(context)) {
+                FragmentTransaction transaction = manager.beginTransaction();
+                transaction.replace(manager.getFragments().get(0).getId(), new TechnicalWorkFragment()); //Переходим на новый фрагмент
+                transaction.commit();
+            }
+
             return "";
         }
     }
@@ -89,5 +110,17 @@ public class SendOrUpdateRequest extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String response) {
         super.onPostExecute(response);
+    }
+
+    //Проверка подключения к интернету
+    public static boolean isConnect(Context context)
+    {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -37,7 +37,7 @@ public class InformationAboutPartnerFragment extends Fragment {
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
-        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState, requireContext()); //Проверка на подключение к интернету
+        new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
         if (dataDbHelper!=null){
             secureKod = dataDbHelper.getSecureKod(dataDbHelper);
         }
@@ -64,7 +64,7 @@ public class InformationAboutPartnerFragment extends Fragment {
         descriptionPartnerView.setText(InformationAboutPartnerFragmentArgs.fromBundle(requireArguments()).getDescription());
 
 
-        CheckRequest checkRequest = new CheckRequest(secureKod,"userIsSub");
+        CheckRequest checkRequest = new CheckRequest(requireContext(),getFragmentManager(), secureKod,"userIsSub");
         checkRequest.execute();
 
         if (checkRequest.get().equals("ACCESS_CLOSED") || secureKod.equals("")) {

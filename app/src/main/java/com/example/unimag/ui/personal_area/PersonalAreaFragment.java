@@ -48,7 +48,7 @@ public class PersonalAreaFragment extends Fragment {
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState, requireContext()); //Проверка на подключение к интернету
+        new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
         //Создание View-Model для данного фрагмента (передаем данные Activity)
 //        //Создание View-элемента из XML-файла
         root = inflater.inflate(R.layout.fragment_personal_area, container, false);
@@ -60,7 +60,7 @@ public class PersonalAreaFragment extends Fragment {
             Navigation.findNavController(requireView()).navigate(R.id.action_navigation_personal_area_to_loginFragment);
         }else {
             try {
-            CheckRequest checkRequest = new CheckRequest(secureKod,"checkBySecureKod");
+            CheckRequest checkRequest = new CheckRequest(requireContext(),getFragmentManager(), secureKod,"checkBySecureKod");
             checkRequest.execute();
                 if(checkRequest.get().equals("ok")){
                     //isLogin = true;

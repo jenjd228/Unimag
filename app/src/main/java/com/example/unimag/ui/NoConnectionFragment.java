@@ -57,11 +57,6 @@ public class NoConnectionFragment extends Fragment {
         button_update_connection.setOnClickListener(new View.OnClickListener() { //Установка onClickListener'а для кнопки "Переподключиться"
             @Override
             public void onClick(View v) {
-                /*manager.popBackStack("last_no_connection_fragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                //transaction.addToBackStack(null);
-                transaction.commit();*/
-
-                //new ThreadCheckingConnection(getFragmentManager(), savedInstanceState).execute(); //Если дисконект
 
                 //Если интернет вернулся
                 if (isConnect(requireContext())) {

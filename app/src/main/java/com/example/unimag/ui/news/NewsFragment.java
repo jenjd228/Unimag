@@ -19,7 +19,7 @@ public class NewsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState, requireContext()); //Проверка на подключение к интернету
+        new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
         newsViewModel =
                 ViewModelProviders.of(this).get(com.example.unimag.ui.news.NewsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_news, container, false);

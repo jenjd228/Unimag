@@ -1,8 +1,15 @@
 package com.example.unimag.ui.Request;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.example.unimag.ui.GlobalVar;
+import com.example.unimag.ui.TechnicalWorkFragment;
 
 import java.io.IOException;
 
@@ -22,8 +29,12 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
     private String pickUpPoint;
     private String color;
     private Integer size;
+    private FragmentManager manager;
+    private Context context;
 
-    public AddRequest(Integer productId,String secureKod, String methodName){
+    public AddRequest(Context context, FragmentManager manager, Integer productId,String secureKod, String methodName){
+        this.context = context;
+        this.manager = manager;
         this.productId = productId;
         this.secureKod = secureKod;
         this.methodName = methodName;
@@ -31,7 +42,9 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
         this.size = null;
     }
 
-    public AddRequest(Integer productId,String secureKod,String color,int size, String methodName){
+    public AddRequest(Context context, FragmentManager manager, Integer productId,String secureKod,String color,int size, String methodName){
+        this.context = context;
+        this.manager = manager;
         this.productId = productId;
         this.secureKod = secureKod;
         this.color = color;
@@ -39,7 +52,9 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
         this.methodName = methodName;
     }
 
-    public AddRequest(String stringIds,String secureKod,String orderId,String totalMoney, String pickUpPoint, String methodName){
+    public AddRequest(Context context, String stringIds,String secureKod,String orderId,String totalMoney, String pickUpPoint, String methodName){
+        this.context = context;
+        /**Нет менеджера*/
         this.stringIds = stringIds;
         this.secureKod = secureKod;
         this.methodName = methodName;
@@ -103,6 +118,14 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
             return result;
         } catch (IOException e) {
             e.printStackTrace();
+
+            //Если инет есть - то значит идут технические работы
+            if(isConnect(context)) {
+                FragmentTransaction transaction = manager.beginTransaction();
+                transaction.replace(manager.getFragments().get(0).getId(), new TechnicalWorkFragment()); //Переходим на новый фрагмент
+                transaction.commit();
+            }
+
             return "";
         }
     }
@@ -110,5 +133,17 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String response) {
         super.onPostExecute(response);
+    }
+
+    //Проверка подключения к интернету
+    public static boolean isConnect(Context context)
+    {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

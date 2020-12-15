@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
 import com.example.unimag.R;
@@ -40,9 +41,11 @@ public class GridAdapterBasket extends BaseAdapter {
     private Context context;
     private String secureKod = null;
     private DataDBHelper dataDbHelper;
+    private FragmentManager manager;
 
 
-    public GridAdapterBasket(Context aContext, List<BasketProductDTO> listData) {
+    public GridAdapterBasket(Context aContext, FragmentManager manager, List<BasketProductDTO> listData) {
+        this.manager = manager;
         this.context = aContext;
         this.listData = listData;
         layoutInflater = LayoutInflater.from(aContext);
@@ -115,7 +118,7 @@ public class GridAdapterBasket extends BaseAdapter {
         Glide.with(convertView).load("http://" + GlobalVar.ip + ":8080/upload/" + product.getImageName()).into(holder.imageView);
 
         holder.deleteButton.setOnClickListener(v -> {
-            DeleteRequest deleteRequest = new DeleteRequest(secureKod, product.getProductId(), "deleteBasketProduct");
+            DeleteRequest deleteRequest = new DeleteRequest(context,manager, secureKod, product.getProductId(), "deleteBasketProduct");
             deleteRequest.execute();
             try {
                 if (deleteRequest.get().equals("ok")) {
@@ -142,7 +145,7 @@ public class GridAdapterBasket extends BaseAdapter {
             if (secureKod == null) {
 
             } else {
-                AddRequest addRequest = new AddRequest(product.getProductId(), secureKod, "addOneProductToBasket");
+                AddRequest addRequest = new AddRequest(context, manager, product.getProductId(), secureKod, "addOneProductToBasket");
                 addRequest.execute();
                 try {
                     if (addRequest.get().equals("ok")) {
@@ -167,7 +170,7 @@ public class GridAdapterBasket extends BaseAdapter {
 
             } else {
                 if (secureKod != null) {
-                    DeleteRequest deleteRequest = new DeleteRequest(secureKod, product.getProductId(), "deleteOneProductFromBasket");
+                    DeleteRequest deleteRequest = new DeleteRequest(context, manager, secureKod, product.getProductId(), "deleteOneProductFromBasket");
                     deleteRequest.execute();
                     try {
                         if (deleteRequest.get().equals("ok")) {

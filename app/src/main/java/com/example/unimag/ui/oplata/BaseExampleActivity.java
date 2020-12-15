@@ -28,8 +28,6 @@ import com.example.unimag.R;
 import com.example.unimag.ui.Request.AddRequest;
 
 import java.security.SecureRandom;
-import java.util.Arrays;
-import java.util.Objects;
 
 /**
  * Created by vberegovoy on 6/20/17.
@@ -200,7 +198,7 @@ abstract public class BaseExampleActivity extends Activity implements
 
     @Override
     public void onPaidProcessed(Receipt receipt) {
-        AddRequest addRequest = new AddRequest(idProductList,secureKod,orderId, totalMoney,pickUpPoint,"addToOrders");
+        AddRequest addRequest = new AddRequest(getApplicationContext(), idProductList,secureKod,orderId, totalMoney,pickUpPoint,"addToOrders");
         addRequest.execute();
         Toast.makeText(this, "Paid " + receipt.status.name() + "\nPaymentId:" + receipt.paymentId, Toast.LENGTH_LONG).show();
         //this.onDestroy();

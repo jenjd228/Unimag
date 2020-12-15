@@ -77,7 +77,7 @@ public class RegisterOrderFragment extends Fragment {
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
-        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState, requireContext()); //Проверка на подключение к интернету
+        new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
 
         gridView = view.findViewById(R.id.grid_view_order);
         if (list!=null){
@@ -103,10 +103,10 @@ public class RegisterOrderFragment extends Fragment {
         totalMoney.setText(String.valueOf(gridAdapterForPay.getTheCostOfProducts()));
 
         try {
-            GetRequest getPickUpPointRequest = new GetRequest("getPickUpPointList");
+            GetRequest getPickUpPointRequest = new GetRequest(requireContext(),getFragmentManager(), "getPickUpPointList");
             getPickUpPointRequest.execute();
 
-            GetRequest getUser = new GetRequest(secureKod, "getUser");
+            GetRequest getUser = new GetRequest(requireContext(),getFragmentManager(), secureKod, "getUser");
             getUser.execute();
 
             String userS = getUser.get();

@@ -54,7 +54,7 @@ public class RegisterFragment2 extends Fragment {
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
-        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState, requireContext()); //Проверка на подключение к интернету
+        new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
         root = inflater.inflate(R.layout.fragment_register2, container, false);
         return root;
     }
@@ -219,7 +219,7 @@ public class RegisterFragment2 extends Fragment {
     @SneakyThrows
     private void update(String email, String fio, String birthData){
         try {
-            SendOrUpdateRequest sendOrUpdateRequest = new SendOrUpdateRequest(email, fio, birthData, "userUpdate");
+            SendOrUpdateRequest sendOrUpdateRequest = new SendOrUpdateRequest(requireContext(),getFragmentManager(), email, fio, birthData, "userUpdate");
             sendOrUpdateRequest.execute();
             if (sendOrUpdateRequest.get().equals("OK")) {
                 goToLK();

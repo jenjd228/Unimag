@@ -55,7 +55,7 @@ public class CatalogFragment extends Fragment {
     @SneakyThrows
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        new ThreadCheckingConnection(getFragmentManager(), savedInstanceState, requireContext()); //Проверка на подключение к интернету
+        new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
         //CatalogViewModel catalogViewModel = ViewModelProviders.of(this).get(CatalogViewModel.class);
         View view = inflater.inflate(R.layout.fragment_catalog, container, false);
         gridView = view.findViewById(R.id.gridView);
@@ -74,7 +74,7 @@ public class CatalogFragment extends Fragment {
             }
 
             if (CustomGridAdapter.getInstance().getCount() == 0) {
-                getRequest = new GetRequest(currentNumberList,"getList");
+                getRequest = new GetRequest(requireContext(),getFragmentManager(), currentNumberList,"getList");
                 getRequest.execute();
                 String response = getRequest.get();
 
@@ -172,7 +172,7 @@ public class CatalogFragment extends Fragment {
                     animation.setOneShot(false); //Зацикливаем анимацию
                     animation.start(); //Начинаем проигрывать анимацию
 
-                    getRequest = new GetRequest(currentNumberList, "getList");
+                    getRequest = new GetRequest(requireContext(),getFragmentManager(), currentNumberList, "getList");
                     getRequest.execute();
                     try {
                         String otvet = getRequest.get();

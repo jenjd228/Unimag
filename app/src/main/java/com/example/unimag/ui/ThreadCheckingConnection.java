@@ -13,19 +13,13 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
-public class ThreadCheckingConnection {
+public class ThreadCheckingConnection extends Thread{
 
-    private FragmentManager fragmentManager;
-    private  Bundle savedInstanceState;
-
-    public ThreadCheckingConnection(FragmentManager fragmentManager, Bundle savedInstanceState, Context context) { //Констуркутор класса
-        this.fragmentManager = fragmentManager;
-        this.savedInstanceState = savedInstanceState;
+    public ThreadCheckingConnection(FragmentManager fragmentManager, Context context) { //Констуркутор класса
 
         //Если нет подключения к интернету
         if(!isConnect(context)) {
-            FragmentManager manager = fragmentManager;
-            FragmentTransaction transaction = manager.beginTransaction();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.replace(fragmentManager.getFragments().get(0).getId(), new NoConnectionFragment()); //Переходим на новый фрагмент
             transaction.addToBackStack("last_no_connection_fragment"); //Добавляем в стек
             transaction.commit();
