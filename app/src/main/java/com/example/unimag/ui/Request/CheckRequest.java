@@ -1,15 +1,12 @@
 package com.example.unimag.ui.Request;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.unimag.ui.GlobalVar;
-import com.example.unimag.ui.TechnicalWorkFragment;
+import com.example.unimag.ui.ThreadCheckingConnection;
 
 import java.io.IOException;
 
@@ -28,7 +25,7 @@ public class CheckRequest extends AsyncTask<Void, Void, String> {
     private FragmentManager manager;
     private Context context;
 
-    public CheckRequest(Context context, FragmentManager manager, String email,String kodOrSecureKod,String password,String methodName){
+    public CheckRequest(Context context, FragmentManager manager, String email, String kodOrSecureKod, String password, String methodName) {
         this.context = context;
         this.manager = manager;
         this.email = email;
@@ -36,7 +33,8 @@ public class CheckRequest extends AsyncTask<Void, Void, String> {
         this.password = password;
         this.methodName = methodName;
     }
-    public CheckRequest(Context context, FragmentManager manager, String email,String password,String methodName){
+
+    public CheckRequest(Context context, FragmentManager manager, String email, String password, String methodName) {
         this.context = context;
         this.manager = manager;
         this.email = email;
@@ -44,7 +42,7 @@ public class CheckRequest extends AsyncTask<Void, Void, String> {
         this.methodName = methodName;
     }
 
-    public CheckRequest(Context context, FragmentManager manager, String secureKod,String methodName){
+    public CheckRequest(Context context, FragmentManager manager, String secureKod, String methodName) {
         this.context = context;
         this.manager = manager;
         this.secureKod = secureKod;
@@ -57,40 +55,40 @@ public class CheckRequest extends AsyncTask<Void, Void, String> {
         OkHttpClient client = new OkHttpClient();
         Request request = null;
         Response response;
-        switch (methodName){
-            case "checkBySecureKod":{
+        switch (methodName) {
+            case "checkBySecureKod": {
                 request = new Request.Builder()
-                        .url("http://"+ GlobalVar.ip +":8080/checkBySecureKod/"+secureKod)
+                        .url("http://" + GlobalVar.ip + ":8080/checkBySecureKod/" + secureKod)
                         .get()
                         .build();
                 break;
             }
-            case "checkUserForLoginIn":{
+            case "checkUserForLoginIn": {
                 RequestBody formBody = new FormBody.Builder()
                         .add("email", email)
                         .add("password", password)
                         .build();
                 request = new Request.Builder()
-                        .url("http://"+ GlobalVar.ip +":8080/checkUserForLoginIn")
+                        .url("http://" + GlobalVar.ip + ":8080/checkUserForLoginIn")
                         .post(formBody)
                         .build();
                 break;
             }
-            case "userIsSub":{
+            case "userIsSub": {
                 request = new Request.Builder()
-                        .url("http://"+ GlobalVar.ip +":8080/userIsSub/"+secureKod)
+                        .url("http://" + GlobalVar.ip + ":8080/userIsSub/" + secureKod)
                         .get()
                         .build();
                 break;
             }
-            case "checkByKod":{
+            case "checkByKod": {
                 RequestBody formBody = new FormBody.Builder()
-                        .add("kod",  kodOrSecureKod)
+                        .add("kod", kodOrSecureKod)
                         .add("email", email)
                         .add("password", password)
                         .build();
                 request = new Request.Builder()
-                        .url("http://"+ GlobalVar.ip +":8080/checkByKod")
+                        .url("http://" + GlobalVar.ip + ":8080/checkByKod")
                         .post(formBody)
                         .build();
                 break;
@@ -104,10 +102,8 @@ public class CheckRequest extends AsyncTask<Void, Void, String> {
             e.printStackTrace();
 
             //Если инет есть - то значит идут технические работы
-            if(isConnect(context)) {
-                FragmentTransaction transaction = manager.beginTransaction();
-                transaction.replace(manager.getFragments().get(0).getId(), new TechnicalWorkFragment()); //Переходим на новый фрагмент
-                transaction.commit();
+            if (ThreadCheckingConnection.isConnect(context)) {
+                ThreadCheckingConnection.goToTechnicalWorkFragment(manager);
             }
 
             return "";
@@ -117,17 +113,5 @@ public class CheckRequest extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String response) {
         super.onPostExecute(response);
-    }
-
-    //Проверка подключения к интернету
-    public static boolean isConnect(Context context)
-    {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

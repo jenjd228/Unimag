@@ -40,9 +40,10 @@ public class EditProfileFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
-        new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
+        new ThreadCheckingConnection(getParentFragmentManager(), requireContext());
+
         return inflater.inflate(R.layout.fragment_edit_profile, container, false);
     }
 
@@ -98,7 +99,8 @@ public class EditProfileFragment extends Fragment {
         final Paint paint = new Paint();
         final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight()); //Создаем прямоугольник
         final RectF rectF = new RectF(rect); //Создаем изменяемый прямоуглоьник
-        final float roundPx = bitmap.getWidth()/2;; //Закругление в пикселях
+        final float roundPx = bitmap.getWidth() / 2;
+        ; //Закругление в пикселях
 
         paint.setAntiAlias(true);
         canvas.drawARGB(0, 0, 0, 0);

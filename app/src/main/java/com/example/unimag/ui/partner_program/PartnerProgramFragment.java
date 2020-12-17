@@ -10,14 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
 import com.example.unimag.ui.DTO.PartnerProgramDTO;
 import com.example.unimag.ui.Request.GetRequest;
-import com.example.unimag.ui.TechnicalWorkFragment;
 import com.example.unimag.ui.ThreadCheckingConnection;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,9 +32,9 @@ public class PartnerProgramFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_partner_program, container, false);
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
-        new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
+        new ThreadCheckingConnection(getParentFragmentManager(), requireContext());
 
         return root;
     }
@@ -51,7 +48,7 @@ public class PartnerProgramFragment extends Fragment {
         //Находим GridView
         gridView = requireView().findViewById(R.id.recycler_view_partner_program);
         try {
-            GetRequest getRequest = new GetRequest(requireContext(),getFragmentManager(),"getPartner");
+            GetRequest getRequest = new GetRequest(requireContext(), getFragmentManager(), "getPartner");
             getRequest.execute();
             //Тестовый список партнеров
             ArrayList<PartnerProgramDTO> dataList;
@@ -82,7 +79,7 @@ public class PartnerProgramFragment extends Fragment {
                 Navigation.findNavController(v).navigate(action);
             });
 
-        } catch (Exception e){
+        } catch (Exception e) {
             e.getMessage();
         }
 

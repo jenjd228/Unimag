@@ -12,15 +12,12 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.unimag.R;
 import com.example.unimag.SimpleExampleActivity;
@@ -28,7 +25,6 @@ import com.example.unimag.ui.DTO.PayDTO;
 import com.example.unimag.ui.DTO.UserDTO;
 import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
-import com.example.unimag.ui.TechnicalWorkFragment;
 import com.example.unimag.ui.ThreadCheckingConnection;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,7 +32,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import lombok.SneakyThrows;
 
@@ -54,13 +49,9 @@ public class RegisterOrderFragment extends Fragment {
 
     private ArrayList<String> listPickUpPoints = new ArrayList<>();
 
-   public RegisterOrderFragment(){
+    public RegisterOrderFragment() {
 
     }
-
-   /* public RegisterOrderFragment(String list){
-        this.list = list;
-    }*/
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,22 +59,23 @@ public class RegisterOrderFragment extends Fragment {
         dataDbHelper = new DataDBHelper(getActivity());
         secureKod = dataDbHelper.getSecureKod(dataDbHelper);
         dataDbHelper.close();
-         list = RegisterOrderFragmentArgs.fromBundle(requireArguments()).getList();
+        list = RegisterOrderFragmentArgs.fromBundle(requireArguments()).getList();
     }
 
     @SneakyThrows
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register_order, container, false);
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
-        new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
+        new ThreadCheckingConnection(getParentFragmentManager(), requireContext());
 
         gridView = view.findViewById(R.id.grid_view_order);
-        if (list!=null){
+        if (list != null) {
             List<PayDTO> participantJsonList;
             ObjectMapper objectMapper = new ObjectMapper();
-            participantJsonList = objectMapper.readValue(list, new TypeReference<List<PayDTO>>(){});
+            participantJsonList = objectMapper.readValue(list, new TypeReference<List<PayDTO>>() {
+            });
             gridView.setAdapter(gridAdapterForPay = new GridAdapterForPay(this.getContext(), new ArrayList<>()));
 
             gridAdapterForPay.addList(participantJsonList);
@@ -103,10 +95,10 @@ public class RegisterOrderFragment extends Fragment {
         totalMoney.setText(String.valueOf(gridAdapterForPay.getTheCostOfProducts()));
 
         try {
-            GetRequest getPickUpPointRequest = new GetRequest(requireContext(),getFragmentManager(), "getPickUpPointList");
+            GetRequest getPickUpPointRequest = new GetRequest(requireContext(), getFragmentManager(), "getPickUpPointList");
             getPickUpPointRequest.execute();
 
-            GetRequest getUser = new GetRequest(requireContext(),getFragmentManager(), secureKod, "getUser");
+            GetRequest getUser = new GetRequest(requireContext(), getFragmentManager(), secureKod, "getUser");
             getUser.execute();
 
             String userS = getUser.get();
@@ -158,13 +150,9 @@ public class RegisterOrderFragment extends Fragment {
     }
 
 
-
-
-    /** АДАПТЕР ДЛЯ СПИННЕРА
-     *
-     *
-     *
-     * */
+    /**
+     * АДАПТЕР ДЛЯ СПИННЕРА
+     */
     public class AdapterForSpinner extends ArrayAdapter<String> {
 
         String[] array; //Массив с пунктами выдачи заказов

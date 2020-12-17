@@ -21,7 +21,7 @@
         app:showAsAction="withText"/>
 
     <item
-        android:id="@+id/navigation_personal_area"
+        android:id="@+id/myCabinetFragment"
         android:icon="@drawable/ic_personal_area_black_24dp"
         android:title="@string/title_personal_area"
         app:showAsAction="withText"/>

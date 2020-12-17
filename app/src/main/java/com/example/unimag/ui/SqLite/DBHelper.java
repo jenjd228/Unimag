@@ -12,11 +12,15 @@ import androidx.annotation.Nullable;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    /**Константы, связанные с БД*/
+    /**
+     * Константы, связанные с БД
+     */
     public static final int DATABASE_VERSION = 1; //Версия БД
     public static final String DATABASE_NAME = "SQLite"; //Имя БД
 
-    /**Константы, связанные с таблицами*/
+    /**
+     * Константы, связанные с таблицами
+     */
     //Таблица "Каталог"
     public static final String TABLE_NAME_CATALOG = "Catalog"; // Имя таблицы с товарами  в каталоге
     public static final String KEY_ID_CATALOG = "_id"; //Имя столбца id товара (обязательно с подчеркивания для id) в каталоге

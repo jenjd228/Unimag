@@ -27,7 +27,7 @@ public class GridAdapterOrder extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private Context context;
 
-    public GridAdapterOrder(Context aContext,  List<OrdersDTO> listData) { //Конструктор нашего Grid'a
+    public GridAdapterOrder(Context aContext, List<OrdersDTO> listData) { //Конструктор нашего Grid'a
         this.context = aContext;
         this.listData = listData;
         layoutInflater = LayoutInflater.from(aContext);
@@ -69,13 +69,13 @@ public class GridAdapterOrder extends BaseAdapter {
         OrdersDTO mainOrder = this.listData.get(position);
 
         //Установка нужных значений для элементов
-        holder.orderIdView.setText("" +mainOrder.getOrderId());
+        holder.orderIdView.setText("" + mainOrder.getOrderId());
         holder.dataOfOrderView.setText("" + mainOrder.getDataOfOrder());
         holder.statusView.setText("" + mainOrder.getStatus());
         holder.pickUpPoint.setText("" + mainOrder.getPickUpPoint());
 
         //Перекрас фона Item'а
-        if(position%2==0) {
+        if (position % 2 == 0) {
             holder.orderView.setBackgroundColor(Color.parseColor("#dadfe0"));
         }
 
@@ -89,18 +89,18 @@ public class GridAdapterOrder extends BaseAdapter {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void addList(List<OrdersDTO> listData){
+    public void addList(List<OrdersDTO> listData) {
         this.listData.addAll(listData);
         notifyDataSetChanged();
     }
 
     //Функция, создающая полный путь до нашего изображения в mipmap
-    public int getMipmapResIdByName(String resName)  {
+    public int getMipmapResIdByName(String resName) {
         String pkgName = context.getPackageName();
 
         // Return 0 if not found.
-        int resID = context.getResources().getIdentifier(resName , "mipmap", pkgName);
-        Log.i("GridViewOrder", "Res Name: "+ resName+"==> Res ID = "+ resID);
+        int resID = context.getResources().getIdentifier(resName, "mipmap", pkgName);
+        Log.i("GridViewOrder", "Res Name: " + resName + "==> Res ID = " + resID);
         return resID;
     }
 

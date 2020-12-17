@@ -75,7 +75,7 @@ public class GridAdapterPartnerProgram extends BaseAdapter {
         PartnerProgramDTO partnerProgramDTO = this.listData.get(position); //Получение объекта списка
         //Загружаем фото партнера
         Glide.with(convertView)
-                .load("http://"+ GlobalVar.ip +":8080/upload/image_partner/"+listData.get(position).getImageName()) //Откуда загружаем
+                .load("http://" + GlobalVar.ip + ":8080/upload/image_partner/" + listData.get(position).getImageName()) //Откуда загружаем
                 .into(holder.imageView); //Куда загружаем
         //Заполняем поля
         holder.titleView.setText(partnerProgramDTO.getTitle());

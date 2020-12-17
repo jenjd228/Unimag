@@ -27,7 +27,7 @@ public class NoConnectionFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
         View root = inflater.inflate(R.layout.fragment_no_connection, container, false);
         return root;
@@ -35,8 +35,7 @@ public class NoConnectionFragment extends Fragment {
 
 
     //Проверка подключения к интернету
-    public static boolean isConnect(Context context)
-    {
+    public static boolean isConnect(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnectedOrConnecting()) {
@@ -63,11 +62,11 @@ public class NoConnectionFragment extends Fragment {
                     getActivity().findViewById(R.id.nav_view).setVisibility(View.VISIBLE); //Возвращаем меню
                     FragmentManager manager = getFragmentManager();
                     FragmentTransaction transaction = manager.beginTransaction();
-                    Toast.makeText(requireContext(), "Подключение восстановлено!",Toast.LENGTH_LONG).show();
+                    Toast.makeText(requireContext(), "Подключение восстановлено!", Toast.LENGTH_LONG).show();
                     manager.popBackStack("last_no_connection_fragment", FragmentManager.POP_BACK_STACK_INCLUSIVE); //Достаем последний фрагмент из стека
                     transaction.commit();
                 } else {
-                    Toast.makeText(requireContext(), "Нет соединения с интернетом!",Toast.LENGTH_LONG).show();
+                    Toast.makeText(requireContext(), "Нет соединения с интернетом!", Toast.LENGTH_LONG).show();
                 }
             }
         });

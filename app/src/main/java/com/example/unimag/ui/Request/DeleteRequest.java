@@ -1,15 +1,12 @@
 package com.example.unimag.ui.Request;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.unimag.ui.GlobalVar;
-import com.example.unimag.ui.TechnicalWorkFragment;
+import com.example.unimag.ui.ThreadCheckingConnection;
 
 import java.io.IOException;
 
@@ -26,7 +23,7 @@ public class DeleteRequest extends AsyncTask<Void, Void, String> {
     private FragmentManager manager;
     private Context context;
 
-    public DeleteRequest(Context context, FragmentManager manager, String secureKod,Integer productId,String methodName){
+    public DeleteRequest(Context context, FragmentManager manager, String secureKod, Integer productId, String methodName) {
         this.context = context;
         this.manager = manager;
         this.secureKod = secureKod;
@@ -40,21 +37,21 @@ public class DeleteRequest extends AsyncTask<Void, Void, String> {
         OkHttpClient client = new OkHttpClient();
         Request request = null;
         Response response;
-        switch (methodName){
-            case "deleteBasketProduct":{
+        switch (methodName) {
+            case "deleteBasketProduct": {
                 request = new Request.Builder()
-                        .url("http://"+ GlobalVar.ip +":8080/deleteBasketProduct/"+secureKod+"/"+productId) // The URL to send the data to
+                        .url("http://" + GlobalVar.ip + ":8080/deleteBasketProduct/" + secureKod + "/" + productId) // The URL to send the data to
                         .get()
                         .build();
                 break;
             }
-            case "deleteOneProductFromBasket" : {
+            case "deleteOneProductFromBasket": {
                 RequestBody formBody = new FormBody.Builder()
                         .add("id", productId.toString())
-                        .add("secureKod",secureKod)
+                        .add("secureKod", secureKod)
                         .build();
                 request = new Request.Builder()
-                        .url("http://"+ GlobalVar.ip +":8080/deleteOneProductFromBasket")
+                        .url("http://" + GlobalVar.ip + ":8080/deleteOneProductFromBasket")
                         .post(formBody)
                         .build();
                 break;
@@ -69,10 +66,8 @@ public class DeleteRequest extends AsyncTask<Void, Void, String> {
             e.printStackTrace();
 
             //Если инет есть - то значит идут технические работы
-            if(isConnect(context)) {
-                FragmentTransaction transaction = manager.beginTransaction();
-                transaction.replace(manager.getFragments().get(0).getId(), new TechnicalWorkFragment()); //Переходим на новый фрагмент
-                transaction.commit();
+            if (ThreadCheckingConnection.isConnect(context)) {
+                ThreadCheckingConnection.goToTechnicalWorkFragment(manager);
             }
 
             return "";
@@ -82,17 +77,5 @@ public class DeleteRequest extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String response) {
         super.onPostExecute(response);
-    }
-
-    //Проверка подключения к интернету
-    public static boolean isConnect(Context context)
-    {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

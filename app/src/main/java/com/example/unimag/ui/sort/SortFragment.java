@@ -40,11 +40,11 @@ public class SortFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
         View view = inflater.inflate(R.layout.fragment_sort, container, false);
 
-        new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
+        new ThreadCheckingConnection(getParentFragmentManager(), requireContext());
 
         return view;
     }
@@ -58,22 +58,22 @@ public class SortFragment extends Fragment {
         RadioButton buttonASC = requireView().findViewById(R.id.radioButtonASC);
         RadioButton buttonDESK = requireView().findViewById(R.id.radioButtonDESC);
         RadioButton buttonWithoutSort = requireView().findViewById(R.id.radioButtonWithout);
-        Button sortButton =  requireView().findViewById(R.id.button_sort);
+        Button sortButton = requireView().findViewById(R.id.button_sort);
 
 
-        if (GlobalSort.getInstance().getSortByPricePosition()!=null){
+        if (GlobalSort.getInstance().getSortByPricePosition() != null) {
             radioGroup.check(GlobalSort.getInstance().getSortByPricePosition());
         }
 
         /**System.out.println("============\n" + GlobalSort.getInstance().getSortByPriceString());
-        //Повторная установка прошлых флажков
-        if (GlobalSort.getInstance().getSortByPriceString() == "price ASC") {
-            buttonASC.setChecked(true);
-        } else if (GlobalSort.getInstance().getSortByPriceString() == "price DESC") {
-            buttonDESK.setChecked(true);
-        } else if (GlobalSort.getInstance().getSortByPriceString() == "NO") {
-            buttonWithoutSort.setChecked(true);
-        }*/
+         //Повторная установка прошлых флажков
+         if (GlobalSort.getInstance().getSortByPriceString() == "price ASC") {
+         buttonASC.setChecked(true);
+         } else if (GlobalSort.getInstance().getSortByPriceString() == "price DESC") {
+         buttonDESK.setChecked(true);
+         } else if (GlobalSort.getInstance().getSortByPriceString() == "NO") {
+         buttonWithoutSort.setChecked(true);
+         }*/
 
         //Обновляем флаги
         buttonWithoutSort.setChecked(true);
@@ -82,13 +82,13 @@ public class SortFragment extends Fragment {
             selectedId = radioGroup.getCheckedRadioButtonId();
             //GlobalSort.getInstance().setSortByPricePosition(selectedId);
             sortByPricePosition = selectedId;
-            if (buttonASC.isChecked()){
+            if (buttonASC.isChecked()) {
                 //GlobalSort.getInstance().setSortByPriceString("price ASC");
                 sortByPriceString = "price ASC";
-            }else if (buttonDESK.isChecked()){
+            } else if (buttonDESK.isChecked()) {
                 //GlobalSort.getInstance().setSortByPriceString("price DESC");
                 sortByPriceString = "price DESC";
-            }else {
+            } else {
                 //GlobalSort.getInstance().setSortByPriceString("NO");
                 sortByPriceString = "NO";
             }
@@ -117,24 +117,25 @@ public class SortFragment extends Fragment {
                 spinnerItemPosition = selectedItemPosition;
 
                 //Сортируем по категории
-                if (choose[selectedItemPosition].equals("Одежда")){
+                if (choose[selectedItemPosition].equals("Одежда")) {
                     spinnerSortItemNameCategory = "Clothes";
                 } else if (choose[selectedItemPosition].equals("Сувениры")) {
                     spinnerSortItemNameCategory = "Souvenirs";
                 }
 
-                if (choose[selectedItemPosition].equals("Все товары")){
+                if (choose[selectedItemPosition].equals("Все товары")) {
                     //GlobalSort.getInstance().setWhereFlag(false);
                     whereFlag = false;
-                }else {
-                   // GlobalSort.getInstance().setWhereFlag(true);
+                } else {
+                    // GlobalSort.getInstance().setWhereFlag(true);
                     whereFlag = true;
                     Toast toast = Toast.makeText(getContext(),
-                            "Вы выбрали : "+choose[selectedItemPosition]+"", Toast.LENGTH_SHORT);
+                            "Вы выбрали : " + choose[selectedItemPosition] + "", Toast.LENGTH_SHORT);
                     toast.show();
                 }
                 GlobalSort.getInstance().setUpdateFlag(false);
             }
+
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
@@ -159,14 +160,11 @@ public class SortFragment extends Fragment {
         });
 
 
-
     }
 
-    /** АДАПТЕР ДЛЯ СПИННЕРА
-     *
-     *
-     *
-     * */
+    /**
+     * АДАПТЕР ДЛЯ СПИННЕРА
+     */
     public class AdapterForSpinner extends ArrayAdapter<String> {
 
         String[] categories; //Массив с названиями категорий

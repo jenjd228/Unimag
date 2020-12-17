@@ -42,18 +42,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_personal_area"
-        android:name="com.example.unimag.ui.personal_area.PersonalAreaFragment"
-        android:label=""
-        tools:layout="@layout/fragment_personal_area" >
-        <action
-            android:id="@+id/action_navigation_personal_area_to_myCabinetFragment"
-            app:destination="@id/myCabinetFragment" />
-        <action
-            android:id="@+id/action_navigation_personal_area_to_loginFragment"
-            app:destination="@id/loginFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/myCabinetFragment"
         android:name="com.example.unimag.ui.personal_area.MyCabinetFragment"
         android:label="@string/myCabinetFragment"
@@ -68,8 +56,8 @@
             android:id="@+id/action_myCabinetFragment_to_editProfileFragment"
             app:destination="@id/editProfileFragment" />
         <action
-            android:id="@+id/action_myCabinetFragment_to_navigation_personal_area"
-            app:destination="@id/navigation_personal_area" />
+            android:id="@+id/action_myCabinetFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -200,4 +188,8 @@
         android:name="com.example.unimag.ui.TechnicalWorkFragment"
         android:label="@string/technicalWorkFragment"
         tools:layout="@layout/fragment_technical_work"/>
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.example.unimag.MainActivity"
+        android:label="MainActivity" />
 </navigation>

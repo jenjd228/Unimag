@@ -15,20 +15,15 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
 import com.example.unimag.ui.Request.SendOrUpdateRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
-import com.example.unimag.ui.TechnicalWorkFragment;
 import com.example.unimag.ui.ThreadCheckingConnection;
 
-import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
@@ -40,14 +35,15 @@ public class RegisterFragment extends Fragment {
     private EditText email;
     private EditText password;
     private EditText repeatPassword;
+
     @Override
     public void onStart() {
         super.onStart();
         try {
-            email =  getActivity().findViewById(R.id.email);
-            password =  getActivity().findViewById(R.id.password);
-            repeatPassword =  getActivity().findViewById(R.id.repeatPassword);
-        }  catch (NullPointerException e){
+            email = getActivity().findViewById(R.id.email);
+            password = getActivity().findViewById(R.id.password);
+            repeatPassword = getActivity().findViewById(R.id.repeatPassword);
+        } catch (NullPointerException e) {
             System.out.println(e.getMessage());
         }
 
@@ -57,9 +53,10 @@ public class RegisterFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
-        new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
+        new ThreadCheckingConnection(getParentFragmentManager(), requireContext());
+
         root = inflater.inflate(R.layout.fragment_register, container, false);
         dataDbHelper = new DataDBHelper(Objects.requireNonNull(container).getContext());
         return root;
@@ -101,36 +98,36 @@ public class RegisterFragment extends Fragment {
             String password2 = String.valueOf(password.getText());
             String repeatPassword2 = String.valueOf(repeatPassword.getText());
             boolean pas = checkPassword(password2);
-            boolean repPas = checkRepeatPassword(password2,repeatPassword2);
+            boolean repPas = checkRepeatPassword(password2, repeatPassword2);
             boolean em = checkEmail(email2);
             TextView viewError = getView().findViewById(R.id.text_hint_registration); //TextView с подсказкой об ошибке
 
 
-            if (repPas && pas && em){ //если пароль email правильный
+            if (repPas && pas && em) { //если пароль email правильный
                 //sendEmail(email2);
                 try {
-                    firstUpdate(email2,password2);
+                    firstUpdate(email2, password2);
                 } catch (ExecutionException ex) {
                     ex.printStackTrace();
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
                 }
             }
-            if (!pas){
+            if (!pas) {
                 Toast toast = Toast.makeText(this.getContext(),
                         "Некорректный пароль !", Toast.LENGTH_SHORT);
                 toast.show();
                 viewError.setTextColor(getResources().getColor(R.color.colorPrimary)); //Установка красного цвета
                 viewError.setText("Ошибка: некорректный пароль !\nПароль может содержать в себе латинский алфавит, цифры и нижнее подчеркивание\nДлина пароля не менее 6 символов.");
             }
-            if (!repPas){
+            if (!repPas) {
                 Toast toast = Toast.makeText(this.getContext(),
                         "Пароли не совпадают !", Toast.LENGTH_SHORT);
                 toast.show();
                 viewError.setTextColor(getResources().getColor(R.color.colorPrimary));
                 viewError.setText("Ошибка: пароли не совпадают");
             }
-            if(!em){
+            if (!em) {
                 Toast toast = Toast.makeText(this.getContext(),
                         "Некорректный email !", Toast.LENGTH_SHORT);
                 toast.show();
@@ -140,14 +137,14 @@ public class RegisterFragment extends Fragment {
         });
     }
 
-    private boolean checkEmail(String email){
+    private boolean checkEmail(String email) {
         String emailPravilo = "^.+@+.+\\..+$";
         Pattern pattern = Pattern.compile(emailPravilo);
         Matcher matcher = pattern.matcher(email);
         return matcher.find();
     }
 
-    private boolean checkPassword(String password){
+    private boolean checkPassword(String password) {
         //String passwordPravilo = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^\\w\\s]).{6,}$";
         String passwordPravilo = "^[a-zA-Z0-9\\_]{6,}$";
         Pattern pattern = Pattern.compile(passwordPravilo);
@@ -155,40 +152,40 @@ public class RegisterFragment extends Fragment {
         return matcher.find();
     }
 
-    private boolean checkRepeatPassword(String password, String repeatPassword){
-        if (password.equals(repeatPassword)){
+    private boolean checkRepeatPassword(String password, String repeatPassword) {
+        if (password.equals(repeatPassword)) {
             return true;
         }
         return false;
     }
 
-    private void firstUpdate(String email,String password) throws ExecutionException, InterruptedException {
+    private void firstUpdate(String email, String password) throws ExecutionException, InterruptedException {
         try {
-            SendOrUpdateRequest sendOrUpdateRequest = new SendOrUpdateRequest(requireContext(),getFragmentManager(), email, password, "firstUpdate");
+            SendOrUpdateRequest sendOrUpdateRequest = new SendOrUpdateRequest(requireContext(), getFragmentManager(), email, password, "firstUpdate");
             sendOrUpdateRequest.execute();
             String otvet = sendOrUpdateRequest.get();
-        if (otvet.equals("yes")) {
-            Toast toast = Toast.makeText(getContext(),
-                    "Такой email уже зарегистрирован !", Toast.LENGTH_SHORT);
-            toast.show();
-        } else {
-            addToSqLite(otvet);
-        }
-    } catch(Exception e) {
+            if (otvet.equals("yes")) {
+                Toast toast = Toast.makeText(getContext(),
+                        "Такой email уже зарегистрирован !", Toast.LENGTH_SHORT);
+                toast.show();
+            } else {
+                addToSqLite(otvet);
+            }
+        } catch (Exception e) {
         }
     }
 
-    private void addToSqLite(String hex){
+    private void addToSqLite(String hex) {
         SQLiteDatabase sqLiteDatabase = dataDbHelper.getWritableDatabase();
-        Cursor cursor = sqLiteDatabase.query(DataDBHelper.TABLE_CONTACTS,null,null,null,null,null,null);
-        if (cursor.getCount()==0){
+        Cursor cursor = sqLiteDatabase.query(DataDBHelper.TABLE_CONTACTS, null, null, null, null, null, null);
+        if (cursor.getCount() == 0) {
             ContentValues contentValues = new ContentValues();//запись
-            contentValues.put(DataDBHelper.KEY_SECUREKOD,hex);
+            contentValues.put(DataDBHelper.KEY_SECUREKOD, hex);
             sqLiteDatabase.insert(DataDBHelper.TABLE_CONTACTS, null, contentValues);
-        }else {
-            sqLiteDatabase.delete(DataDBHelper.TABLE_CONTACTS,null,null);//удаление
+        } else {
+            sqLiteDatabase.delete(DataDBHelper.TABLE_CONTACTS, null, null);//удаление
             ContentValues contentValues = new ContentValues();//запись
-            contentValues.put(DataDBHelper.KEY_SECUREKOD,hex);
+            contentValues.put(DataDBHelper.KEY_SECUREKOD, hex);
             sqLiteDatabase.insert(DataDBHelper.TABLE_CONTACTS, null, contentValues);
         }
         dataDbHelper.close();
@@ -210,7 +207,7 @@ public class RegisterFragment extends Fragment {
         }
     }*/
 
-    private void goToNextFragmentRegistration(){
+    private void goToNextFragmentRegistration() {
         RegisterFragmentDirections.ActionRegisterFragment3ToRegisterFragment2 action = RegisterFragmentDirections.actionRegisterFragment3ToRegisterFragment2(String.valueOf(email.getText()));
         Navigation.findNavController(requireView()).navigate(action);
     }

@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -19,7 +18,9 @@ public class NewsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
+
+        new ThreadCheckingConnection(getParentFragmentManager(), requireContext());
+
         newsViewModel =
                 ViewModelProviders.of(this).get(com.example.unimag.ui.news.NewsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_news, container, false);

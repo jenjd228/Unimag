@@ -34,11 +34,11 @@ public class InformationAboutPartnerFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_information_about_partner, container, false);
 
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
+        new ThreadCheckingConnection(getParentFragmentManager(), requireContext());
 
-        new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
-        if (dataDbHelper!=null){
+        if (dataDbHelper != null) {
             secureKod = dataDbHelper.getSecureKod(dataDbHelper);
         }
         return root;
@@ -53,18 +53,18 @@ public class InformationAboutPartnerFragment extends Fragment {
 
         Button button_in_info_partner = requireView().findViewById(R.id.button_in_info_partner); //Кнопка "Оформить подписку"/"Использовать"
 
-        ImageView image =  requireView().findViewById(R.id.image_info_partner);
-        TextView titlePartnerView =  requireView().findViewById(R.id.text_title_info_partner);
-        TextView pricePartnerView =  requireView().findViewById(R.id.price_partner);
-        TextView descriptionPartnerView =  requireView().findViewById(R.id.text_description_partner);
+        ImageView image = requireView().findViewById(R.id.image_info_partner);
+        TextView titlePartnerView = requireView().findViewById(R.id.text_title_info_partner);
+        TextView pricePartnerView = requireView().findViewById(R.id.price_partner);
+        TextView descriptionPartnerView = requireView().findViewById(R.id.text_description_partner);
 
-        Glide.with(requireView()).load("http://"+ GlobalVar.ip+":8080/upload/image_partner/"+InformationAboutPartnerFragmentArgs.fromBundle(requireArguments()).getImageName()).into(image);
+        Glide.with(requireView()).load("http://" + GlobalVar.ip + ":8080/upload/image_partner/" + InformationAboutPartnerFragmentArgs.fromBundle(requireArguments()).getImageName()).into(image);
         titlePartnerView.setText(InformationAboutPartnerFragmentArgs.fromBundle(requireArguments()).getTitle());
         pricePartnerView.setText(InformationAboutPartnerFragmentArgs.fromBundle(requireArguments()).getPrice() + " рублей");
         descriptionPartnerView.setText(InformationAboutPartnerFragmentArgs.fromBundle(requireArguments()).getDescription());
 
 
-        CheckRequest checkRequest = new CheckRequest(requireContext(),getFragmentManager(), secureKod,"userIsSub");
+        CheckRequest checkRequest = new CheckRequest(requireContext(), getFragmentManager(), secureKod, "userIsSub");
         checkRequest.execute();
 
         if (checkRequest.get().equals("ACCESS_CLOSED") || secureKod.equals("")) {

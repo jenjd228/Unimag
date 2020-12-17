@@ -26,6 +26,7 @@ import com.cloudipsp.android.Order;
 import com.cloudipsp.android.Receipt;
 import com.example.unimag.R;
 import com.example.unimag.ui.Request.AddRequest;
+import com.example.unimag.ui.ThreadCheckingConnection;
 
 import java.security.SecureRandom;
 
@@ -76,7 +77,7 @@ abstract public class BaseExampleActivity extends Activity implements
         totalMoney = getIntent().getStringExtra("Amount");
         editAmount.setText(getIntent().getStringExtra("Amount"));
         idProductList = getIntent().getStringExtra("IdProductList");
-        secureKod =  getIntent().getStringExtra("secureKod");
+        secureKod = getIntent().getStringExtra("secureKod");
         pickUpPoint = getIntent().getStringExtra("pickUpPoint");
         String email = getIntent().getStringExtra("email");
 
@@ -198,12 +199,16 @@ abstract public class BaseExampleActivity extends Activity implements
 
     @Override
     public void onPaidProcessed(Receipt receipt) {
-        AddRequest addRequest = new AddRequest(getApplicationContext(), idProductList,secureKod,orderId, totalMoney,pickUpPoint,"addToOrders");
-        addRequest.execute();
-        Toast.makeText(this, "Paid " + receipt.status.name() + "\nPaymentId:" + receipt.paymentId, Toast.LENGTH_LONG).show();
-        //this.onDestroy();
+        try {
+            AddRequest addRequest = new AddRequest(getApplicationContext(), idProductList, secureKod, orderId, totalMoney, pickUpPoint, "addToOrders");
+            addRequest.execute();
+            Toast.makeText(this, "Paid " + receipt.status.name() + "\nPaymentId:" + receipt.paymentId, Toast.LENGTH_LONG).show();
+            //this.onDestroy();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
-}
+    }
 
     @Override
     public void onPaidFailure(Cloudipsp.Exception e) {

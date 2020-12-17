@@ -17,13 +17,13 @@ import com.example.unimag.ui.GlobalVar;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class CustomGridAdapter  extends BaseAdapter {
+public final class CustomGridAdapter extends BaseAdapter {
 
     private static List<ProductDTO> listData;
     private LayoutInflater layoutInflater;
     private static CustomGridAdapter instance;
 
-    public CustomGridAdapter (Context context) {
+    public CustomGridAdapter(Context context) {
         layoutInflater = LayoutInflater.from(context);
         listData = new ArrayList<>();
     }
@@ -64,7 +64,7 @@ public final class CustomGridAdapter  extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.catalog_item_layout, null);
             holder = new ViewHolder();
             holder.flagView = convertView.findViewById(R.id.imageView_flag);
-            holder.productTitle= convertView.findViewById(R.id.textView_productTitle);
+            holder.productTitle = convertView.findViewById(R.id.textView_productTitle);
             holder.productDescription = convertView.findViewById(R.id.textView_productDescription);
             convertView.setTag(holder);
         } else {
@@ -76,7 +76,7 @@ public final class CustomGridAdapter  extends BaseAdapter {
         holder.productDescription.setText("" + productDTO.getPrice());
 
         //int imageId = this.getMipmapResIdByName("image");
-        Glide.with(convertView).load("http://"+ GlobalVar.ip +":8080/upload/"+ productDTO.getImageName()).into(holder.flagView);
+        Glide.with(convertView).load("http://" + GlobalVar.ip + ":8080/upload/" + productDTO.getImageName()).into(holder.flagView);
 
 
         return convertView;
@@ -91,12 +91,12 @@ public final class CustomGridAdapter  extends BaseAdapter {
         Log.i("CustomGridView", "Res Name: "+ resName+"==> Res ID = "+ resID);
         return resID;
     }*/
-    public void cleanList(){
+    public void cleanList() {
         listData.clear();
         notifyDataSetChanged();
     }
 
-    public void addList(List<ProductDTO> listData2){
+    public void addList(List<ProductDTO> listData2) {
         listData.addAll(listData2);
         notifyDataSetChanged();
     }

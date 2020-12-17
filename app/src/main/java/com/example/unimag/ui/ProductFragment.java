@@ -8,7 +8,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -22,22 +21,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
-
 
 import com.example.unimag.R;
 import com.example.unimag.ui.Request.AddRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
-import com.example.unimag.ui.ProductFragmentArgs;
 import com.example.unimag.ui.productFragment.ProductAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-
 
 
 public class ProductFragment extends Fragment { //Класс шаблона страницы с продуктом
@@ -48,12 +42,12 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
     private String descriptions;
     private Integer price;
     private String imageName;
-	private String category;
+    private String category;
     private String secureKod = null;
     private ArrayList<Integer> listSizeClothes = new ArrayList<Integer>(); //Лист с доступными размерами одежды для данной страницы
     private String listImage;
 
-    public ProductFragment(){
+    public ProductFragment() {
 
     }
 
@@ -76,35 +70,36 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         actionBar.setTitle("Информация о товаре");
         actionBar.setDisplayHomeAsUpEnabled(false);
 
-        new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
+        new ThreadCheckingConnection(getParentFragmentManager(), requireContext());
+
         View root = inflater.inflate(R.layout.fragment_product, container, false);
         return root;
     }
 
-    public void setTitleProduct(String title){ //Функция установки значения названия продукта
+    public void setTitleProduct(String title) { //Функция установки значения названия продукта
         TextView titleProduct = getView().findViewById(R.id.title_product);
         titleProduct.setText(title);
     }
 
-    public void setPriceProduct(Integer price){ //Функция установки значения цены продукта
+    public void setPriceProduct(Integer price) { //Функция установки значения цены продукта
         TextView priceProduct = getView().findViewById(R.id.price_product);
         priceProduct.setText(String.valueOf(price));
     }
 
-    public void setImageProduct(String mainImage){ //Функция установки изображения продукта
+    public void setImageProduct(String mainImage) { //Функция установки изображения продукта
         //ImageView imageProduct = getView().findViewById(R.id.image_product);
         //Glide.with(getView()).load("http://"+GlobalVar.ip+":8080/upload/"+url).into(imageProduct);
         List<String> strings = new ArrayList<>();
         ProductAdapter adapter;
-       
-        if (listImage.equals(" ")){
+
+        if (listImage.equals(" ")) {
             strings.add(imageName);
             adapter = new ProductAdapter(ProductFragment.this.getContext(), strings);
-        }else {
+        } else {
             strings = Arrays.asList(listImage.split(","));
         }
 
@@ -116,12 +111,12 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
 
     }
 
-    public void setDescriptionProduct(String description){ //Функция установки значения описания продукта
+    public void setDescriptionProduct(String description) { //Функция установки значения описания продукта
         TextView descriptionProduct = getView().findViewById(R.id.description_product);
         descriptionProduct.setText("Описание: " + description);
     }
 
-    public void setInformationAboutProduct(){ //Функция установки всей информации о продукте
+    public void setInformationAboutProduct() { //Функция установки всей информации о продукте
         //Через idProduct связываемся и получаем нуную инфу тут
         setImageProduct(imageName);
         setTitleProduct(title);
@@ -145,11 +140,11 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
 
         Button b = getView().findViewById(R.id.button_add_basket);
         b.setOnClickListener(e -> {
-            if (secureKod==null){
+            if (secureKod == null) {
                 Toast toast = Toast.makeText(getContext(),
                         "Доступ к корзине открывается после создания аккаунта", Toast.LENGTH_SHORT);
                 toast.show();
-            }else {
+            } else {
 
                 /**--------------------------------------------------------------------
                  * Если категория = одежда добавляем всплывающее окно с выбором размера
@@ -167,7 +162,7 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
                     WindowManager.LayoutParams params = dialog.getWindow().getAttributes(); //Получаем текущие атрибуты
                     //Устанавливаем атрибуты
                     params.width = LinearLayout.LayoutParams.MATCH_PARENT;
-                    params.height = getActivity().getWindowManager().getDefaultDisplay().getHeight()*3/4;
+                    params.height = getActivity().getWindowManager().getDefaultDisplay().getHeight() * 3 / 4;
                     params.gravity = Gravity.BOTTOM;
                     dialog.getWindow().setAttributes(params);
 
@@ -192,7 +187,7 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
                         public void onClick(View v) {
                             /**Здесь должна быть отправка размера*/
                             int selectedSize = Integer.parseInt(spinner.getSelectedItem().toString());
-                            AddRequest addRequest = new AddRequest(requireContext(),getFragmentManager(), productId, secureKod, "", selectedSize, "addToBasket"); //Отправляем дополнительно размер
+                            AddRequest addRequest = new AddRequest(requireContext(), getFragmentManager(), productId, secureKod, "", selectedSize, "addToBasket"); //Отправляем дополнительно размер
                             addRequest.execute();
 
                             try {
@@ -207,7 +202,7 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
                     });
                 } else {
                     //Иначе если не одежда то просто запрос
-                    AddRequest addRequest = new AddRequest(requireContext(),getFragmentManager(), productId, secureKod, "addToBasket");
+                    AddRequest addRequest = new AddRequest(requireContext(), getFragmentManager(), productId, secureKod, "addToBasket");
                     addRequest.execute();
                     try {
                         String otvet = addRequest.get();
@@ -220,7 +215,7 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
         });
     }
 
-    private void showToast(String otvet){
+    private void showToast(String otvet) {
         if (otvet.equals("OK")) {
             Toast toast = Toast.makeText(getContext(),
                     "Товар добавлен!", Toast.LENGTH_SHORT);
@@ -237,11 +232,9 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
     }
 
 
-    /** АДАПТЕР ДЛЯ СПИННЕРА
-     *
-     *
-     *
-     * */
+    /**
+     * АДАПТЕР ДЛЯ СПИННЕРА
+     */
     public class AdapterForSpinner extends ArrayAdapter<Integer> {
 
         Integer[] array; //Массив с размерами одежды

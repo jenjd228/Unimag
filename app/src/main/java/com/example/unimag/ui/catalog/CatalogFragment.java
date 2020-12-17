@@ -15,15 +15,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
 import com.example.unimag.ui.DTO.ProductDTO;
 import com.example.unimag.ui.Request.GetRequest;
-import com.example.unimag.ui.TechnicalWorkFragment;
 import com.example.unimag.ui.ThreadCheckingConnection;
 import com.example.unimag.ui.sort.GlobalSort;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -46,7 +43,7 @@ public class CatalogFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(CustomGridAdapter.getInstance() != null){
+        if (CustomGridAdapter.getInstance() != null) {
             CustomGridAdapter.getInstance().cleanList();
         }
     }
@@ -55,18 +52,20 @@ public class CatalogFragment extends Fragment {
     @SneakyThrows
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
+
+        new ThreadCheckingConnection(getParentFragmentManager(), requireContext());
+
         //CatalogViewModel catalogViewModel = ViewModelProviders.of(this).get(CatalogViewModel.class);
         View view = inflater.inflate(R.layout.fragment_catalog, container, false);
         gridView = view.findViewById(R.id.gridView);
 
-        if (CustomGridAdapter.getInstance() == null){
+        if (CustomGridAdapter.getInstance() == null) {
             CustomGridAdapter.setContext(requireContext());
         }
 
         try {
 
-            if (GlobalSort.getInstance().getUpdateFlag()){
+            if (GlobalSort.getInstance().getUpdateFlag()) {
                 CustomGridAdapter.getInstance().cleanList();
                 currentNumberList = 0;
                 GlobalSort.getInstance().setUpdateFlag(false);
@@ -74,7 +73,7 @@ public class CatalogFragment extends Fragment {
             }
 
             if (CustomGridAdapter.getInstance().getCount() == 0) {
-                getRequest = new GetRequest(requireContext(),getFragmentManager(), currentNumberList,"getList");
+                getRequest = new GetRequest(requireContext(), getFragmentManager(), currentNumberList, "getList");
                 getRequest.execute();
                 String response = getRequest.get();
 
@@ -92,42 +91,21 @@ public class CatalogFragment extends Fragment {
                     System.out.println("Лист установлен");
                     gridView.setAdapter(CustomGridAdapter.getInstance());
                 }
-            }else {
+            } else {
                 gridView.setAdapter(CustomGridAdapter.getInstance());
             }
-            System.out.println(CustomGridAdapter.getInstance().getCount());
-            //gridView.setAdapter(CustomGridAdapter.getInstance());
 
-            /*if (customGridAdapter == null){
-                //gridView.setAdapter(customGridAdapter = new CustomGridAdapter(this.getContext(), new ArrayList<>()));
-
-               // String otvet = getRequest.get();
-
-                if(otvet.equals("Error!")){
-                    Toast toast = Toast.makeText(getContext(),
-                            "Товары закончились!", Toast.LENGTH_SHORT);
-                    toast.show();
-
-                } else {
-                    List<ProductDTO> participantJsonList;
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    participantJsonList = objectMapper.readValue(otvet, new TypeReference<List<ProductDTO>>() {
-                    });
-                    customGridAdapter.addList(participantJsonList);
-                    currentNumberList++;
-                }
-            }else {
-                gridView.setAdapter(customGridAdapter);
-            }*/
-        }catch (Exception e){e.getMessage(); }
+        } catch (Exception e) {
+            e.getMessage();
+        }
 
 
         gridView.setOnItemClickListener((a, v, position, id) -> {
             Object o = gridView.getItemAtPosition(position);
             ProductDTO productDTO = (ProductDTO) o;
 
-             CatalogFragmentDirections.ActionNavigationCatalogToProductFragment2 action= CatalogFragmentDirections.actionNavigationCatalogToProductFragment2(productDTO.getImageName(), productDTO.getTitle(), productDTO.getDescriptions(), productDTO.getPrice(), productDTO.getId(), productDTO.getCategory(), productDTO.getListImage());
-             Navigation.findNavController(v).navigate(action);
+            CatalogFragmentDirections.ActionNavigationCatalogToProductFragment2 action = CatalogFragmentDirections.actionNavigationCatalogToProductFragment2(productDTO.getImageName(), productDTO.getTitle(), productDTO.getDescriptions(), productDTO.getPrice(), productDTO.getId(), productDTO.getCategory(), productDTO.getListImage());
+            Navigation.findNavController(v).navigate(action);
         });
 
         return view;
@@ -172,7 +150,7 @@ public class CatalogFragment extends Fragment {
                     animation.setOneShot(false); //Зацикливаем анимацию
                     animation.start(); //Начинаем проигрывать анимацию
 
-                    getRequest = new GetRequest(requireContext(),getFragmentManager(), currentNumberList, "getList");
+                    getRequest = new GetRequest(requireContext(), getFragmentManager(), currentNumberList, "getList");
                     getRequest.execute();
                     try {
                         String otvet = getRequest.get();

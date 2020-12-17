@@ -70,6 +70,12 @@ public class BasketFragment extends Fragment {
 
         TextView buttonReady = requireView().findViewById(R.id.button_oformlenie_order);
 
+        System.out.println("--------------------------------------"+getParentFragmentManager());
+        System.out.println("--------------------------------------"+getParentFragmentManager().getBackStackEntryCount());
+        for (Fragment e : getParentFragmentManager().getFragments()){
+            System.out.println(e.toString());
+        }
+
         if (gridAdapterBasket.getCount() == 0) {
             ConstraintLayout layout = getView().findViewById(R.id.layout_basket);
 
@@ -117,7 +123,9 @@ public class BasketFragment extends Fragment {
     @SneakyThrows
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
+
+        new ThreadCheckingConnection(getParentFragmentManager(), requireContext());
+
         basketViewModel =
                 ViewModelProviders.of(this).get(BasketViewModel.class);
         View view = inflater.inflate(R.layout.fragment_basket, container, false);

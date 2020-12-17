@@ -1,4 +1,6 @@
-/**СТАРТОВОЕ ОКНО ЗАГРУЗКИ*/
+/**
+ * СТАРТОВОЕ ОКНО ЗАГРУЗКИ
+ */
 package com.example.unimag;
 
 import android.content.Intent;

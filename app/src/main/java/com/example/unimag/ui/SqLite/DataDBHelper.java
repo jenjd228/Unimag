@@ -8,7 +8,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-public class  DataDBHelper extends SQLiteOpenHelper {
+public class DataDBHelper extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "userData";
@@ -23,7 +23,7 @@ public class  DataDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table " + TABLE_CONTACTS + "(" + KEY_ID
-        + " integer primary key," + KEY_SECUREKOD + " text" + ")");
+                + " integer primary key," + KEY_SECUREKOD + " text" + ")");
     }
 
     @Override
@@ -31,20 +31,21 @@ public class  DataDBHelper extends SQLiteOpenHelper {
         db.execSQL("drop table if exists " + TABLE_CONTACTS);
         onCreate(db);
     }
-    public String getSecureKod(DataDBHelper dataDbHelper){
+
+    public String getSecureKod(DataDBHelper dataDbHelper) {
         String secureKod = null;
         SQLiteDatabase sqLiteDatabase = dataDbHelper.getWritableDatabase();
-                Cursor cursor = sqLiteDatabase.query(DataDBHelper.TABLE_CONTACTS, null, null, null, null, null, null);
-                if (cursor.moveToFirst()) {
-                    int idIndex = cursor.getColumnIndex(DataDBHelper.KEY_ID);
-                    int nameIndex = cursor.getColumnIndex(DataDBHelper.KEY_SECUREKOD);
-                    cursor.moveToPosition(0);
-                    Log.d("mLog", "ID = " + cursor.getString(idIndex) +
-                            ", kod = " + cursor.getString(nameIndex)
-                    );
-                    secureKod = cursor.getString(nameIndex);
-                }
-                return secureKod;
+        Cursor cursor = sqLiteDatabase.query(DataDBHelper.TABLE_CONTACTS, null, null, null, null, null, null);
+        if (cursor.moveToFirst()) {
+            int idIndex = cursor.getColumnIndex(DataDBHelper.KEY_ID);
+            int nameIndex = cursor.getColumnIndex(DataDBHelper.KEY_SECUREKOD);
+            cursor.moveToPosition(0);
+            Log.d("mLog", "ID = " + cursor.getString(idIndex) +
+                    ", kod = " + cursor.getString(nameIndex)
+            );
+            secureKod = cursor.getString(nameIndex);
+        }
+        return secureKod;
     }
 
 }

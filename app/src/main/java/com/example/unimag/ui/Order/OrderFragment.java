@@ -13,15 +13,12 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.unimag.R;
 import com.example.unimag.ui.DTO.OrdersDTO;
 import com.example.unimag.ui.DTO.ProductDTO;
 import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
-import com.example.unimag.ui.TechnicalWorkFragment;
 import com.example.unimag.ui.ThreadCheckingConnection;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -55,29 +52,31 @@ public class OrderFragment extends Fragment {
     @SneakyThrows
     @RequiresApi(api = Build.VERSION_CODES.N)
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
+        new ThreadCheckingConnection(getParentFragmentManager(), requireContext());
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
         View root = inflater.inflate(R.layout.fragment_orders, container, false);
 
         gridView = root.findViewById(R.id.grid_view_orders);
         gridView.setAdapter(gridAdapterOrder = new GridAdapterOrder(this.getContext(), new ArrayList<>()));
 
-        try{
-            GetRequest getRequest = new GetRequest(requireContext(),getFragmentManager(), secureKod,"getOrdersList");
+        try {
+            GetRequest getRequest = new GetRequest(requireContext(), getFragmentManager(), secureKod, "getOrdersList");
             getRequest.execute();
             String result = getRequest.get();
 
-            if (result.isEmpty()){
+            if (result.isEmpty()) {
 
-            }else {
+            } else {
                 List<OrdersDTO> participantJsonList;
                 ObjectMapper objectMapper = new ObjectMapper();
-                participantJsonList = objectMapper.readValue(getRequest.get(), new TypeReference<List<OrdersDTO>>(){});
+                participantJsonList = objectMapper.readValue(getRequest.get(), new TypeReference<List<OrdersDTO>>() {
+                });
                 gridAdapterOrder.addList(participantJsonList);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 

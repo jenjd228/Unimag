@@ -74,8 +74,6 @@ public class GridAdapterBasket extends BaseAdapter {
         dataDbHelper.close();
 
         GridAdapterBasket.ViewHolder holder;
-        View view = layoutInflater.inflate(R.layout.fragment_basket, null);
-        ;
 
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.basket_product_item_layout, null);
@@ -118,7 +116,7 @@ public class GridAdapterBasket extends BaseAdapter {
         Glide.with(convertView).load("http://" + GlobalVar.ip + ":8080/upload/" + product.getImageName()).into(holder.imageView);
 
         holder.deleteButton.setOnClickListener(v -> {
-            DeleteRequest deleteRequest = new DeleteRequest(context,manager, secureKod, product.getProductId(), "deleteBasketProduct");
+            DeleteRequest deleteRequest = new DeleteRequest(context, manager, secureKod, product.getProductId(), "deleteBasketProduct");
             deleteRequest.execute();
             try {
                 if (deleteRequest.get().equals("ok")) {

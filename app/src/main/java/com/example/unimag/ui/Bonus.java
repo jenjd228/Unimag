@@ -24,14 +24,14 @@ public class Bonus {
 
         if (sum < 500) {
             bonuses = 0;
-        } else if (sum < 1000){
-            bonuses += ((float)Math.round(sum*2))/100;
+        } else if (sum < 1000) {
+            bonuses += ((float) Math.round(sum * 2)) / 100;
         } else if (sum < 1500) {
-            bonuses += ((float)Math.round(sum*3))/100;
+            bonuses += ((float) Math.round(sum * 3)) / 100;
         } else if (sum < 2000) {
-            bonuses += ((float)Math.round(sum*4))/100;
+            bonuses += ((float) Math.round(sum * 4)) / 100;
         } else if (sum >= 2000) {
-            bonuses += ((float)Math.round(sum*5))/100;
+            bonuses += ((float) Math.round(sum * 5)) / 100;
         }
 
         //setBonus(bonuses); //Добавление новых бонусов пользователю

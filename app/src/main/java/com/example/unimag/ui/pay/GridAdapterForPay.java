@@ -25,7 +25,7 @@ public class GridAdapterForPay extends BaseAdapter {
     private List<PayDTO> listFromBasket;
 
 
-    GridAdapterForPay(Context context , List<PayDTO> listProduct){
+    GridAdapterForPay(Context context, List<PayDTO> listProduct) {
         this.listFromBasket = listProduct;
         layoutInflater = LayoutInflater.from(context);
     }
@@ -56,7 +56,7 @@ public class GridAdapterForPay extends BaseAdapter {
             holder.orderLayout = convertView.findViewById(R.id.order_layout);
             holder.imageView = convertView.findViewById(R.id.image_order);
             holder.productPrice = convertView.findViewById(R.id.cost);
-            holder.productTitle= convertView.findViewById(R.id.title_order);
+            holder.productTitle = convertView.findViewById(R.id.title_order);
             //holder.productDescription = (TextView) convertView.findViewById(R.id.description_basket_product);
             holder.productCount = convertView.findViewById(R.id.count);
             convertView.setTag(holder);
@@ -67,31 +67,31 @@ public class GridAdapterForPay extends BaseAdapter {
         PayDTO product = this.listFromBasket.get(position);
         holder.productTitle.setText(product.getTitle());
         //holder.productDescription.setText("" + product.getDescriptions());
-        holder.productPrice.setText("" + product.getPrice()*product.getCount());
+        holder.productPrice.setText("" + product.getPrice() * product.getCount());
         holder.productCount.setText("" + product.getCount());
 
-        if(position%2==0) {
+        if (position % 2 == 0) {
             holder.orderLayout.setBackgroundColor(Color.parseColor("#dadfe0"));
         }
 
-        Glide.with(convertView).load("http://"+ GlobalVar.ip +":8080/upload/"+product.getImageName()).into(holder.imageView);
+        Glide.with(convertView).load("http://" + GlobalVar.ip + ":8080/upload/" + product.getImageName()).into(holder.imageView);
 
         return convertView;
     }
 
-    public void addList(List<PayDTO> listData){
+    public void addList(List<PayDTO> listData) {
         this.listFromBasket.addAll(listData);
         notifyDataSetChanged();
     }
 
-    public List<PayDTO> getProductList(){
+    public List<PayDTO> getProductList() {
         return listFromBasket;
     }
 
-    public Integer getTheCostOfProducts(){
+    public Integer getTheCostOfProducts() {
         int totalMoney = 0;
-        for (PayDTO  payDTO: listFromBasket){
-            totalMoney += payDTO.getCount()*payDTO.getPrice();
+        for (PayDTO payDTO : listFromBasket) {
+            totalMoney += payDTO.getCount() * payDTO.getPrice();
         }
         return totalMoney;
     }

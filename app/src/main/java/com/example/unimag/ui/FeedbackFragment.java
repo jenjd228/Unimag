@@ -29,9 +29,10 @@ public class FeedbackFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
-        new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
+        new ThreadCheckingConnection(getParentFragmentManager(), requireContext());
+
         View root = inflater.inflate(R.layout.fragment_feedback, container, false);
         return root;
     }
@@ -41,21 +42,23 @@ public class FeedbackFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         Button buttonSend = requireView().findViewById(R.id.buttonSend); //Кнопка "Отправить"
-        textSubject =  requireView().findViewById(R.id.editTextSubject); //Тема письма
-        textMessage =  requireView().findViewById(R.id.editTextMessage); //Сообщение письма
+        textSubject = requireView().findViewById(R.id.editTextSubject); //Тема письма
+        textMessage = requireView().findViewById(R.id.editTextMessage); //Сообщение письма
         textPhone = requireView().findViewById(R.id.editTextPhone);      //Номер телефона
 
         /**Листенер для ввода телефона*/
         textPhone.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(!s.toString().startsWith("+7")){
+                if (!s.toString().startsWith("+7")) {
                     textPhone.setText("+7");
                     Selection.setSelection(textPhone.getText(), textPhone.getText().length());
                 }
@@ -106,13 +109,13 @@ public class FeedbackFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-            outState.putString("textMessage",textMessage.getText().toString());
+        outState.putString("textMessage", textMessage.getText().toString());
     }
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-        if (savedInstanceState!=null){
+        if (savedInstanceState != null) {
             textMessage.setText(savedInstanceState.getString("textMessage"));
         }
     }

@@ -17,15 +17,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
 import com.example.unimag.ui.Request.CheckRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
 
-import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 public class LoginFragment extends Fragment {
@@ -36,9 +33,10 @@ public class LoginFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
+        new ThreadCheckingConnection(getParentFragmentManager(), requireContext());
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
         return inflater.inflate(R.layout.fragment_login, container, false);
     }
@@ -82,7 +80,7 @@ public class LoginFragment extends Fragment {
             String password = String.valueOf(this.password.getText());
             String email = String.valueOf(this.login.getText());
             if (!password.equals("") && !email.equals("")) {
-                CheckRequest checkRequest = new CheckRequest(requireContext(),getFragmentManager(), email, password, "checkUserForLoginIn");
+                CheckRequest checkRequest = new CheckRequest(requireContext(), getFragmentManager(), email, password, "checkUserForLoginIn");
                 checkRequest.execute();
                 try {
                     String response = checkRequest.get();
@@ -117,7 +115,7 @@ public class LoginFragment extends Fragment {
                     ex.printStackTrace();
                     System.out.println("2222222222222");
                 }
-            }else {
+            } else {
                 Toast toast = Toast.makeText(getContext(),
                         "Введите данные!", Toast.LENGTH_SHORT);
                 toast.show();
