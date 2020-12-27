@@ -19,4 +19,17 @@ public class PayDTO {
 
     private Integer count;
 
+    private String size;
+
+    @Override
+    public String toString() {
+        return "{" +
+                "\"productId\":" + productId +
+                ",\"imageName\":\"" + imageName + '\"' +
+                ",\"price\":" + price +
+                ",\"title\":\"" + title + '\"' +
+                ",\"count\":" + count +
+                ",\"size\":\"" + size + '\"' +
+                '}';
+    }
 }

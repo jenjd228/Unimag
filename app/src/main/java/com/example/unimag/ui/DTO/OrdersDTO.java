@@ -1,7 +1,5 @@
 package com.example.unimag.ui.DTO;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +16,4 @@ public class OrdersDTO {
     private String status;
 
     private String pickUpPoint;
-
-    private List<Order2ProductDTO> order2ProductsList;
 }

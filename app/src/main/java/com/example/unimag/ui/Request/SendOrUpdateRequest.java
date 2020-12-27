@@ -1,5 +1,6 @@
 package com.example.unimag.ui.Request;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -23,6 +24,7 @@ public class SendOrUpdateRequest extends AsyncTask<Void, Void, String> {
     private String methodName;
     private String password;
     private FragmentManager manager;
+    @SuppressLint("StaticFieldLeak")
     private Context context;
 
     public SendOrUpdateRequest(Context context, FragmentManager manager, String email, String password, String methodName) {
@@ -86,8 +88,7 @@ public class SendOrUpdateRequest extends AsyncTask<Void, Void, String> {
 
         try {
             response = client.newCall(request).execute(); //ответ сервера
-            String result = response.body().string();
-            return result;
+            return response.body().string();
         } catch (IOException e) {
             e.printStackTrace();
 
@@ -95,7 +96,6 @@ public class SendOrUpdateRequest extends AsyncTask<Void, Void, String> {
             if (ThreadCheckingConnection.isConnect(context)) {
                 ThreadCheckingConnection.goToTechnicalWorkFragment(manager);
             }
-
             return "";
         }
     }

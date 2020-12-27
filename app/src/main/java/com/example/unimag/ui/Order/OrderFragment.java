@@ -7,12 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
 import com.example.unimag.ui.DTO.OrdersDTO;
@@ -20,11 +22,13 @@ import com.example.unimag.ui.DTO.ProductDTO;
 import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
 import com.example.unimag.ui.ThreadCheckingConnection;
+import com.example.unimag.ui.partner_program.PartnerProgramFragmentDirections;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import lombok.SneakyThrows;
 
@@ -63,7 +67,7 @@ public class OrderFragment extends Fragment {
         gridView.setAdapter(gridAdapterOrder = new GridAdapterOrder(this.getContext(), new ArrayList<>()));
 
         try {
-            GetRequest getRequest = new GetRequest(requireContext(), getFragmentManager(), secureKod, "getOrdersList");
+            GetRequest getRequest = new GetRequest(requireContext(), getParentFragmentManager(), secureKod, "getOrdersList");
             getRequest.execute();
             String result = getRequest.get();
 
@@ -72,8 +76,7 @@ public class OrderFragment extends Fragment {
             } else {
                 List<OrdersDTO> participantJsonList;
                 ObjectMapper objectMapper = new ObjectMapper();
-                participantJsonList = objectMapper.readValue(getRequest.get(), new TypeReference<List<OrdersDTO>>() {
-                });
+                participantJsonList = objectMapper.readValue(getRequest.get(), new TypeReference<List<OrdersDTO>>() {});
                 gridAdapterOrder.addList(participantJsonList);
             }
         } catch (Exception e) {
@@ -88,8 +91,29 @@ public class OrderFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         gridView.setOnItemClickListener((a, v, position, id) -> {
 
-            Object o = gridView.getItemAtPosition(position);
-            ProductDTO productDTO = (ProductDTO) o;
+            Object object = gridView.getItemAtPosition(position);
+            OrdersDTO ordersDTO = (OrdersDTO) object;
+
+            GetRequest getRequest = new GetRequest(requireContext(),getParentFragmentManager(),secureKod,ordersDTO.getOrderId(),"getOrderToProductList");
+            getRequest.execute();
+            String list = null;
+            try {
+                list = getRequest.get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (list!= null){
+                if (!list.equals("Ошибка") && !list.isEmpty()){
+                    OrderFragmentDirections.ActionOrderFragmentToOrderDetailsFragment action =
+                            OrderFragmentDirections.actionOrderFragmentToOrderDetailsFragment(list);
+                    Navigation.findNavController(v).navigate(action);
+                }else {
+                    Toast.makeText(requireContext(),"Ошибка",Toast.LENGTH_SHORT).show();
+                }
+            }
 
         });
 

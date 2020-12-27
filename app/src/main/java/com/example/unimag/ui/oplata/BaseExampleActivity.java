@@ -47,7 +47,7 @@ abstract public class BaseExampleActivity extends Activity implements
     private EditText editDescription;
     private CloudipspWebView webView;
 
-    private String idProductList;
+    private String productList;
     private String secureKod;
     private String orderId;
     private String totalMoney;
@@ -76,9 +76,11 @@ abstract public class BaseExampleActivity extends Activity implements
 
         totalMoney = getIntent().getStringExtra("Amount");
         editAmount.setText(getIntent().getStringExtra("Amount"));
-        idProductList = getIntent().getStringExtra("IdProductList");
+
+        productList = getIntent().getStringExtra("productList");
         secureKod = getIntent().getStringExtra("secureKod");
         pickUpPoint = getIntent().getStringExtra("pickUpPoint");
+
         String email = getIntent().getStringExtra("email");
 
         editEmail.setText(email);
@@ -155,7 +157,6 @@ abstract public class BaseExampleActivity extends Activity implements
         if (order != null) {
             final Card card = getCard();
             if (card != null) {
-                //System.out.println("Тут да  "+order.id);
                 cloudipsp.pay(card, order, this);
             }
         }
@@ -200,7 +201,7 @@ abstract public class BaseExampleActivity extends Activity implements
     @Override
     public void onPaidProcessed(Receipt receipt) {
         try {
-            AddRequest addRequest = new AddRequest(getApplicationContext(), idProductList, secureKod, orderId, totalMoney, pickUpPoint, "addToOrders");
+            AddRequest addRequest = new AddRequest(getApplicationContext(), productList, secureKod, orderId, totalMoney, pickUpPoint, "addToOrders");
             addRequest.execute();
             Toast.makeText(this, "Paid " + receipt.status.name() + "\nPaymentId:" + receipt.paymentId, Toast.LENGTH_LONG).show();
             //this.onDestroy();

@@ -61,6 +61,7 @@ public class GridAdapterOrder extends BaseAdapter {
             holder.dataOfOrderView = convertView.findViewById(R.id.data_of_order);
             holder.statusView = convertView.findViewById(R.id.status_of_order);
             holder.pickUpPoint = convertView.findViewById(R.id.pick_up_point);
+
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();

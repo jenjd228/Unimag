@@ -1,5 +1,6 @@
 package com.example.unimag.ui.Request;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -23,6 +24,7 @@ public class CheckRequest extends AsyncTask<Void, Void, String> {
     private String password;
     private String methodName;
     private FragmentManager manager;
+    @SuppressLint("StaticFieldLeak")
     private Context context;
 
     public CheckRequest(Context context, FragmentManager manager, String email, String kodOrSecureKod, String password, String methodName) {

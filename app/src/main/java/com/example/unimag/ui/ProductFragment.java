@@ -44,7 +44,7 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
     private String imageName;
     private String category;
     private String secureKod = null;
-    private ArrayList<Integer> listSizeClothes = new ArrayList<Integer>(); //Лист с доступными размерами одежды для данной страницы
+    private ArrayList<String> listSizeClothes = new ArrayList<>(); //Лист с доступными размерами одежды для данной страницы
     private String listImage;
 
     public ProductFragment() {
@@ -132,11 +132,11 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
         setInformationAboutProduct(); //Получение информации о продукте
 
         /**ВРЕМЕННО*/
-        listSizeClothes.add(42);
-        listSizeClothes.add(44);
-        listSizeClothes.add(46);
-        listSizeClothes.add(48);
-        listSizeClothes.add(50);
+        listSizeClothes.add("42");
+        listSizeClothes.add("44");
+        listSizeClothes.add("46");
+        listSizeClothes.add("48");
+        listSizeClothes.add("50");
 
         Button b = getView().findViewById(R.id.button_add_basket);
         b.setOnClickListener(e -> {
@@ -154,7 +154,7 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
                     //Делаем из листа - массив
                     //Integer[] arraySizeClothes = listSizeClothes.toArray(new Integer[0]);
                     //System.out.println(arraySizeClothes[0]);
-                    Integer[] arraySizeClothes = listSizeClothes.toArray(new Integer[0]);
+                    String[] arraySizeClothes = listSizeClothes.toArray(new String[0]);
 
                     //Всплывающее окно
                     Dialog dialog = new Dialog(getActivity(), R.style.Dialog); //Создаем диалоговое окно
@@ -170,8 +170,6 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
                     //Получаем экземпляр элемента Spinner
                     LayoutInflater inflater = this.getLayoutInflater(); //Для поиска вне данной разметки
                     Spinner spinner = (Spinner) dialog.findViewById(R.id.spinnerSizeClothes); //Ищем спиннер
-                    System.out.println("SPINNER:");
-                    System.out.println(spinner);
 
                     //Настраиваем адаптер
                     AdapterForSpinner adapter = new AdapterForSpinner(requireContext(), R.layout.spinner_row, arraySizeClothes);
@@ -186,8 +184,7 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
                         @Override
                         public void onClick(View v) {
                             /**Здесь должна быть отправка размера*/
-                            int selectedSize = Integer.parseInt(spinner.getSelectedItem().toString());
-                            AddRequest addRequest = new AddRequest(requireContext(), getFragmentManager(), productId, secureKod, "", selectedSize, "addToBasket"); //Отправляем дополнительно размер
+                            AddRequest addRequest = new AddRequest(requireContext(), getParentFragmentManager(), productId, secureKod, "Non", spinner.getSelectedItem().toString(), "addToBasket"); //Отправляем дополнительно размер
                             addRequest.execute();
 
                             try {
@@ -202,7 +199,7 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
                     });
                 } else {
                     //Иначе если не одежда то просто запрос
-                    AddRequest addRequest = new AddRequest(requireContext(), getFragmentManager(), productId, secureKod, "addToBasket");
+                    AddRequest addRequest = new AddRequest(requireContext(), getParentFragmentManager(), productId, secureKod, "Non","Non", "addToBasket");
                     addRequest.execute();
                     try {
                         String otvet = addRequest.get();
@@ -235,13 +232,13 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
     /**
      * АДАПТЕР ДЛЯ СПИННЕРА
      */
-    public class AdapterForSpinner extends ArrayAdapter<Integer> {
+    public class AdapterForSpinner extends ArrayAdapter<String> {
 
-        Integer[] array; //Массив с размерами одежды
+        String[] array; //Массив с размерами одежды
 
         //Конструктор класса
         public AdapterForSpinner(Context context, int textViewResourceId,
-                                 Integer[] objects) {
+                                 String[] objects) {
             super(context, textViewResourceId, objects);
             array = objects;
         }
@@ -266,7 +263,7 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
             LayoutInflater inflater = getLayoutInflater();
             View row = inflater.inflate(R.layout.spinner_row, parent, false);
             TextView label = (TextView) row.findViewById(R.id.row_spinner_size_text);
-            label.setText(array[position].toString());
+            label.setText(array[position]);
 
             return row;
         }

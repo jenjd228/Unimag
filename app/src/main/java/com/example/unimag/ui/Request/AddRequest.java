@@ -21,12 +21,12 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
     private String secureKod;
     private Integer productId;
     private String methodName;
-    private String stringIds;
+    private String productList;
     private String orderId;
     private String totalMoney;
     private String pickUpPoint;
     private String color;
-    private Integer size;
+    private String size;
     private FragmentManager manager;
     @SuppressLint("StaticFieldLeak")
     private Context context;
@@ -41,7 +41,7 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
         this.size = null;
     }
 
-    public AddRequest(Context context, FragmentManager manager, Integer productId, String secureKod, String color, int size, String methodName) {
+    public AddRequest(Context context, FragmentManager manager, Integer productId, String secureKod, String color, String size, String methodName) {
         this.context = context;
         this.manager = manager;
         this.productId = productId;
@@ -51,10 +51,10 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
         this.methodName = methodName;
     }
 
-    public AddRequest(Context context, String stringIds, String secureKod, String orderId, String totalMoney, String pickUpPoint, String methodName) {
+    public AddRequest(Context context, String productList, String secureKod, String orderId, String totalMoney, String pickUpPoint, String methodName) {
         this.context = context;
         /**Нет менеджера*/
-        this.stringIds = stringIds;
+        this.productList = productList;
         this.secureKod = secureKod;
         this.methodName = methodName;
         this.orderId = orderId;
@@ -75,7 +75,7 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
                 RequestBody formBody = new FormBody.Builder()
                         .add("id", productId.toString())
                         .add("color", color)
-                        .add("size", String.valueOf(size))
+                        .add("size", size)
                         .add("secureKod", secureKod)
                         .build();
                 request = new Request.Builder()
@@ -87,7 +87,7 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
             case "addToOrders": {
                 RequestBody formBody = new FormBody.Builder()
                         .add("secureKod", secureKod)
-                        .add("stringIds", stringIds)
+                        .add("productList", productList)
                         .add("totalMoney", totalMoney)
                         .add("orderId", orderId)
                         .add("pickUpPoint", pickUpPoint)
@@ -113,8 +113,7 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
 
         try {
             response = client.newCall(request).execute(); //ответ сервера
-            String result = response.body().string();
-            return result;
+            return response.body().string();
         } catch (IOException e) {
             e.printStackTrace();
 

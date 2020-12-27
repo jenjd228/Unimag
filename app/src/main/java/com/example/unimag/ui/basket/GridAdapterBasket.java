@@ -88,7 +88,7 @@ public class GridAdapterBasket extends BaseAdapter {
             holder.addProductCountButton = convertView.findViewById(R.id.addProductCountButton);
             holder.deleteProductCountButton = convertView.findViewById(R.id.deleteProductCountButton);
             holder.productCount = convertView.findViewById(R.id.productCount);
-            holder.productAddInformational = convertView.findViewById(R.id.additional_info_basket);
+            holder.productSize = convertView.findViewById(R.id.size_in_basket);
             convertView.setTag(holder);
         } else {
             holder = (GridAdapterBasket.ViewHolder) convertView.getTag();
@@ -99,11 +99,13 @@ public class GridAdapterBasket extends BaseAdapter {
         //holder.productDescription.setText("" + product.getDescriptions());
         holder.productPrice.setText("" + product.getPrice() * product.getCount());
         holder.productCount.setText("" + product.getCount());
-        if (product.getSize() != null) {
+        holder.productSize.setText(""+product.getSize());
+
+        /*if (product.getSize() != null) {
             holder.productAddInformational.setText("" + product.getColor() + String.valueOf(product.getSize()) + " размер ");
         } else {
             holder.productAddInformational.setText("" + product.getColor());
-        }
+        }*/
 
         Integer id = product.getProductId();
 
@@ -240,7 +242,7 @@ public class GridAdapterBasket extends BaseAdapter {
         //TextView productDescription;
         TextView productPrice;
         TextView productCount;
-        TextView productAddInformational;
+        TextView productSize;
 
         LinearLayout basketLayout;
 

@@ -57,6 +57,7 @@ public class GridAdapterForPay extends BaseAdapter {
             holder.imageView = convertView.findViewById(R.id.image_order);
             holder.productPrice = convertView.findViewById(R.id.cost);
             holder.productTitle = convertView.findViewById(R.id.title_order);
+            holder.productSize = convertView.findViewById(R.id.size);
             //holder.productDescription = (TextView) convertView.findViewById(R.id.description_basket_product);
             holder.productCount = convertView.findViewById(R.id.count);
             convertView.setTag(holder);
@@ -69,10 +70,11 @@ public class GridAdapterForPay extends BaseAdapter {
         //holder.productDescription.setText("" + product.getDescriptions());
         holder.productPrice.setText("" + product.getPrice() * product.getCount());
         holder.productCount.setText("" + product.getCount());
+        holder.productSize.setText(""+product.getSize());
 
-        if (position % 2 == 0) {
+        /*if (position % 2 == 0) {
             holder.orderLayout.setBackgroundColor(Color.parseColor("#dadfe0"));
-        }
+        }*/
 
         Glide.with(convertView).load("http://" + GlobalVar.ip + ":8080/upload/" + product.getImageName()).into(holder.imageView);
 
@@ -102,6 +104,7 @@ public class GridAdapterForPay extends BaseAdapter {
         TextView productTitle;
         TextView productPrice;
         TextView productCount;
+        TextView productSize;
 
         LinearLayout orderLayout;
 

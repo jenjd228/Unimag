@@ -1,5 +1,6 @@
 package com.example.unimag.ui.Request;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -11,8 +12,10 @@ import com.example.unimag.ui.sort.GlobalSort;
 
 import java.io.IOException;
 
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class GetRequest extends AsyncTask<Void, Void, String> {
@@ -20,6 +23,8 @@ public class GetRequest extends AsyncTask<Void, Void, String> {
     private Integer currentNumberList;
     private String methodName;
     private FragmentManager manager;
+    private Integer orderId;
+    @SuppressLint("StaticFieldLeak")
     private Context context;
 
     public GetRequest(Context context, FragmentManager manager, String secureKod, String methodName) {
@@ -39,6 +44,14 @@ public class GetRequest extends AsyncTask<Void, Void, String> {
     public GetRequest(Context context, FragmentManager manager, String methodName) {
         this.context = context;
         this.manager = manager;
+        this.methodName = methodName;
+    }
+
+    public GetRequest(Context context, FragmentManager manager, String secureKod, Integer orderId, String methodName) {
+        this.orderId = orderId;
+        this.context = context;
+        this.manager = manager;
+        this.secureKod = secureKod;
         this.methodName = methodName;
     }
 
@@ -97,12 +110,18 @@ public class GetRequest extends AsyncTask<Void, Void, String> {
                         .build();
                 break;
             }
+            case "getOrderToProductList": {
+                request = new Request.Builder()
+                        .url("http://" + GlobalVar.ip + ":8080/getOrderToProductList/"+secureKod+"/"+orderId+"")
+                        .get()
+                        .build();
+                break;
+            }
         }
 
         try {
             response = client.newCall(request).execute(); //ответ сервера
-            String result = response.body().string();
-            return result;
+            return response.body().string();
         } catch (IOException e) {
             e.printStackTrace();
 
@@ -110,7 +129,6 @@ public class GetRequest extends AsyncTask<Void, Void, String> {
             if (ThreadCheckingConnection.isConnect(context)) {
                 ThreadCheckingConnection.goToTechnicalWorkFragment(manager);
             }
-
             return "";
         }
     }

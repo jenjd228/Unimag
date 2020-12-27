@@ -70,12 +70,6 @@ public class BasketFragment extends Fragment {
 
         TextView buttonReady = requireView().findViewById(R.id.button_oformlenie_order);
 
-        System.out.println("--------------------------------------"+getParentFragmentManager());
-        System.out.println("--------------------------------------"+getParentFragmentManager().getBackStackEntryCount());
-        for (Fragment e : getParentFragmentManager().getFragments()){
-            System.out.println(e.toString());
-        }
-
         if (gridAdapterBasket.getCount() == 0) {
             ConstraintLayout layout = getView().findViewById(R.id.layout_basket);
 
@@ -103,7 +97,7 @@ public class BasketFragment extends Fragment {
             if (gridAdapterBasket.getProductForPayList() != null) {
                 products = gridAdapterBasket.getProductForPayList();
                 for (BasketProductDTO basketProductDTO : products) {
-                    payDTOIdList.add(new PayDTO(basketProductDTO.getProductId(), basketProductDTO.getImageName(), basketProductDTO.getPrice(), basketProductDTO.getTitle(), basketProductDTO.getCount()));
+                    payDTOIdList.add(new PayDTO(basketProductDTO.getProductId(), basketProductDTO.getImageName(), basketProductDTO.getPrice(), basketProductDTO.getTitle(), basketProductDTO.getCount(),basketProductDTO.getSize()));
                 }
             }
 
@@ -131,10 +125,10 @@ public class BasketFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_basket, container, false);
         gridView = view.findViewById(R.id.grid_view_basket);
 
-        gridView.setAdapter(gridAdapterBasket = new GridAdapterBasket(this.getContext(),getFragmentManager(), new ArrayList<>()));
+        gridView.setAdapter(gridAdapterBasket = new GridAdapterBasket(this.getContext(),getParentFragmentManager(), new ArrayList<>()));
 
         try {
-            GetRequest getRequest = new GetRequest(requireContext(),getFragmentManager(), secureKod, "getBasketList");
+            GetRequest getRequest = new GetRequest(requireContext(),getParentFragmentManager(), secureKod, "getBasketList");
             getRequest.execute();
             String result = getRequest.get();
             if (result.equals("BAD_REQUEST") || result.equals("ERROR")) {
@@ -145,7 +139,7 @@ public class BasketFragment extends Fragment {
             } else {
                 List<BasketProductDTO> participantJsonList;
                 ObjectMapper objectMapper = new ObjectMapper();
-                participantJsonList = objectMapper.readValue(getRequest.get(), new TypeReference<List<BasketProductDTO>>() {
+                participantJsonList = objectMapper.readValue(result, new TypeReference<List<BasketProductDTO>>() {
                 });
                 if (participantJsonList.size() != 0) {
                     gridAdapterBasket.addList(participantJsonList);

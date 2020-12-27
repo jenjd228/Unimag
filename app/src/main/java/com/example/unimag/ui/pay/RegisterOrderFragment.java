@@ -31,6 +31,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import lombok.SneakyThrows;
@@ -74,8 +75,7 @@ public class RegisterOrderFragment extends Fragment {
         if (list != null) {
             List<PayDTO> participantJsonList;
             ObjectMapper objectMapper = new ObjectMapper();
-            participantJsonList = objectMapper.readValue(list, new TypeReference<List<PayDTO>>() {
-            });
+            participantJsonList = objectMapper.readValue(list, new TypeReference<List<PayDTO>>() {});
             gridView.setAdapter(gridAdapterForPay = new GridAdapterForPay(this.getContext(), new ArrayList<>()));
 
             gridAdapterForPay.addList(participantJsonList);
@@ -95,16 +95,13 @@ public class RegisterOrderFragment extends Fragment {
         totalMoney.setText(String.valueOf(gridAdapterForPay.getTheCostOfProducts()));
 
         try {
-            GetRequest getPickUpPointRequest = new GetRequest(requireContext(), getFragmentManager(), "getPickUpPointList");
+            GetRequest getPickUpPointRequest = new GetRequest(requireContext(), getParentFragmentManager(), "getPickUpPointList");
             getPickUpPointRequest.execute();
 
-            GetRequest getUser = new GetRequest(requireContext(), getFragmentManager(), secureKod, "getUser");
+            GetRequest getUser = new GetRequest(requireContext(), getParentFragmentManager(), secureKod, "getUser");
             getUser.execute();
 
             String userS = getUser.get();
-
-            List<Integer> idProductList = new ArrayList<>();
-            gridAdapterForPay.getProductList().forEach(object -> idProductList.add(object.getProductId()));
 
             List<String> listPickUpPoints = new ObjectMapper().readValue(getPickUpPointRequest.get(), new TypeReference<List<String>>() {
             });
@@ -132,10 +129,14 @@ public class RegisterOrderFragment extends Fragment {
 
                 if (secureKod != null) {
                     Intent intent = new Intent(getActivity(), SimpleExampleActivity.class);
+
+                    System.out.println(Arrays.toString(gridAdapterForPay.getProductList().toArray()) +"        - -- - - - -- - - - ");
+
                     intent.putExtra("Amount", totalMoney.getText());
-                    intent.putExtra("IdProductList", idProductList.toString());
+                    intent.putExtra("productList", Arrays.toString(gridAdapterForPay.getProductList().toArray()));
                     intent.putExtra("secureKod", secureKod);
                     intent.putExtra("pickUpPoint", spinner.getSelectedItem().toString());
+
                     intent.putExtra("email", finalUser.getEmail());
 
                     startActivity(intent);
@@ -144,7 +145,7 @@ public class RegisterOrderFragment extends Fragment {
             });
 
         } catch (IOException e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
 
     }
@@ -184,7 +185,7 @@ public class RegisterOrderFragment extends Fragment {
             LayoutInflater inflater = getLayoutInflater();
             View row = inflater.inflate(R.layout.spinner_row_pick_up_point, parent, false);
             TextView label = (TextView) row.findViewById(R.id.row_spinner_pick_up_point);
-            label.setText(array[position].toString());
+            label.setText(array[position]);
 
             return row;
         }
