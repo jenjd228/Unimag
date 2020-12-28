@@ -35,10 +35,11 @@ public class SendOrUpdateRequest extends AsyncTask<Void, Void, String> {
         this.methodName = methodName;
     }
 
-    public SendOrUpdateRequest(Context context, FragmentManager manager, String email, String fio, String birthDay, String methodName) {
+    public SendOrUpdateRequest(Context context, FragmentManager manager, String email, String password, String fio, String birthDay, String methodName) {
         this.context = context;
         this.manager = manager;
         this.email = email;
+        this.password = password;
         this.fio = fio;
         this.birthDay = birthDay;
         this.methodName = methodName;
@@ -65,6 +66,8 @@ public class SendOrUpdateRequest extends AsyncTask<Void, Void, String> {
                 RequestBody formBody = new FormBody.Builder()
                         .add("email", email)
                         .add("password", password)
+                        .add("fio", fio)
+                        .add("birthData", birthDay)
                         .build();
                 request = new Request.Builder()
                         .url("http://" + GlobalVar.ip + ":8080/firstUpdate")
@@ -72,7 +75,7 @@ public class SendOrUpdateRequest extends AsyncTask<Void, Void, String> {
                         .build();
                 break;
             }
-            case "userUpdate": {
+            /*case "userUpdate": {
                 RequestBody formBody = new FormBody.Builder()
                         .add("email", email)
                         .add("fio", fio)
@@ -83,7 +86,7 @@ public class SendOrUpdateRequest extends AsyncTask<Void, Void, String> {
                         .post(formBody)
                         .build();
                 break;
-            }
+            }*/
         }
 
         try {

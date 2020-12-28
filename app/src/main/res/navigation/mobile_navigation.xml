@@ -91,20 +91,8 @@
         android:label="@string/registerFragment"
         tools:layout="@layout/fragment_register" >
         <action
-            android:id="@+id/action_registerFragment3_to_registerFragment2"
-            app:destination="@id/registerFragment2" />
-    </fragment>
-    <fragment
-        android:id="@+id/registerFragment2"
-        android:name="com.example.unimag.ui.register.RegisterFragment2"
-        android:label="@string/registerFragment"
-        tools:layout="@layout/fragment_register2" >
-        <action
-            android:id="@+id/action_registerFragment2_to_myCabinetFragment"
+            android:id="@+id/action_registerFragment_to_myCabinetFragment"
             app:destination="@id/myCabinetFragment" />
-        <argument
-            android:name="email"
-            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"

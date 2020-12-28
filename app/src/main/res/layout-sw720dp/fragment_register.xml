@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,77 +8,205 @@
     tools:context=".ui.register.RegisterFragment"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <EditText
-        android:id="@+id/email"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="18dp"
-        android:hint="@string/email"
-        android:backgroundTint="@color/colorPrimary"
-        android:digits="@string/allowed_symbols"
-        android:textSize="40sp"
-        android:maxLength="32"/>
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="18dp"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        android:textSize="40sp"
-        android:backgroundTint="@color/colorPrimary"
-        android:digits="@string/allowed_symbols"
-        android:maxLength="32"/>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="18dp">
-
-        <EditText
-            android:id="@+id/repeatPassword"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:textSize="40sp"
-            android:hint="@string/repeat_password"
-            android:inputType="textPassword"
-            android:backgroundTint="@color/colorPrimary"
-            android:digits="@string/allowed_symbols"
-            android:maxLength="32"/>
+            android:orientation="vertical">
 
-        <ImageButton
-            android:id="@+id/show_password_in_registr"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:src="@drawable/ic_show_password"
-            android:background="@null" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Регистрация"
+                android:textSize="70sp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:background="@color/light_black"
+                android:textColor="@color/black"/>
 
-    <TextView
-        android:id="@+id/text_hint_registration"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/register_text_margin"
-        android:textSize="38sp"
-        android:inputType="textMultiLine" />
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="28dp"
+                android:textSize="40sp"
+                android:backgroundTint="@color/colorPrimary"
+                android:digits="@string/allowed_symbols"
+                android:hint="@string/email"
+                android:maxLength="32" />
 
-    <Button
-        android:id="@+id/register_button"
-        style="@style/ButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="80dp"
-        android:paddingRight="80dp"
-        android:layout_gravity="center_horizontal"
-        android:textSize="34sp"
-        android:layout_margin="18dp"
-        android:text="@string/register" />
-</LinearLayout>
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="28dp"
+                android:textSize="40sp"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:backgroundTint="@color/colorPrimary"
+                android:digits="@string/allowed_symbols"
+                android:maxLength="32"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="28dp">
+
+                <EditText
+                    android:id="@+id/repeatPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:hint="@string/repeat_password"
+                    android:textSize="40sp"
+                    android:inputType="textPassword"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:digits="@string/allowed_symbols"
+                    android:maxLength="32"/>
+
+                <ImageButton
+                    android:id="@+id/show_password_in_registr"
+                    android:layout_width="65dp"
+                    android:layout_height="40dp"
+                    android:background="@null"
+                    android:src="@drawable/ic_show_password"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="56sp"
+                android:padding="18dp"
+                android:gravity="center"
+                android:text="Введите данные о себе:"
+                android:textColor="@color/black"
+                android:background="@color/light_black" />
+
+            <EditText
+                android:id="@+id/surname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="28dp"
+                android:textSize="40sp"
+                android:hint="@string/surname"
+                android:backgroundTint="@color/colorPrimary"
+                android:digits="@string/allowed_symbols_name"
+                android:maxLength="32"/>
+
+            <EditText
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="28dp"
+                android:textSize="40sp"
+                android:hint="@string/name"
+                android:backgroundTint="@color/colorPrimary"
+                android:digits="@string/allowed_symbols_name"
+                android:maxLength="32"/>
+
+            <EditText
+                android:id="@+id/secondSurname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="28dp"
+                android:textSize="40sp"
+                android:hint="@string/secondSurname"
+                android:backgroundTint="@color/colorPrimary"
+                android:digits="@string/allowed_symbols_name"
+                android:maxLength="32"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="День рождения:"
+                android:textSize="54sp"
+                android:background="@color/light_black"
+                android:textColor="@color/black"
+                android:padding="14dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:layout_margin="14dp">
+
+
+                <EditText
+                    android:id="@+id/birthDay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="40sp"
+                    android:layout_marginRight="11dp"
+                    android:maxLength="2"
+                    android:minEms="2"
+                    android:hint="День"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:digits="@string/allowed_numbers"
+                    android:inputType="number"/>
+
+                <EditText
+                    android:id="@+id/birthMonth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLength="2"
+                    android:minEms="2"
+                    android:textSize="40sp"
+                    android:hint="Месяц"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:digits="@string/allowed_numbers"
+                    android:inputType="number"/>
+
+                <EditText
+                    android:id="@+id/birthYear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="11dp"
+                    android:textSize="40sp"
+                    android:maxLength="4"
+                    android:minEms="4"
+                    android:hint="Год"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:digits="@string/allowed_numbers"
+                    android:inputType="number"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/text_hint_registration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:textSize="32sp"
+                android:textColor="@color/colorPrimary"/>
+
+            <Button
+                android:id="@+id/register_button"
+                style="@style/ButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="48dp"
+                android:paddingRight="48dp"
+                android:textSize="38sp"
+                android:text="@string/registration"
+                android:layout_gravity="center_horizontal"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -29,12 +29,21 @@ import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import lombok.SneakyThrows;
+
 public class RegisterFragment extends Fragment {
     private DataDBHelper dataDbHelper;
     private View root;
     private EditText email;
     private EditText password;
     private EditText repeatPassword;
+    private ImageButton showPassword;
+    private EditText birthDay;
+    private EditText birthMonth;
+    private EditText birthYear;
+    private EditText name;
+    private EditText surname;
+    private EditText secondSurname;
 
     @Override
     public void onStart() {
@@ -66,76 +75,147 @@ public class RegisterFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Button b = getView().findViewById(R.id.register_button);
-        ImageButton showPassword = getView().findViewById(R.id.show_password_in_registr);
-        EditText editPassword1 = getView().findViewById(R.id.password);
-        EditText editPassword2 = getView().findViewById(R.id.repeatPassword);
+        Button buttonRegister = getView().findViewById(R.id.register_button);
+        showPassword = getView().findViewById(R.id.show_password_in_registr);
+        password = getView().findViewById(R.id.password);
+        repeatPassword = getView().findViewById(R.id.repeatPassword);
+        birthDay = getView().findViewById(R.id.birthDay);
+        birthMonth = getView().findViewById(R.id.birthMonth);
+        birthYear = getView().findViewById(R.id.birthYear);
+        name = getView().findViewById(R.id.name);
+        surname = getView().findViewById(R.id.surname);
+        secondSurname = getView().findViewById(R.id.secondSurname);
 
         showPassword.setOnClickListener(new View.OnClickListener() { //Создание листенера для кнопки "Показать пароль"
             @Override
             public void onClick(View e) {
                 //Если пароль невиден
-                if (editPassword1.getInputType() == 131201) {
-                    editPassword1.setInputType(1);
-                    editPassword2.setInputType(1);
-                    editPassword1.setSelection(editPassword1.getText().length()); //Установка курсора в конец ввода
-                    editPassword2.setSelection(editPassword2.getText().length()); //Установка курсора в конец ввода
+                if (password.getInputType() == 131201) {
+                    password.setInputType(1);
+                    repeatPassword.setInputType(1);
+                    password.setSelection(password.getText().length()); //Установка курсора в конец ввода
+                    repeatPassword.setSelection(repeatPassword.getText().length()); //Установка курсора в конец ввода
                     showPassword.setColorFilter(getResources().getColor(R.color.light_blue)); //Покраска знака глаза
                 }
                 //Если пароль виден
-                else if (editPassword1.getInputType() == 1) {
-                    editPassword1.setInputType(131201);
-                    editPassword2.setInputType(131201);
-                    editPassword1.setSelection(editPassword1.getText().length()); //Установка курсора в конец ввода
-                    editPassword2.setSelection(editPassword2.getText().length()); //Установка курсора в конец ввода
+                else if (password.getInputType() == 1) {
+                    password.setInputType(131201);
+                    repeatPassword.setInputType(131201);
+                    password.setSelection(password.getText().length()); //Установка курсора в конец ввода
+                    repeatPassword.setSelection(repeatPassword.getText().length()); //Установка курсора в конец ввода
                     showPassword.setColorFilter(getResources().getColor(R.color.black));
                 }
             }
         });
 
-        b.setOnClickListener(e -> {
+        //Листенер для кнопки "Зарегистрироваться"
+        buttonRegister.setOnClickListener(e -> {
             String email2 = String.valueOf(email.getText());
             String password2 = String.valueOf(password.getText());
             String repeatPassword2 = String.valueOf(repeatPassword.getText());
+            String birthDay2 = checkDay(String.valueOf(birthDay.getText()));
+            String birthMonth2 = checkBirthMonth(String.valueOf(birthMonth.getText()));
+            String birthYear2 = checkBirthYear(String.valueOf(birthYear.getText()));
+            String name2 = checkString(String.valueOf(name.getText()));
+            String surname2 = checkString(String.valueOf(surname.getText()));
+            String secondSurname2 = checkString(String.valueOf(secondSurname.getText()));
             boolean pas = checkPassword(password2);
             boolean repPas = checkRepeatPassword(password2, repeatPassword2);
             boolean em = checkEmail(email2);
             TextView viewError = getView().findViewById(R.id.text_hint_registration); //TextView с подсказкой об ошибке
 
-
-            if (repPas && pas && em) { //если пароль email правильный
-                //sendEmail(email2);
-                try {
-                    firstUpdate(email2, password2);
-                } catch (ExecutionException ex) {
-                    ex.printStackTrace();
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-            }
-            if (!pas) {
-                Toast toast = Toast.makeText(this.getContext(),
-                        "Некорректный пароль !", Toast.LENGTH_SHORT);
-                toast.show();
-                viewError.setTextColor(getResources().getColor(R.color.colorPrimary)); //Установка красного цвета
-                viewError.setText("Ошибка: некорректный пароль !\nПароль может содержать в себе латинский алфавит, цифры и нижнее подчеркивание\nДлина пароля не менее 6 символов.");
-            }
-            if (!repPas) {
-                Toast toast = Toast.makeText(this.getContext(),
-                        "Пароли не совпадают !", Toast.LENGTH_SHORT);
-                toast.show();
-                viewError.setTextColor(getResources().getColor(R.color.colorPrimary));
-                viewError.setText("Ошибка: пароли не совпадают");
-            }
-            if (!em) {
+            /**------------------------
+             * Проверка логина и пароля
+             * ------------------------*/
+             if (!em) {
                 Toast toast = Toast.makeText(this.getContext(),
                         "Некорректный email !", Toast.LENGTH_SHORT);
                 toast.show();
-                viewError.setTextColor(getResources().getColor(R.color.colorPrimary));
                 viewError.setText("Ошибка: некорректный Email");
+            }
+            else if (!pas) {
+                Toast toast = Toast.makeText(this.getContext(),
+                        "Некорректный пароль !", Toast.LENGTH_SHORT);
+                toast.show();
+                viewError.setText("Ошибка: некорректный пароль !\nПароль может содержать в себе латинский алфавит, цифры и нижнее подчеркивание\nДлина пароля не менее 6 символов.");
+            }
+            else if (!repPas) {
+                Toast toast = Toast.makeText(this.getContext(),
+                        "Пароли не совпадают !", Toast.LENGTH_SHORT);
+                toast.show();
+                viewError.setText("Ошибка: пароли не совпадают");
+            }
+
+            /**------------------------------
+             * Проверка данных о пользователе
+             * ------------------------------*/
+             else if (surname2.equals("false")) {
+                 Toast toast = Toast.makeText(getContext(),
+                         "Ошибка ввода фамилии!", Toast.LENGTH_SHORT);
+                 toast.show();
+                 viewError.setText("Ошибка ввода фамилии");
+             } else if (name2.equals("false")) {
+                Toast toast = Toast.makeText(getContext(),
+                        "Ошибка ввода имени!", Toast.LENGTH_SHORT);
+                toast.show();
+                viewError.setText("Ошибка ввода имени");
+            } else if (secondSurname2.equals("false")) {
+                Toast toast = Toast.makeText(getContext(),
+                        "Ошибка ввода отчества!", Toast.LENGTH_SHORT);
+                toast.show();
+                viewError.setText("Ошибка ввода отчества");
+            } else if (birthDay2.equals("false")) {
+                Toast toast = Toast.makeText(getContext(),
+                        "Неверный день рождения!", Toast.LENGTH_SHORT);
+                toast.show();
+                viewError.setText("Неверный день рождения");
+            } else if (birthDay2.equals("День рождения не может быть 0")) {
+                Toast toast = Toast.makeText(getContext(),
+                        "День рождения не может быть 0!", Toast.LENGTH_SHORT);
+                toast.show();
+                viewError.setText("День рождения не может быть 0");
+            } else if (birthMonth2.equals("false")) {
+                Toast toast = Toast.makeText(getContext(),
+                        "Неверный месяц рождения!", Toast.LENGTH_SHORT);
+                toast.show();
+                viewError.setText("Неверный месяц рождения");
+            } else if (birthMonth2.equals("Месяц рождения не может быть 0")) {
+                Toast toast = Toast.makeText(getContext(),
+                        "Месяц рождения не может быть 0!", Toast.LENGTH_SHORT);
+                toast.show();
+                viewError.setText("Месяц рождения не может быть 0");
+            } else if (birthYear2.equals("false")) {
+                Toast toast = Toast.makeText(getContext(),
+                        "Неверный год рождения!", Toast.LENGTH_SHORT);
+                toast.show();
+                viewError.setText("Неверный год рождения");
+            } else {
+                 String birthData = birthDay2 + "." + birthMonth2 + "." + birthYear2;
+                 String fio = surname2 + " " + name2 + " " + secondSurname2;
+                //Если все введено корректно - то только тогда шлем запрос на сервер
+                try {
+                    SendOrUpdateRequest sendOrUpdateRequest = new SendOrUpdateRequest(requireContext(), getFragmentManager(),
+                            String.valueOf(email.getText()), String.valueOf(password.getText()), fio, birthData, "firstUpdate");
+                    sendOrUpdateRequest.execute();
+                    String otvet = sendOrUpdateRequest.get();
+                    //Если такой email зарегистрирован - то говорим
+                    if (otvet.equals("yes")) {
+                        Toast toast = Toast.makeText(getContext(),
+                                "Такой email уже зарегистрирован!", Toast.LENGTH_SHORT);
+                        toast.show();
+                        viewError.setText("Такой email уже зарегистрирован");
+                    } else {
+                        //Иначе - все хорошо и мы заносим пользователя в БД и переходим дальше
+                        addToSqLite(otvet);
+                        goToLK();
+                    }
+                } catch (Exception ex) {
+                    System.out.println(ex.getMessage());
+                }
             }
         });
     }
+
 
     private boolean checkEmail(String email) {
         String emailPravilo = "^.+@+.+\\..+$";
@@ -143,6 +223,7 @@ public class RegisterFragment extends Fragment {
         Matcher matcher = pattern.matcher(email);
         return matcher.find();
     }
+
 
     private boolean checkPassword(String password) {
         //String passwordPravilo = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^\\w\\s]).{6,}$";
@@ -152,6 +233,7 @@ public class RegisterFragment extends Fragment {
         return matcher.find();
     }
 
+
     private boolean checkRepeatPassword(String password, String repeatPassword) {
         if (password.equals(repeatPassword)) {
             return true;
@@ -159,21 +241,6 @@ public class RegisterFragment extends Fragment {
         return false;
     }
 
-    private void firstUpdate(String email, String password) throws ExecutionException, InterruptedException {
-        try {
-            SendOrUpdateRequest sendOrUpdateRequest = new SendOrUpdateRequest(requireContext(), getFragmentManager(), email, password, "firstUpdate");
-            sendOrUpdateRequest.execute();
-            String otvet = sendOrUpdateRequest.get();
-            if (otvet.equals("yes")) {
-                Toast toast = Toast.makeText(getContext(),
-                        "Такой email уже зарегистрирован !", Toast.LENGTH_SHORT);
-                toast.show();
-            } else {
-                addToSqLite(otvet);
-            }
-        } catch (Exception e) {
-        }
-    }
 
     private void addToSqLite(String hex) {
         SQLiteDatabase sqLiteDatabase = dataDbHelper.getWritableDatabase();
@@ -189,26 +256,94 @@ public class RegisterFragment extends Fragment {
             sqLiteDatabase.insert(DataDBHelper.TABLE_CONTACTS, null, contentValues);
         }
         dataDbHelper.close();
-        goToNextFragmentRegistration();
     }
 
-    /*@SneakyThrows
-    private void sendEmail(String email){
-        SendOrUpdateRequest sendOrUpdateRequest = new SendOrUpdateRequest(email,"sendMessage");
-        sendOrUpdateRequest.execute();
-        String otvet = sendOrUpdateRequest.get();
-        System.out.println(otvet);
-        if(otvet.equals("no")){
-            qwe();
-        } else {
-            Toast toast = Toast.makeText(getContext(),
-                    "Такой email уже зарегистрирован !", Toast.LENGTH_SHORT);
-            toast.show();
+
+    private String checkString(String string) {
+
+        String stringPravilo = "^[a-zа-яA-ZА-Я]{1,}$";
+        Pattern pattern = Pattern.compile(stringPravilo);
+        Matcher matcher = pattern.matcher(string);
+        if (matcher.find()) {
+            //Если было с маленькой буквы - делаем в большую
+            if (Character.isLowerCase(string.charAt(0))) {
+                string = string.substring(0, 1).toUpperCase() + string.substring(1);
+            }
+            return string;
         }
-    }*/
-
-    private void goToNextFragmentRegistration() {
-        RegisterFragmentDirections.ActionRegisterFragment3ToRegisterFragment2 action = RegisterFragmentDirections.actionRegisterFragment3ToRegisterFragment2(String.valueOf(email.getText()));
-        Navigation.findNavController(requireView()).navigate(action);
+        return "false";
     }
+
+
+    private String checkDay(String birthDay) {
+        String birthDayPravilo = "^[0-9]+$";
+        Pattern pattern = Pattern.compile(birthDayPravilo);
+        Matcher matcher = pattern.matcher(birthDay);
+        boolean flag = matcher.find();
+        if (!flag) { //передалать switch case
+            return "false";
+        } else {
+            int intBirthDay = Integer.parseInt(birthDay);
+            if (intBirthDay > 0 && intBirthDay <= 31) {
+                if (intBirthDay == 0) {
+                    return "День рождения не может быть 0";
+                }
+                if (birthDay.length() == 1) {
+                    return "0" + intBirthDay;
+                }
+                if ((birthDay.substring(0, 1).equals("0") && Integer.parseInt(birthDay.substring(1, 2)) >= 1) || (Integer.parseInt(birthDay.substring(0, 1)) >= 1 && Integer.parseInt(birthDay.substring(1, 2)) <= 9)) {
+                    return Integer.toString(intBirthDay);
+                }
+            }
+        }
+        return "false";
+    }
+
+
+    private String checkBirthMonth(String birthMonth) {
+        String birthMonthPravilo = "^[0-9]+$";
+        Pattern pattern = Pattern.compile(birthMonthPravilo);
+        Matcher matcher = pattern.matcher(birthMonth);
+        if (!matcher.find()) { //передалать switch case
+            return "false";
+        } else {
+            int intBirthMonth = Integer.parseInt(birthMonth);
+            if (intBirthMonth > 0 && intBirthMonth <= 12) {
+                if (intBirthMonth == 0) {
+                    return "Месяц не может быть 0";
+                }
+                if (birthMonth.length() == 1) {
+                    return "0" + birthMonth;
+                }
+                if (birthMonth.length() > 1) {
+                    if ((birthMonth.substring(0, 1).equals("0") && Integer.parseInt(birthMonth.substring(1, 2)) >= 1) || (Integer.parseInt(birthMonth.substring(0, 1)) == 1 && Integer.parseInt(birthMonth.substring(1, 2)) <= 2)) {
+                        return birthMonth;
+                    }
+                }
+            }
+        }
+        return "false";
+    }
+
+
+    private String checkBirthYear(String birthYear) {
+        String birthYearPravilo = "^[0-9]+$";
+        Pattern pattern = Pattern.compile(birthYearPravilo);
+        Matcher matcher = pattern.matcher(birthYear);
+        if (!matcher.find()) {
+            return "false";
+        } else {
+            int intBirthYear = Integer.parseInt(birthYear);
+            if (birthYear.length() == 4 && intBirthYear > 1950 && intBirthYear < 2010) {
+                return Integer.toString(intBirthYear);
+            }
+        }
+        return "false";
+    }
+
+
+    private void goToLK() {
+        Navigation.findNavController(getView()).navigate(R.id.action_registerFragment_to_myCabinetFragment);
+    }
+
 }
