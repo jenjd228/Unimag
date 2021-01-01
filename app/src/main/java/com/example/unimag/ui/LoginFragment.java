@@ -110,10 +110,8 @@ public class LoginFragment extends Fragment {
                     }
                 } catch (ExecutionException ex) {
                     ex.printStackTrace();
-                    System.out.println("1111111111111");
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
-                    System.out.println("2222222222222");
                 }
             } else {
                 Toast toast = Toast.makeText(getContext(),

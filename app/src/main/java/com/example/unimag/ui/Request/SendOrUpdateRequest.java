@@ -23,15 +23,17 @@ public class SendOrUpdateRequest extends AsyncTask<Void, Void, String> {
     private String birthDay;
     private String methodName;
     private String password;
+    private String secureKod;
+
     private FragmentManager manager;
     @SuppressLint("StaticFieldLeak")
     private Context context;
 
-    public SendOrUpdateRequest(Context context, FragmentManager manager, String email, String password, String methodName) {
+    public SendOrUpdateRequest(Context context, FragmentManager manager, String fio, String secureKod, String methodName) {
         this.context = context;
         this.manager = manager;
-        this.email = email;
-        this.password = password;
+        this.fio = fio;
+        this.secureKod = secureKod;
         this.methodName = methodName;
     }
 
@@ -75,18 +77,17 @@ public class SendOrUpdateRequest extends AsyncTask<Void, Void, String> {
                         .build();
                 break;
             }
-            /*case "userUpdate": {
+            case "userUpdate": {
                 RequestBody formBody = new FormBody.Builder()
-                        .add("email", email)
                         .add("fio", fio)
-                        .add("birthData", birthDay)
+                        .add("secureKod",secureKod)
                         .build();
                 request = new Request.Builder()
                         .url("http://" + GlobalVar.ip + ":8080/userUpdate")
                         .post(formBody)
                         .build();
                 break;
-            }*/
+            }
         }
 
         try {

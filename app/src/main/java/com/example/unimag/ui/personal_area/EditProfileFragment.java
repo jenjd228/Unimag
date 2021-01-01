@@ -1,5 +1,6 @@
 package com.example.unimag.ui.personal_area;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,25 +24,43 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.unimag.R;
+import com.example.unimag.ui.MyCustomPatterns;
+import com.example.unimag.ui.Request.SendOrUpdateRequest;
+import com.example.unimag.ui.SqLite.DataDBHelper;
 import com.example.unimag.ui.ThreadCheckingConnection;
+
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 public class EditProfileFragment extends Fragment {
 
-    private ImageView editImageUser;
-    private EditText editTextFirstName;
-    private EditText editTextSurname;
-    private EditText editTextSecondSurname;
-    private EditText editTextBirthDay;
-    private EditText editTextBirthMonth;
-    private EditText editTextBirthYear;
-    private Button SaveEdit;
+    private DataDBHelper dataDbHelper;
 
+    private ImageView editImageUser;
+
+    private String secureKod;
+
+    private EditText editTextName;
+    private EditText editTextSurname;
+    private EditText editTextPatronymic;
+
+    private Button saveEdit;
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        dataDbHelper = new DataDBHelper(getActivity());
+        secureKod = dataDbHelper.getSecureKod(dataDbHelper);
+        dataDbHelper.close();
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar())
+                .setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
         new ThreadCheckingConnection(getParentFragmentManager(), requireContext());
 
@@ -48,21 +68,61 @@ public class EditProfileFragment extends Fragment {
     }
 
 
+    @SuppressLint("ShowToast")
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        editImageUser = getView().findViewById(R.id.edit_image_user);
-        editTextFirstName = getView().findViewById(R.id.edit_name);
-        editTextSurname = getView().findViewById(R.id.edit_surname);
-        editTextSecondSurname = getView().findViewById(R.id.edit_secondSurname);
-        editTextBirthDay = getView().findViewById(R.id.edit_birthDay);
-        editTextBirthMonth = getView().findViewById(R.id.edit_birthMonth);
-        editTextBirthYear = getView().findViewById(R.id.edit_birthYear);
+        editImageUser = requireView().findViewById(R.id.edit_image_user);
+        editTextName = requireView().findViewById(R.id.edit_name);
+        editTextSurname = requireView().findViewById(R.id.edit_surname);
+        editTextPatronymic = requireView().findViewById(R.id.edit_secondSurname);
+        saveEdit = requireView().findViewById(R.id.register_button2);
 
+        saveEdit.setOnClickListener(view -> {
+            String name = String.valueOf(editTextName.getText());
+            String surname = String.valueOf(editTextSurname.getText());
+            String patronymic = String.valueOf(editTextPatronymic.getText());
+
+            editTextName.setError(null);
+            editTextSurname.setError(null);
+            editTextPatronymic.setError(null);
+
+            if (!MyCustomPatterns.getInstance().isValidString(surname)){
+                editTextSurname.setError("Incorrect surname!");
+            }else if (!MyCustomPatterns.getInstance().isValidString(name)){
+                editTextName.setError("Incorrect name!");
+            }else if (!MyCustomPatterns.getInstance().isValidString(patronymic)){
+                editTextPatronymic.setError("Incorrect patronymic!");
+            }else {
+                String fio = MyCustomPatterns.getInstance().firstCharToUpperCase(surname) + " "
+                        + MyCustomPatterns.getInstance().firstCharToUpperCase(name) + " "
+                        + MyCustomPatterns.getInstance().firstCharToUpperCase(patronymic);
+
+                SendOrUpdateRequest sendOrUpdateRequest = new SendOrUpdateRequest(getContext(),
+                        getParentFragmentManager(),fio,secureKod,"userUpdate");
+                sendOrUpdateRequest.execute();
+
+                try {
+                    String otvet = sendOrUpdateRequest.get();
+                    if (otvet.equals("OK")){
+                        Toast.makeText(getContext(),"Успешно!",Toast.LENGTH_LONG).show();
+                        editTextPatronymic.setText("");
+                        editTextSurname.setText("");
+                        editTextName.setText("");
+                    }else {
+                        Toast.makeText(getContext(),"Ошибка!",Toast.LENGTH_LONG).show();
+                    }
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            
+        });
         /*Сделать setText по умолчанию для всех полей*/
-        setImageUser("");
-
+        setImageUser();
     }
 
 
@@ -86,8 +146,8 @@ public class EditProfileFragment extends Fragment {
 
 
     //Функция установки аватарки пользователя
-    private void setImageUser(String URL) {
-        ImageView imageUser = getView().findViewById(R.id.edit_image_user);
+    private void setImageUser() {
+        ImageView imageUser = requireView().findViewById(R.id.edit_image_user);
 
         Bitmap startBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.user); //Наше изображение
         Bitmap bitmap = scaleCenterCrop(startBitmap, (int) getResources().getDimension(R.dimen.dp150), (int) getResources().getDimension(R.dimen.dp150));
@@ -100,7 +160,7 @@ public class EditProfileFragment extends Fragment {
         final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight()); //Создаем прямоугольник
         final RectF rectF = new RectF(rect); //Создаем изменяемый прямоуглоьник
         final float roundPx = bitmap.getWidth() / 2;
-        ; //Закругление в пикселях
+        //Закругление в пикселях
 
         paint.setAntiAlias(true);
         canvas.drawARGB(0, 0, 0, 0);
@@ -111,5 +171,6 @@ public class EditProfileFragment extends Fragment {
         canvas.drawBitmap(bitmap, rect, rect, paint);
         imageUser.setImageBitmap(output);
     }
+
 
 }

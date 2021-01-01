@@ -65,60 +65,6 @@
             android:digits="@string/allowed_symbols_name"
             android:maxLength="32"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="Ваш день, месяц и год рождения."
-            android:textSize="25sp"
-            android:backgroundTint="@color/colorPrimary"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/edit_birthDay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="0dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:maxLength="2"
-                android:hint="День"
-                android:backgroundTint="@color/colorPrimary"
-                android:digits="@string/allowed_numbers"
-                android:inputType="number"/>
-
-            <EditText
-                android:id="@+id/edit_birthMonth"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="0dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:maxLength="2"
-                android:hint="Месяц"
-                android:backgroundTint="@color/colorPrimary"
-                android:digits="@string/allowed_numbers"
-                android:inputType="number"/>
-
-            <EditText
-                android:id="@+id/edit_birthYear"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="0dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:maxLength="4"
-                android:hint="Год"
-                android:backgroundTint="@color/colorPrimary"
-                android:digits="@string/allowed_numbers"
-                android:inputType="number"/>
-        </LinearLayout>
 
         <Button
             android:id="@+id/register_button2"

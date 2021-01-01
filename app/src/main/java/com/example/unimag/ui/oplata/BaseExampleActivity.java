@@ -182,6 +182,7 @@ abstract public class BaseExampleActivity extends Activity implements
 
         final String email = editEmail.getText().toString();
         final String description = editDescription.getText().toString();
+
         if (TextUtils.isEmpty(email) || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             editEmail.setError(getString(R.string.e_invalid_email));
             return null;
