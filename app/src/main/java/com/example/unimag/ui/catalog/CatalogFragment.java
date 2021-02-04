@@ -73,7 +73,7 @@ public class CatalogFragment extends Fragment {
             }
 
             if (CustomGridAdapter.getInstance().getCount() == 0) {
-                getRequest = new GetRequest(requireContext(), getFragmentManager(), currentNumberList, "getList");
+                getRequest = new GetRequest(requireContext(), getParentFragmentManager(), currentNumberList, "getList");
                 getRequest.execute();
                 String response = getRequest.get();
 

@@ -3,8 +3,6 @@ package com.example.unimag.ui.basket;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
@@ -36,7 +33,7 @@ public class GridAdapterBasket extends BaseAdapter {
 
     private List<BasketProductDTO> listData;
     private List<BasketProductDTO> listProductForPay = new ArrayList<>();
-    ;
+
     private LayoutInflater layoutInflater;
     private Context context;
     private String secureKod = null;
@@ -66,7 +63,6 @@ public class GridAdapterBasket extends BaseAdapter {
         return position;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
     public View getView(int position, View convertView, ViewGroup parent) {
         dataDbHelper = new DataDBHelper(context);
@@ -99,7 +95,7 @@ public class GridAdapterBasket extends BaseAdapter {
         //holder.productDescription.setText("" + product.getDescriptions());
         holder.productPrice.setText("" + product.getPrice() * product.getCount());
         holder.productCount.setText("" + product.getCount());
-        holder.productSize.setText(""+product.getSize());
+        holder.productSize.setText("" + product.getSize());
 
         /*if (product.getSize() != null) {
             holder.productAddInformational.setText("" + product.getColor() + String.valueOf(product.getSize()) + " размер ");
