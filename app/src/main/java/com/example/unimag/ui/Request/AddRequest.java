@@ -20,6 +20,7 @@ import okhttp3.Response;
 public class AddRequest extends AsyncTask<Void, Void, String> {
     private String secureKod;
     private Integer productId;
+    private String productHash;
     private String methodName;
     private String productList;
     private String orderId;
@@ -41,10 +42,10 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
         this.size = null;
     }
 
-    public AddRequest(Context context, FragmentManager manager, Integer productId, String secureKod, String color, String size, String methodName) {
+    public AddRequest(Context context, FragmentManager manager, String productHash, String secureKod, String color, String size, String methodName) {
         this.context = context;
         this.manager = manager;
-        this.productId = productId;
+        this.productHash = productHash;
         this.secureKod = secureKod;
         this.color = color;
         this.size = size;
@@ -73,7 +74,7 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
         switch (methodName) {
             case "addToBasket": {
                 RequestBody formBody = new FormBody.Builder()
-                        .add("id", productId.toString())
+                        .add("productHash", productHash)
                         .add("color", color)
                         .add("size", size)
                         .add("secureKod", secureKod)

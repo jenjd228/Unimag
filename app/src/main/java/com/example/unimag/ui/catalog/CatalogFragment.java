@@ -19,7 +19,7 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.example.unimag.R;
-import com.example.unimag.ui.DTO.ProductDTO;
+import com.example.unimag.ui.DTO.CatalogDTO;
 import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.ThreadCheckingConnection;
 import com.example.unimag.ui.sort.GlobalSort;
@@ -82,9 +82,9 @@ public class CatalogFragment extends Fragment {
                             "Товары закончились!", Toast.LENGTH_SHORT);
                     toast.show();
                 } else {
-                    List<ProductDTO> participantJsonList;
+                    List<CatalogDTO> participantJsonList;
                     ObjectMapper objectMapper = new ObjectMapper();
-                    participantJsonList = objectMapper.readValue(response, new TypeReference<List<ProductDTO>>() {
+                    participantJsonList = objectMapper.readValue(response, new TypeReference<List<CatalogDTO>>() {
                     });
                     CustomGridAdapter.getInstance().addList(participantJsonList);
                     currentNumberList++;
@@ -102,9 +102,9 @@ public class CatalogFragment extends Fragment {
 
         gridView.setOnItemClickListener((a, v, position, id) -> {
             Object o = gridView.getItemAtPosition(position);
-            ProductDTO productDTO = (ProductDTO) o;
+            CatalogDTO catalogDTO = (CatalogDTO) o;
 
-            CatalogFragmentDirections.ActionNavigationCatalogToProductFragment2 action = CatalogFragmentDirections.actionNavigationCatalogToProductFragment2(productDTO.getImageName(), productDTO.getTitle(), productDTO.getDescriptions(), productDTO.getPrice(), productDTO.getId(), productDTO.getCategory(), productDTO.getListImage());
+            CatalogFragmentDirections.ActionNavigationCatalogToProductFragment2 action = CatalogFragmentDirections.actionNavigationCatalogToProductFragment2(catalogDTO.getMainImage(), catalogDTO.getTitle(), catalogDTO.getDescriptions(), catalogDTO.getPrice(), catalogDTO.getHash(), catalogDTO.getCategory(), catalogDTO.getListImage());
             Navigation.findNavController(v).navigate(action);
         });
 
@@ -161,9 +161,9 @@ public class CatalogFragment extends Fragment {
                             isEnd = true; //Товары закончились
                             //Завершение анимации
                         } else {
-                            List<ProductDTO> participantJsonList;
+                            List<CatalogDTO> participantJsonList;
                             ObjectMapper objectMapper = new ObjectMapper();
-                            participantJsonList = objectMapper.readValue(otvet, new TypeReference<List<ProductDTO>>() {
+                            participantJsonList = objectMapper.readValue(otvet, new TypeReference<List<CatalogDTO>>() {
                             });
                             CustomGridAdapter.getInstance().addList(participantJsonList);
                             currentNumberList++;

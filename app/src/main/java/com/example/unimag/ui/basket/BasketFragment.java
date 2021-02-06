@@ -22,7 +22,7 @@ import androidx.navigation.Navigation;
 import com.example.unimag.R;
 import com.example.unimag.ui.DTO.BasketProductDTO;
 import com.example.unimag.ui.DTO.PayDTO;
-import com.example.unimag.ui.DTO.ProductDTO;
+import com.example.unimag.ui.DTO.CatalogDTO;
 import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
 import com.example.unimag.ui.ThreadCheckingConnection;
@@ -152,9 +152,9 @@ public class BasketFragment extends Fragment {
 
         gridView.setOnItemClickListener((a, v, position, id) -> {
             Object o = gridView.getItemAtPosition(position);
-            ProductDTO productDTO = (ProductDTO) o;
+            CatalogDTO catalogDTO = (CatalogDTO) o;
 
-            BasketFragmentDirections.ActionNavigationBasketToProductFragment action = BasketFragmentDirections.actionNavigationBasketToProductFragment(productDTO.getImageName(), productDTO.getTitle(), productDTO.getDescriptions(), productDTO.getPrice(), productDTO.getId(), productDTO.getCategory(), productDTO.getListImage());
+            BasketFragmentDirections.ActionNavigationBasketToProductFragment action = BasketFragmentDirections.actionNavigationBasketToProductFragment(catalogDTO.getMainImage(), catalogDTO.getTitle(), catalogDTO.getDescriptions(), catalogDTO.getPrice(), catalogDTO.getHash(), catalogDTO.getCategory(), catalogDTO.getListImage());
             Navigation.findNavController(v).navigate(action);
         });
 

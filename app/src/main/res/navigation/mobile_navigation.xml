@@ -106,7 +106,7 @@
         android:label="@string/productFrafment"
         tools:layout="@layout/fragment_product">
         <argument
-            android:name="imageName"
+            android:name="mainImage"
             app:argType="string" />
         <argument
             android:name="title"
@@ -118,8 +118,8 @@
             android:name="price"
             app:argType="integer" />
         <argument
-            android:name="productId"
-            app:argType="integer" />
+            android:name="productHash"
+            app:argType="string" />
         <argument
             android:name="category"
             app:argType="string" />

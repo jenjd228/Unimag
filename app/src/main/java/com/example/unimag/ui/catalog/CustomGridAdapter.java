@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.unimag.R;
-import com.example.unimag.ui.DTO.ProductDTO;
+import com.example.unimag.ui.DTO.CatalogDTO;
 import com.example.unimag.ui.GlobalVar;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.List;
 
 public final class CustomGridAdapter extends BaseAdapter {
 
-    private static List<ProductDTO> listData;
+    private static List<CatalogDTO> listData;
     private LayoutInflater layoutInflater;
     private static CustomGridAdapter instance;
 
@@ -71,12 +71,12 @@ public final class CustomGridAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        ProductDTO productDTO = listData.get(position);
-        holder.productTitle.setText(productDTO.getTitle());
-        holder.productDescription.setText("" + productDTO.getPrice());
+        CatalogDTO catalogDTO = listData.get(position);
+        holder.productTitle.setText(catalogDTO.getTitle());
+        holder.productDescription.setText("" + catalogDTO.getPrice());
 
         //int imageId = this.getMipmapResIdByName("image");
-        Glide.with(convertView).load("http://" + GlobalVar.ip + ":8080/upload/" + productDTO.getImageName()).into(holder.flagView);
+        Glide.with(convertView).load(catalogDTO.getMainImage()).into(holder.flagView);
 
 
         return convertView;
@@ -96,7 +96,7 @@ public final class CustomGridAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void addList(List<ProductDTO> listData2) {
+    public void addList(List<CatalogDTO> listData2) {
         listData.addAll(listData2);
         notifyDataSetChanged();
     }

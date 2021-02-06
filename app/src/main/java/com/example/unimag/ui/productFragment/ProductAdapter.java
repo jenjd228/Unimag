@@ -60,9 +60,8 @@ public class ProductAdapter extends PagerAdapter {
         imageView = itemView.findViewById(R.id.image_product_view);
 
         numberStr.setText((position + 1) + "/" + getCount());
-        //?????????????
-        System.out.println(listImageName.get(position) + "-----------------------------------");
-        Glide.with(container).load("http://" + GlobalVar.ip + ":8080/upload/" + listImageName.get(position)).into(imageView);
+
+        Glide.with(container).load(listImageName.get(position)).into(imageView);
 
         container.addView(itemView);
 

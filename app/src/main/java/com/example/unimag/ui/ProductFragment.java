@@ -31,17 +31,18 @@ import com.example.unimag.ui.productFragment.ProductAdapter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 
 public class ProductFragment extends Fragment { //Класс шаблона страницы с продуктом
 
     private DataDBHelper dataDbHelper;
-    private Integer productId;
+    private String productHash;
     private String title;
     private String descriptions;
     private Integer price;
-    private String imageName;
+    private String mainImage;
     private String category;
     private String secureKod = null;
     private ArrayList<String> listSizeClothes = new ArrayList<>(); //Лист с доступными размерами одежды для данной страницы
@@ -59,11 +60,11 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
         secureKod = dataDbHelper.getSecureKod(dataDbHelper);
         dataDbHelper.close();
 
-        productId = ProductFragmentArgs.fromBundle(requireArguments()).getProductId();
+        productHash = ProductFragmentArgs.fromBundle(requireArguments()).getProductHash();
         title = ProductFragmentArgs.fromBundle(requireArguments()).getTitle();
         descriptions = ProductFragmentArgs.fromBundle(requireArguments()).getDescriptions();
         price = ProductFragmentArgs.fromBundle(requireArguments()).getPrice();
-        imageName = ProductFragmentArgs.fromBundle(requireArguments()).getImageName();
+        mainImage = ProductFragmentArgs.fromBundle(requireArguments()).getMainImage();
         category = ProductFragmentArgs.fromBundle(requireArguments()).getCategory();
         listImage = ProductFragmentArgs.fromBundle(requireArguments()).getListImage();
     }
@@ -80,24 +81,24 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
         return root;
     }
 
-    public void setTitleProduct(String title) { //Функция установки значения названия продукта
+    public void setTitleProduct() { //Функция установки значения названия продукта
         TextView titleProduct = getView().findViewById(R.id.title_product);
         titleProduct.setText(title);
     }
 
-    public void setPriceProduct(Integer price) { //Функция установки значения цены продукта
+    public void setPriceProduct() { //Функция установки значения цены продукта
         TextView priceProduct = getView().findViewById(R.id.price_product);
         priceProduct.setText(String.valueOf(price));
     }
 
-    public void setImageProduct(String mainImage) { //Функция установки изображения продукта
+    public void setImageProduct() { //Функция установки изображения продукта
         //ImageView imageProduct = getView().findViewById(R.id.image_product);
         //Glide.with(getView()).load("http://"+GlobalVar.ip+":8080/upload/"+url).into(imageProduct);
         List<String> strings = new ArrayList<>();
         ProductAdapter adapter;
 
         if (listImage.equals(" ")) {
-            strings.add(imageName);
+            strings.add(mainImage);
             adapter = new ProductAdapter(ProductFragment.this.getContext(), strings);
         } else {
             strings = Arrays.asList(listImage.split(","));
@@ -111,17 +112,17 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
 
     }
 
-    public void setDescriptionProduct(String description) { //Функция установки значения описания продукта
-        TextView descriptionProduct = getView().findViewById(R.id.description_product);
-        descriptionProduct.setText("Описание: " + description);
+    public void setDescriptionProduct() { //Функция установки значения описания продукта
+        TextView descriptionProduct = requireView().findViewById(R.id.description_product);
+        descriptionProduct.setText("Описание: " + descriptions);
     }
 
     public void setInformationAboutProduct() { //Функция установки всей информации о продукте
         //Через idProduct связываемся и получаем нуную инфу тут
-        setImageProduct(imageName);
-        setTitleProduct(title);
-        setPriceProduct(price);
-        setDescriptionProduct(descriptions);
+        setImageProduct();
+        setTitleProduct();
+        setPriceProduct();
+        setDescriptionProduct();
     }
 
     @SuppressLint("ShowToast")
@@ -184,7 +185,7 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
                         @Override
                         public void onClick(View v) {
                             /**Здесь должна быть отправка размера*/
-                            AddRequest addRequest = new AddRequest(requireContext(), getParentFragmentManager(), productId, secureKod, "Non", spinner.getSelectedItem().toString(), "addToBasket"); //Отправляем дополнительно размер
+                            AddRequest addRequest = new AddRequest(requireContext(), getParentFragmentManager(), productHash, secureKod, "Non", spinner.getSelectedItem().toString(), "addToBasket"); //Отправляем дополнительно размер
                             addRequest.execute();
 
                             try {
@@ -199,7 +200,7 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
                     });
                 } else {
                     //Иначе если не одежда то просто запрос
-                    AddRequest addRequest = new AddRequest(requireContext(), getParentFragmentManager(), productId, secureKod, "Non","Non", "addToBasket");
+                    AddRequest addRequest = new AddRequest(requireContext(), getParentFragmentManager(), productHash, secureKod, "Non","Non", "addToBasket");
                     addRequest.execute();
                     try {
                         String otvet = addRequest.get();
