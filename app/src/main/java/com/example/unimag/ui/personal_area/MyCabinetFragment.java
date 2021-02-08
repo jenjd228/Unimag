@@ -86,12 +86,13 @@ public class MyCabinetFragment extends Fragment {
 
         }else {
             try {
-                GetRequest getRequest = new GetRequest(requireContext(),getFragmentManager(), secureKod, "getUser");
+                GetRequest getRequest = new GetRequest(requireContext(),getParentFragmentManager(), secureKod, "getUser");
                 getRequest.execute();
                 if (getRequest.get().equals("Error!")) {
                     Toast toast = Toast.makeText(getContext(),
                             "Ошибка!", Toast.LENGTH_SHORT);
                     toast.show();
+
 
                 } else {
                     ObjectMapper objectMapper = new ObjectMapper();

@@ -76,6 +76,7 @@ public final class CustomGridAdapter extends BaseAdapter {
         holder.productDescription.setText("" + catalogDTO.getPrice());
 
         //int imageId = this.getMipmapResIdByName("image");
+
         Glide.with(convertView).load(catalogDTO.getMainImage()).into(holder.flagView);
 
 

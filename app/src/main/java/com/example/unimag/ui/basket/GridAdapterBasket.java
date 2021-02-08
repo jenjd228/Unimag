@@ -103,7 +103,7 @@ public class GridAdapterBasket extends BaseAdapter {
             holder.productAddInformational.setText("" + product.getColor());
         }*/
 
-        Integer id = product.getProductId();
+        String hash = product.getProductHash();
 
         if (position % 2 == 0) {
             holder.basketLayout.setBackgroundColor(Color.parseColor("#dadfe0"));
@@ -111,10 +111,10 @@ public class GridAdapterBasket extends BaseAdapter {
         //int imageId = this.getMipmapResIdByName("image");
 
         //holder.imageView.setImageResource(imageId);
-        Glide.with(convertView).load("http://" + GlobalVar.ip + ":8080/upload/" + product.getImageName()).into(holder.imageView);
+        Glide.with(convertView).load(product.getMainImage()).into(holder.imageView);
 
         holder.deleteButton.setOnClickListener(v -> {
-            DeleteRequest deleteRequest = new DeleteRequest(context, manager, secureKod, product.getProductId(), "deleteBasketProduct");
+            DeleteRequest deleteRequest = new DeleteRequest(context, manager, secureKod, product.getProductHash(), "deleteBasketProduct");
             deleteRequest.execute();
             try {
                 if (deleteRequest.get().equals("ok")) {
@@ -141,7 +141,7 @@ public class GridAdapterBasket extends BaseAdapter {
             if (secureKod == null) {
 
             } else {
-                AddRequest addRequest = new AddRequest(context, manager, product.getProductId(), secureKod, "addOneProductToBasket");
+                AddRequest addRequest = new AddRequest(context, manager, product.getProductHash(), secureKod, "addOneProductToBasket");
                 addRequest.execute();
                 try {
                     if (addRequest.get().equals("ok")) {
@@ -166,7 +166,7 @@ public class GridAdapterBasket extends BaseAdapter {
 
             } else {
                 if (secureKod != null) {
-                    DeleteRequest deleteRequest = new DeleteRequest(context, manager, secureKod, product.getProductId(), "deleteOneProductFromBasket");
+                    DeleteRequest deleteRequest = new DeleteRequest(context, manager, secureKod, product.getProductHash(), "deleteOneProductFromBasket");
                     deleteRequest.execute();
                     try {
                         if (deleteRequest.get().equals("ok")) {
@@ -190,9 +190,6 @@ public class GridAdapterBasket extends BaseAdapter {
 
         holder.itemCheckBox.setOnClickListener(
                 v -> {
-                    Toast toast = Toast.makeText(context,
-                            "Выбран товар с id = " + id + " - " + holder.itemCheckBox.isChecked(), Toast.LENGTH_SHORT);
-                    toast.show();
                     if (holder.itemCheckBox.isChecked()) {
                         listProductForPay.add(product);
                     } else {
@@ -218,9 +215,9 @@ public class GridAdapterBasket extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public boolean findProductInBasketList(Integer id) {
+    public boolean findProductInBasketList(String hash) {
         for (BasketProductDTO basketProduct : listData) {
-            if (basketProduct.getProductId().equals(id)) {
+            if (basketProduct.getProductHash().equals(hash)) {
                 return true;
             }
         }

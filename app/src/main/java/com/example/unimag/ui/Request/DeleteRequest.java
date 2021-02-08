@@ -19,17 +19,17 @@ import okhttp3.Response;
 
 public class DeleteRequest extends AsyncTask<Void, Void, String> {
     private String secureKod;
-    private Integer productId;
+    private String productHash;
     private String methodName;
     private FragmentManager manager;
     @SuppressLint("StaticFieldLeak")
     private Context context;
 
-    public DeleteRequest(Context context, FragmentManager manager, String secureKod, Integer productId, String methodName) {
+    public DeleteRequest(Context context, FragmentManager manager, String secureKod, String productHash, String methodName) {
         this.context = context;
         this.manager = manager;
         this.secureKod = secureKod;
-        this.productId = productId;
+        this.productHash = productHash;
         this.methodName = methodName;
     }
 
@@ -42,14 +42,14 @@ public class DeleteRequest extends AsyncTask<Void, Void, String> {
         switch (methodName) {
             case "deleteBasketProduct": {
                 request = new Request.Builder()
-                        .url("http://" + GlobalVar.ip + ":8080/deleteBasketProduct/" + secureKod + "/" + productId) // The URL to send the data to
+                        .url("http://" + GlobalVar.ip + ":8080/deleteBasketProduct/" + secureKod + "/" + productHash) // The URL to send the data to
                         .get()
                         .build();
                 break;
             }
             case "deleteOneProductFromBasket": {
                 RequestBody formBody = new FormBody.Builder()
-                        .add("id", productId.toString())
+                        .add("productHash", productHash)
                         .add("secureKod", secureKod)
                         .build();
                 request = new Request.Builder()

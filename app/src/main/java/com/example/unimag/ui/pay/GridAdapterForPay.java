@@ -75,7 +75,7 @@ public class GridAdapterForPay extends BaseAdapter {
             holder.orderLayout.setBackgroundColor(Color.parseColor("#dadfe0"));
         }*/
 
-        Glide.with(convertView).load("http://" + GlobalVar.ip + ":8080/upload/" + product.getImageName()).into(holder.imageView);
+        Glide.with(convertView).load(product.getMainImage()).into(holder.imageView);
 
         return convertView;
     }

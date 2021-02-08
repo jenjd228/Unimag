@@ -99,7 +99,6 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
 
         if (listImage.equals(" ")) {
             strings.add(mainImage);
-            adapter = new ProductAdapter(ProductFragment.this.getContext(), strings);
         } else {
             strings = Arrays.asList(listImage.split(","));
         }
@@ -139,7 +138,7 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
         listSizeClothes.add("48");
         listSizeClothes.add("50");
 
-        Button b = getView().findViewById(R.id.button_add_basket);
+        Button b = requireView().findViewById(R.id.button_add_basket);
         b.setOnClickListener(e -> {
             if (secureKod == null) {
                 Toast toast = Toast.makeText(getContext(),

@@ -32,10 +32,10 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
     @SuppressLint("StaticFieldLeak")
     private Context context;
 
-    public AddRequest(Context context, FragmentManager manager, Integer productId, String secureKod, String methodName) {
+    public AddRequest(Context context, FragmentManager manager, String productHash, String secureKod, String methodName) {
         this.context = context;
         this.manager = manager;
-        this.productId = productId;
+        this.productHash = productHash;
         this.secureKod = secureKod;
         this.methodName = methodName;
         this.color = "";
@@ -101,7 +101,7 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
             }
             case "addOneProductToBasket": {
                 RequestBody formBody = new FormBody.Builder()
-                        .add("id", String.valueOf(productId))
+                        .add("productHash", productHash)
                         .add("secureKod", secureKod)
                         .build();
                 request = new Request.Builder()

@@ -97,7 +97,7 @@ public class BasketFragment extends Fragment {
             if (gridAdapterBasket.getProductForPayList() != null) {
                 products = gridAdapterBasket.getProductForPayList();
                 for (BasketProductDTO basketProductDTO : products) {
-                    payDTOIdList.add(new PayDTO(basketProductDTO.getProductId(), basketProductDTO.getImageName(), basketProductDTO.getPrice(), basketProductDTO.getTitle(), basketProductDTO.getCount(),basketProductDTO.getSize()));
+                    payDTOIdList.add(new PayDTO(basketProductDTO.getProductHash(), basketProductDTO.getMainImage(), basketProductDTO.getPrice(), basketProductDTO.getTitle(), basketProductDTO.getCount(),basketProductDTO.getSize()));
                 }
             }
 

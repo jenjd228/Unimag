@@ -13,6 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 import com.example.unimag.R;
 import com.example.unimag.ui.GlobalVar;
 
@@ -61,6 +62,7 @@ public class ProductAdapter extends PagerAdapter {
 
         numberStr.setText((position + 1) + "/" + getCount());
 
+        System.out.println(listImageName.get(position));
         Glide.with(container).load(listImageName.get(position)).into(imageView);
 
         container.addView(itemView);

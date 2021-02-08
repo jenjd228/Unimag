@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PayDTO {
 
-    private Integer productId;
+    private String productHash;
 
-    private String imageName;
+    private String mainImage;
 
     private Integer price;
 
@@ -24,8 +24,8 @@ public class PayDTO {
     @Override
     public String toString() {
         return "{" +
-                "\"productId\":" + productId +
-                ",\"imageName\":\"" + imageName + '\"' +
+                "\"productHash\":" + productHash +
+                ",\"imageName\":\"" + mainImage + '\"' +
                 ",\"price\":" + price +
                 ",\"title\":\"" + title + '\"' +
                 ",\"count\":" + count +
