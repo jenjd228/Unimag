@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.example.unimag.MainActivity;
 import com.example.unimag.R;
 import com.example.unimag.ui.DTO.PartnerProgramDTO;
 import com.example.unimag.ui.Request.GetRequest;

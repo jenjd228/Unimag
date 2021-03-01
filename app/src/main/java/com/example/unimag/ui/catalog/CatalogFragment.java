@@ -18,11 +18,14 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
+import com.example.unimag.MainActivity;
 import com.example.unimag.R;
 import com.example.unimag.ui.DTO.CatalogDTO;
+import com.example.unimag.ui.ProductFragment;
 import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.ThreadCheckingConnection;
 import com.example.unimag.ui.sort.GlobalSort;
+import com.example.unimag.ui.sort.SortFragment;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -39,6 +42,8 @@ public class CatalogFragment extends Fragment {
     private GetRequest getRequest;
 
     private Boolean isEnd = false; //Переменная отвечающая за "товары закончились"
+
+    private int positionScroll = 0; //Последний нажатый товар в прокрутке
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,8 +110,13 @@ public class CatalogFragment extends Fragment {
             CatalogDTO catalogDTO = (CatalogDTO) o;
 
             CatalogFragmentDirections.ActionNavigationCatalogToProductFragment2 action = CatalogFragmentDirections.actionNavigationCatalogToProductFragment2(catalogDTO.getMainImage(), catalogDTO.getTitle(), catalogDTO.getDescriptions(), catalogDTO.getPrice(), catalogDTO.getHash(), catalogDTO.getCategory(), catalogDTO.getListImage());
-            Navigation.findNavController(v).navigate(action);
+            //currentNumberList--; //Иначе потом будут баги
+            ((MainActivity)getActivity()).addInStack(MainActivity.TAB_CATALOG, this);
+            ((MainActivity)getActivity()).navigateIn(MainActivity.TAB_CATALOG, new ProductFragment(), action.getArguments());
         });
+
+        System.out.println(positionScroll);
+        gridView.setSelection(positionScroll);
 
         return view;
     }
@@ -124,11 +134,13 @@ public class CatalogFragment extends Fragment {
         //Listener для кнопки с категорией
         viewCategory.setOnClickListener(v -> {
             NavDirections action = CatalogFragmentDirections.actionNavigationCatalogToSortFragment2();
-            Navigation.findNavController(v).navigate(action);
+            //Navigation.findNavController(v).navigate(action);
+            ((MainActivity)getActivity()).navigateIn(MainActivity.TAB_CATALOG, new SortFragment(), action.getArguments());
         });
 
         //Автообновление каталога
         gridView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            positionScroll = gridView.getScrollY();
             //Если товары еще не закончились
             if (!isEnd) {
                 View lastElement = gridView.getChildAt(gridView.getChildCount() - 1); //Определяем последний товар
@@ -181,5 +193,14 @@ public class CatalogFragment extends Fragment {
         });
 
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        System.out.println("Destroy catalog");
+        System.out.println(positionScroll);
+        currentNumberList--; //Иначе не построится всё
+        //((MainActivity)getActivity()).addInStack(MainActivity.TAB_CATALOG, this);
+        super.onDestroyView();
     }
 }

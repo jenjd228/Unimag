@@ -6,7 +6,7 @@
     app:startDestination="@+id/navigation_catalog">
 
     <fragment
-        android:id="@+id/navigation_catalog"
+        android:id="@id/navigation_catalog"
         android:name="com.example.unimag.ui.catalog.CatalogFragment"
         android:label="@string/title_catalog"
         tools:layout="@layout/fragment_catalog" >
@@ -19,7 +19,7 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_partner_program"
+        android:id="@id/navigation_partner_program"
         android:name="com.example.unimag.ui.partner_program.PartnerProgramFragment"
         android:label="@string/title_partner_program"
         tools:layout="@layout/fragment_partner_program" >
@@ -29,7 +29,7 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_basket"
+        android:id="@id/navigation_basket"
         android:name="com.example.unimag.ui.basket.BasketFragment"
         android:label="@string/title_basket"
         tools:layout="@layout/fragment_basket" >
@@ -42,7 +42,7 @@
     </fragment>
 
     <fragment
-        android:id="@+id/myCabinetFragment"
+        android:id="@id/myCabinetFragment"
         android:name="com.example.unimag.ui.personal_area.MyCabinetFragment"
         android:label="@string/myCabinetFragment"
         tools:layout="@layout/fragment_my_cabinet">

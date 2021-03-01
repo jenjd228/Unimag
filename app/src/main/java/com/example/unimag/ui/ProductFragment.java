@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.unimag.MainActivity;
 import com.example.unimag.R;
 import com.example.unimag.ui.Request.AddRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
@@ -269,4 +270,11 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
         }
 
     }
+
+    /*@Override
+    public void onDestroyView() {
+        System.out.println("Destroy product");
+        ((MainActivity)getActivity()).addInStack(MainActivity.TAB_CATALOG, this);
+        super.onDestroyView();
+    }*/
 }
