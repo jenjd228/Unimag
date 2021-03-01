@@ -20,8 +20,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.example.unimag.MainActivity;
 import com.example.unimag.R;
 import com.example.unimag.ui.ThreadCheckingConnection;
+import com.example.unimag.ui.catalog.CatalogFragment;
 import com.example.unimag.ui.catalog.CustomGridAdapter;
 
 public class SortFragment extends Fragment {
@@ -157,6 +159,9 @@ public class SortFragment extends Fragment {
             Toast toast = Toast.makeText(getContext(),
                     "Сортировка успешно применена!", Toast.LENGTH_SHORT);
             toast.show();
+
+            ((MainActivity)getActivity()).deleteFromStack(MainActivity.TAB_CATALOG);
+            ((MainActivity)getActivity()).navigateIn(MainActivity.TAB_CATALOG, new CatalogFragment(), new Bundle());
         });
 
 

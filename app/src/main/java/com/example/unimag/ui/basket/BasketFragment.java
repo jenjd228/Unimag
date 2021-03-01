@@ -27,6 +27,8 @@ import com.example.unimag.ui.DTO.CatalogDTO;
 import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
 import com.example.unimag.ui.ThreadCheckingConnection;
+import com.example.unimag.ui.pay.RegisterOrderFragment;
+import com.example.unimag.ui.sort.SortFragment;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -105,7 +107,7 @@ public class BasketFragment extends Fragment {
             if (products.size() != 0) {
                 String list = new Gson().toJson(payDTOIdList);
                 NavDirections action = BasketFragmentDirections.actionNavigationBasketToRegisterOrderFragment(list);
-                Navigation.findNavController(requireView()).navigate(action);
+                ((MainActivity)getActivity()).navigateIn(MainActivity.TAB_BASKET, new RegisterOrderFragment(), action.getArguments());
 
             } else {
                 Toast toast = Toast.makeText(getContext(),
@@ -160,6 +162,12 @@ public class BasketFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        ((MainActivity)getActivity()).addInStack(MainActivity.TAB_BASKET, this);
+        super.onDestroyView();
     }
 }
 

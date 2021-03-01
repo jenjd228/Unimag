@@ -19,6 +19,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.example.unimag.MainActivity;
 import com.example.unimag.R;
 import com.example.unimag.SimpleExampleActivity;
 import com.example.unimag.ui.DTO.PayDTO;
@@ -148,6 +149,12 @@ public class RegisterOrderFragment extends Fragment {
             System.out.println(e.getMessage());
         }
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        ((MainActivity)getActivity()).addInStack(MainActivity.TAB_BASKET, this);
+        super.onDestroyView();
     }
 
 

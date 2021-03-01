@@ -26,8 +26,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.example.unimag.MainActivity;
 import com.example.unimag.R;
 import com.example.unimag.ui.DTO.UserDTO;
+import com.example.unimag.ui.FeedbackFragment;
+import com.example.unimag.ui.LoginFragment;
+import com.example.unimag.ui.Order.OrderFragment;
+import com.example.unimag.ui.ProductFragment;
 import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
 import com.example.unimag.ui.ThreadCheckingConnection;
@@ -58,7 +63,7 @@ public class MyCabinetFragment extends Fragment {
         getDataBySecureKod(secureKod);
     }
 
-    @Override
+    /*@Override
     public void onResume() {
         super.onResume();
 
@@ -79,7 +84,7 @@ public class MyCabinetFragment extends Fragment {
                 return false;
             }
         });
-    }
+    }*/
 
     private void getDataBySecureKod(String secureKod) throws ExecutionException, InterruptedException, IOException {
         if (secureKod==null){
@@ -111,6 +116,8 @@ public class MyCabinetFragment extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
         new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
+        ((MainActivity)getActivity()).clearStack(MainActivity.TAB_PERSONAL_AREA);
+
         return inflater.inflate(R.layout.fragment_my_cabinet, container, false);
     }
 
@@ -194,13 +201,12 @@ public class MyCabinetFragment extends Fragment {
         switch (item.getItemId()) {
             //Если нажат пункт "Редактировать профиль"
             case R.id.action_settings:
-                Navigation.findNavController(requireView()).navigate(R.id.action_myCabinetFragment_to_editProfileFragment);
+                ((MainActivity)getActivity()).navigateIn(MainActivity.TAB_PERSONAL_AREA, new EditProfileFragment(), new Bundle());
                 return true;
             //Если нажат пункт "Выйти"
             case R.id.action_exit:
-                //Прописать
                 dataDbHelper.getWritableDatabase().delete(DataDBHelper.TABLE_CONTACTS,null,null);
-                Navigation.findNavController(requireView()).navigate(R.id.loginFragment);
+                ((MainActivity)getActivity()).navigateIn(MainActivity.TAB_PERSONAL_AREA, new LoginFragment(), new Bundle());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -217,7 +223,7 @@ public class MyCabinetFragment extends Fragment {
         buttonMyOrders.setOnClickListener(new View.OnClickListener() { //Переход по кнопке "Мои заказы"
             @Override
             public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_myCabinetFragment_to_orderFragment);
+                ((MainActivity)getActivity()).navigateIn(MainActivity.TAB_PERSONAL_AREA, new OrderFragment(), new Bundle());
             }
         });
 
@@ -226,8 +232,14 @@ public class MyCabinetFragment extends Fragment {
         buttonFeedback.setOnClickListener(new View.OnClickListener() { //Переход по кнопке "Мои заказы"
             @Override
             public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_myCabinetFragment_to_feedbackFragment);
+                ((MainActivity)getActivity()).navigateIn(MainActivity.TAB_PERSONAL_AREA, new FeedbackFragment(), new Bundle());
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        ((MainActivity)getActivity()).addInStack(MainActivity.TAB_PERSONAL_AREA, this);
+        super.onDestroyView();
     }
 }

@@ -271,10 +271,10 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
 
     }
 
-    /*@Override
+    @Override
     public void onDestroyView() {
         System.out.println("Destroy product");
         ((MainActivity)getActivity()).addInStack(MainActivity.TAB_CATALOG, this);
         super.onDestroyView();
-    }*/
+    }
 }

@@ -3,26 +3,28 @@ package com.example.unimag;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.GridView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavBackStackEntry;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.unimag.ui.LoginFragment;
 import com.example.unimag.ui.SqLite.DataDBHelper;
 import com.example.unimag.ui.basket.BasketFragment;
 import com.example.unimag.ui.catalog.CatalogFragment;
 import com.example.unimag.ui.partner_program.PartnerProgramFragment;
+import com.example.unimag.ui.personal_area.MyCabinetFragment;
 import com.example.unimag.ui.sort.GlobalSort;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public static final String TAB_CATALOG  = "TAB_CATALOG";
     public static final String TAB_PARTNER_PROGRAM  = "TAB_PARTNER_PROGRAM";
     public static final String TAB_BASKET  = "TAB_BASKET";
+    public static final String TAB_PERSONAL_AREA = "PERSONAL_AREA";
 
     private String mCurrentTab;    //Текущий выбранный пункт меню
     private String lastCurrentTab; //Предыдущий выбранный пункт меню
@@ -75,12 +78,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         mStacks.put(TAB_CATALOG, new Stack<Fragment>());
         mStacks.put(TAB_PARTNER_PROGRAM, new Stack<Fragment>());
         mStacks.put(TAB_BASKET, new Stack<Fragment>());
+        mStacks.put(TAB_PERSONAL_AREA, new Stack<Fragment>());
         getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CatalogFragment()).addToBackStack(null).commit();
 
         mStacksBundle = new HashMap<String, Stack<Bundle>>();
         mStacksBundle.put(TAB_CATALOG, new Stack<Bundle>());
         mStacksBundle.put(TAB_PARTNER_PROGRAM, new Stack<Bundle>());
         mStacksBundle.put(TAB_BASKET, new Stack<Bundle>());
+        mStacksBundle.put(TAB_PERSONAL_AREA, new Stack<Bundle>());
 
         //Первоначальная инициализация выбранного пункта меню
         mCurrentTab = TAB_CATALOG;
@@ -102,23 +107,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 break;
             case R.id.navigation_partner_program:
                 selectedTab(TAB_PARTNER_PROGRAM);
-                //Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.navigation_partner_program);
                 break;
             case R.id.navigation_basket:
                 selectedTab(TAB_BASKET);
-                //Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.navigation_basket);
                 break;
             case R.id.myCabinetFragment: {
-
-                dataDbHelper = new DataDBHelper(this);
-                secureKod = dataDbHelper.getSecureKod(dataDbHelper);
-                dataDbHelper.close();
-
-                if (secureKod == null) {
-                    Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.loginFragment);
-                } else {
-                    Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.myCabinetFragment);
-                }
+                selectedTab(TAB_PERSONAL_AREA);
                 break;
             }
         }
@@ -132,24 +126,49 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         lastCurrentTab = mCurrentTab;
         mCurrentTab = tabId;
 
+        /*//Фича как в вк (нажат тот же пункт меню)
+        if (lastCurrentTab == mCurrentTab) {
+            //Исключительный случай для оригинального пользователя, нажавшего на каталог дважды
+            if (mCurrentTab.equals(TAB_CATALOG)) {
+                //Если был каталог - устанавливаем позицию скроллинга вверху, иначе - достаем из стека каталог
+                if (mStacks.get(TAB_CATALOG).size() == 0) {
+                    ((GridView)getSupportFragmentManager().getFragments().get(getSupportFragmentManager().getFragments().size() - 1).getView().findViewById(R.id.gridView)).setSelection(0);
+                    return;
+                } else {
+                    navigateIn(TAB_CATALOG, mStacks.get(TAB_CATALOG).lastElement(), mStacksBundle.get(tabId).lastElement());
+                    deleteFromStack(tabId);
+                    return;
+                }
+            } else {
+                clearStack(tabId);
+            }
+        }*/
+
         //Если в первый раз жмем
         if(mStacks.get(tabId).size() == 0){
             //Смотрим куда нажали (каталог и лк - исключительные случаи)
             if(tabId.equals(TAB_CATALOG)){
                 navigateIn(tabId, new CatalogFragment(), new Bundle());
             }else if(tabId.equals(TAB_PARTNER_PROGRAM)){
-                addInStack(lastCurrentTab, getSupportFragmentManager().getFragments().get(getSupportFragmentManager().getFragments().size() - 1));
                 navigateIn(tabId, new PartnerProgramFragment(), new Bundle()); //Переходим на фрагмент
             }else if(tabId.equals(TAB_BASKET)){
-                addInStack(lastCurrentTab, getSupportFragmentManager().getFragments().get(getSupportFragmentManager().getFragments().size() - 1));
                 navigateIn(tabId, new BasketFragment(), new Bundle());
+            } else if(tabId.equals(TAB_PERSONAL_AREA)){
+                dataDbHelper = new DataDBHelper(this);
+                secureKod = dataDbHelper.getSecureKod(dataDbHelper);
+                dataDbHelper.close();
+
+                if (secureKod == null) {
+                    navigateIn(tabId, new LoginFragment(), new Bundle());
+                } else {
+                    navigateIn(tabId, new MyCabinetFragment(), new Bundle());
+                }
             }
 
-        }else {
+        } else {
             //Иначе если там не первая страница - то делаем те же действия, только в конце еще и удаляем последнюю запись из стека только что выбранного пункта меню
-            addInStack(lastCurrentTab,getSupportFragmentManager().getFragments().get(getSupportFragmentManager().getFragments().size()-1)); //Добавляем в стек предыдущий фрагмент
             navigateIn(tabId, mStacks.get(tabId).lastElement(), mStacksBundle.get(tabId).lastElement());
-            deleteFromStack(tabId); //Удаляем из стека текущее
+            deleteFromStack(tabId);
         }
 
         System.out.println("____________________________");
@@ -187,11 +206,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction ft = manager.beginTransaction();
         ft.replace(R.id.nav_host_fragment, fragment);
-        ft.commit();
+        ft.commitNowAllowingStateLoss();
 
         //После удаления фрагмента вызывается дестрой, в котором сохраняется запись в стек
         //Эту запись нужно удалить
-        //...
+        deleteFromStack(mCurrentTab);
 
         System.out.println("конец back");
     }
@@ -206,8 +225,16 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         System.out.println("____________________________");
     }
     public void deleteFromStack(String tag) {
-        mStacks.get(tag).pop();
-        mStacksBundle.get(tag).pop();
+        try {
+            mStacks.get(tag).pop();
+            mStacksBundle.get(tag).pop();
+        } catch (EmptyStackException e) {
+            //Оно выскакивает только в ЛК из-за clearStack в onCreateView фрагментов Логин и МайКабинет
+        }
+    }
+    public void clearStack(String tag) {
+        mStacks.get(tag).clear();
+        mStacksBundle.get(tag).clear();
     }
 
 

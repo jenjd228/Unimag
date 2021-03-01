@@ -22,10 +22,12 @@ public final class CustomGridAdapter extends BaseAdapter {
     private static List<CatalogDTO> listData;
     private LayoutInflater layoutInflater;
     private static CustomGridAdapter instance;
+    private Context context;
 
     public CustomGridAdapter(Context context) {
         layoutInflater = LayoutInflater.from(context);
         listData = new ArrayList<>();
+        this.context = context;
     }
 
     public static CustomGridAdapter setContext(Context context) {
@@ -77,7 +79,7 @@ public final class CustomGridAdapter extends BaseAdapter {
 
         //int imageId = this.getMipmapResIdByName("image");
 
-        Glide.with(convertView).load(catalogDTO.getMainImage()).into(holder.flagView);
+        Glide.with(context).load(catalogDTO.getMainImage()).into(holder.flagView);
 
 
         return convertView;

@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.example.unimag.MainActivity;
 import com.example.unimag.R;
 import com.example.unimag.ui.GlobalVar;
 import com.example.unimag.ui.Request.CheckRequest;
@@ -115,6 +116,12 @@ public class InformationAboutPartnerFragment extends Fragment {
 
         }
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        ((MainActivity)getActivity()).addInStack(MainActivity.TAB_PARTNER_PROGRAM, this);
+        super.onDestroyView();
     }
 
 }

@@ -23,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.example.unimag.MainActivity;
 import com.example.unimag.R;
 import com.example.unimag.ui.MyCustomPatterns;
 import com.example.unimag.ui.Request.SendOrUpdateRequest;
@@ -79,6 +80,7 @@ public class EditProfileFragment extends Fragment {
         editTextPatronymic = requireView().findViewById(R.id.edit_secondSurname);
         saveEdit = requireView().findViewById(R.id.register_button2);
 
+        //Кнопка сохранить изменения
         saveEdit.setOnClickListener(view -> {
             String name = String.valueOf(editTextName.getText());
             String surname = String.valueOf(editTextSurname.getText());
@@ -173,4 +175,9 @@ public class EditProfileFragment extends Fragment {
     }
 
 
+    @Override
+    public void onDestroyView() {
+        ((MainActivity)getActivity()).addInStack(MainActivity.TAB_PERSONAL_AREA, this);
+        super.onDestroyView();
+    }
 }

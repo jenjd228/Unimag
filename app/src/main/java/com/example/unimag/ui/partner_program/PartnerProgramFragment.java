@@ -17,6 +17,7 @@ import com.example.unimag.R;
 import com.example.unimag.ui.DTO.PartnerProgramDTO;
 import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.ThreadCheckingConnection;
+import com.example.unimag.ui.sort.SortFragment;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -77,13 +78,19 @@ public class PartnerProgramFragment extends Fragment {
                                 partner.getPrice(),
                                 partner.getId());
 
-                Navigation.findNavController(v).navigate(action);
+                ((MainActivity)getActivity()).navigateIn(MainActivity.TAB_PARTNER_PROGRAM, new InformationAboutPartnerFragment(), action.getArguments());
             });
 
         } catch (Exception e) {
             e.getMessage();
         }
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        ((MainActivity)getActivity()).addInStack(MainActivity.TAB_PARTNER_PROGRAM, this);
+        super.onDestroyView();
     }
 
 }

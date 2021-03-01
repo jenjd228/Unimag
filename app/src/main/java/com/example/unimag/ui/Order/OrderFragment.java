@@ -16,8 +16,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.example.unimag.MainActivity;
 import com.example.unimag.R;
 import com.example.unimag.ui.DTO.OrdersDTO;
+import com.example.unimag.ui.OrderDetails.OrderDetailsFragment;
+import com.example.unimag.ui.ProductFragment;
 import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
 import com.example.unimag.ui.ThreadCheckingConnection;
@@ -107,7 +110,7 @@ public class OrderFragment extends Fragment {
                 if (!list.equals("Ошибка") && !list.isEmpty()){
                     OrderFragmentDirections.ActionOrderFragmentToOrderDetailsFragment action =
                             OrderFragmentDirections.actionOrderFragmentToOrderDetailsFragment(list);
-                    Navigation.findNavController(v).navigate(action);
+                    ((MainActivity)getActivity()).navigateIn(MainActivity.TAB_PERSONAL_AREA, new OrderDetailsFragment(), action.getArguments());
                 }else {
                     Toast.makeText(requireContext(),"Ошибка",Toast.LENGTH_SHORT).show();
                 }
@@ -115,5 +118,11 @@ public class OrderFragment extends Fragment {
 
         });
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        ((MainActivity)getActivity()).addInStack(MainActivity.TAB_PERSONAL_AREA, this);
+        super.onDestroyView();
     }
 }

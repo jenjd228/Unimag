@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.example.unimag.MainActivity;
 import com.example.unimag.R;
 import com.example.unimag.ui.DTO.Order2ProductDTO;
 import com.example.unimag.ui.DTO.OrdersDTO;
@@ -70,5 +71,11 @@ public class OrderDetailsFragment extends Fragment {
                 gridAdapterForOrderDetails.addList(participantJsonList);
 
         return root;
+    }
+
+    @Override
+    public void onDestroyView() {
+        ((MainActivity)getActivity()).addInStack(MainActivity.TAB_PERSONAL_AREA, this);
+        super.onDestroyView();
     }
 }

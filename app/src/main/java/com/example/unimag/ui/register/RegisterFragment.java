@@ -21,11 +21,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.example.unimag.MainActivity;
 import com.example.unimag.R;
 import com.example.unimag.ui.MyCustomPatterns;
+import com.example.unimag.ui.OrderDetails.OrderDetailsFragment;
 import com.example.unimag.ui.Request.SendOrUpdateRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
 import com.example.unimag.ui.ThreadCheckingConnection;
+import com.example.unimag.ui.personal_area.MyCabinetFragment;
 
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
@@ -291,7 +294,13 @@ public class RegisterFragment extends Fragment {
 
 
     private void goToLK() {
-        Navigation.findNavController(requireView()).navigate(R.id.action_registerFragment_to_myCabinetFragment);
+        ((MainActivity)getActivity()).navigateIn(MainActivity.TAB_PERSONAL_AREA, new MyCabinetFragment(), new Bundle());
+    }
+
+    @Override
+    public void onDestroyView() {
+        ((MainActivity)getActivity()).addInStack(MainActivity.TAB_PERSONAL_AREA, this);
+        super.onDestroyView();
     }
 
 }

@@ -19,9 +19,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.example.unimag.MainActivity;
 import com.example.unimag.R;
 import com.example.unimag.ui.Request.CheckRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
+import com.example.unimag.ui.personal_area.MyCabinetFragment;
+import com.example.unimag.ui.register.RegisterFragment;
 
 import java.util.concurrent.ExecutionException;
 
@@ -35,7 +38,7 @@ public class LoginFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         new ThreadCheckingConnection(getParentFragmentManager(), requireContext());
-
+        ((MainActivity)getActivity()).clearStack(MainActivity.TAB_PERSONAL_AREA);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
 
         return inflater.inflate(R.layout.fragment_login, container, false);
@@ -73,9 +76,12 @@ public class LoginFragment extends Fragment {
             }
         });
 
+        //Листенер для кнопки регистрация
         register.setOnClickListener(e -> {
-            Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_registerFragment);
+            ((MainActivity)getActivity()).navigateIn(MainActivity.TAB_PERSONAL_AREA, new RegisterFragment(), new Bundle());
         });
+
+        //Листенер для кнопки войти
         singIn.setOnClickListener(e -> {
             String password = String.valueOf(this.password.getText());
             String email = String.valueOf(this.login.getText());
@@ -106,7 +112,7 @@ public class LoginFragment extends Fragment {
                             sqLiteDatabase.insert(DataDBHelper.TABLE_CONTACTS, null, contentValues);
                         }
                         dataDBHelper.close();
-                        Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_myCabinetFragment2);
+                        ((MainActivity)getActivity()).navigateIn(MainActivity.TAB_PERSONAL_AREA, new MyCabinetFragment(), new Bundle());
                     }
                 } catch (ExecutionException ex) {
                     ex.printStackTrace();
@@ -124,5 +130,12 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        ((MainActivity)getActivity()).addInStack(MainActivity.TAB_PERSONAL_AREA, this);
+        super.onDestroyView();
     }
 }

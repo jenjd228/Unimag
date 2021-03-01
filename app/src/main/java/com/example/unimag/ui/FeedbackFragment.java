@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.example.unimag.MainActivity;
 import com.example.unimag.R;
 
 
@@ -120,4 +121,9 @@ public class FeedbackFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        ((MainActivity)getActivity()).addInStack(MainActivity.TAB_PERSONAL_AREA, this);
+        super.onDestroyView();
+    }
 }

@@ -16,7 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
 
 import com.example.unimag.MainActivity;
 import com.example.unimag.R;
@@ -65,7 +64,7 @@ public class CatalogFragment extends Fragment {
         gridView = view.findViewById(R.id.gridView);
 
         if (CustomGridAdapter.getInstance() == null) {
-            CustomGridAdapter.setContext(requireContext());
+            CustomGridAdapter.setContext(getActivity().getApplicationContext());
         }
 
         try {
@@ -110,8 +109,6 @@ public class CatalogFragment extends Fragment {
             CatalogDTO catalogDTO = (CatalogDTO) o;
 
             CatalogFragmentDirections.ActionNavigationCatalogToProductFragment2 action = CatalogFragmentDirections.actionNavigationCatalogToProductFragment2(catalogDTO.getMainImage(), catalogDTO.getTitle(), catalogDTO.getDescriptions(), catalogDTO.getPrice(), catalogDTO.getHash(), catalogDTO.getCategory(), catalogDTO.getListImage());
-            //currentNumberList--; //Иначе потом будут баги
-            ((MainActivity)getActivity()).addInStack(MainActivity.TAB_CATALOG, this);
             ((MainActivity)getActivity()).navigateIn(MainActivity.TAB_CATALOG, new ProductFragment(), action.getArguments());
         });
 
@@ -134,7 +131,6 @@ public class CatalogFragment extends Fragment {
         //Listener для кнопки с категорией
         viewCategory.setOnClickListener(v -> {
             NavDirections action = CatalogFragmentDirections.actionNavigationCatalogToSortFragment2();
-            //Navigation.findNavController(v).navigate(action);
             ((MainActivity)getActivity()).navigateIn(MainActivity.TAB_CATALOG, new SortFragment(), action.getArguments());
         });
 
@@ -197,10 +193,8 @@ public class CatalogFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-        System.out.println("Destroy catalog");
-        System.out.println(positionScroll);
         currentNumberList--; //Иначе не построится всё
-        //((MainActivity)getActivity()).addInStack(MainActivity.TAB_CATALOG, this);
+        ((MainActivity)getActivity()).addInStack(MainActivity.TAB_CATALOG, this);
         super.onDestroyView();
     }
 }
