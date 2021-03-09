@@ -19,7 +19,7 @@
     </fragment>
 
     <fragment
-        android:id="@id/navigation_partner_program"
+        android:id="@+id/navigation_partner_program"
         android:name="com.example.unimag.ui.partner_program.PartnerProgramFragment"
         android:label="@string/title_partner_program"
         tools:layout="@layout/fragment_partner_program" >

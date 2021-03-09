@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     //Названия ключей для каждого пункта меню
     public static final String TAB_CATALOG  = "TAB_CATALOG";
-    public static final String TAB_PARTNER_PROGRAM  = "TAB_PARTNER_PROGRAM";
+    //public static final String TAB_PARTNER_PROGRAM  = "TAB_PARTNER_PROGRAM";
     public static final String TAB_BASKET  = "TAB_BASKET";
     public static final String TAB_PERSONAL_AREA = "PERSONAL_AREA";
 
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         BottomNavigationView navView = findViewById(R.id.nav_view);
         //?Связывание пунктов меню с их id фрагментами (mobile_navigation.XML)
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_catalog, R.id.navigation_partner_program, R.id.navigation_basket, R.id.myCabinetFragment)
+                R.id.navigation_catalog, R.id.navigation_basket, R.id.myCabinetFragment)
                 .build();
         //??Создание области действия нашего контроллера для фрагмента nav_host_fragment(в activity_main.xml) - для всего экрана
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -76,14 +76,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         //Первоначальная инициализация всех стеков
         mStacks = new HashMap<String, Stack<Fragment>>();
         mStacks.put(TAB_CATALOG, new Stack<Fragment>());
-        mStacks.put(TAB_PARTNER_PROGRAM, new Stack<Fragment>());
+        //mStacks.put(TAB_PARTNER_PROGRAM, new Stack<Fragment>());
         mStacks.put(TAB_BASKET, new Stack<Fragment>());
         mStacks.put(TAB_PERSONAL_AREA, new Stack<Fragment>());
         getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new CatalogFragment()).addToBackStack(null).commit();
 
         mStacksBundle = new HashMap<String, Stack<Bundle>>();
         mStacksBundle.put(TAB_CATALOG, new Stack<Bundle>());
-        mStacksBundle.put(TAB_PARTNER_PROGRAM, new Stack<Bundle>());
+        //mStacksBundle.put(TAB_PARTNER_PROGRAM, new Stack<Bundle>());
         mStacksBundle.put(TAB_BASKET, new Stack<Bundle>());
         mStacksBundle.put(TAB_PERSONAL_AREA, new Stack<Bundle>());
 
@@ -105,9 +105,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 selectedTab(TAB_CATALOG);
                 //Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.navigation_catalog);
                 break;
-            case R.id.navigation_partner_program:
-                selectedTab(TAB_PARTNER_PROGRAM);
-                break;
+            //case R.id.navigation_partner_program:
+               // selectedTab(TAB_PARTNER_PROGRAM);
+               // break;
             case R.id.navigation_basket:
                 selectedTab(TAB_BASKET);
                 break;
@@ -149,8 +149,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             //Смотрим куда нажали (каталог и лк - исключительные случаи)
             if(tabId.equals(TAB_CATALOG)){
                 navigateIn(tabId, new CatalogFragment(), new Bundle());
-            }else if(tabId.equals(TAB_PARTNER_PROGRAM)){
-                navigateIn(tabId, new PartnerProgramFragment(), new Bundle()); //Переходим на фрагмент
+            //}else if(tabId.equals(TAB_PARTNER_PROGRAM)){
+                //navigateIn(tabId, new PartnerProgramFragment(), new Bundle()); //Переходим на фрагмент
             }else if(tabId.equals(TAB_BASKET)){
                 navigateIn(tabId, new BasketFragment(), new Bundle());
             } else if(tabId.equals(TAB_PERSONAL_AREA)){

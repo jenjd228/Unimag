@@ -118,10 +118,10 @@ public class InformationAboutPartnerFragment extends Fragment {
 
     }
 
-    @Override
+    /*@Override
     public void onDestroyView() {
         ((MainActivity)getActivity()).addInStack(MainActivity.TAB_PARTNER_PROGRAM, this);
         super.onDestroyView();
-    }
+    }*/
 
 }

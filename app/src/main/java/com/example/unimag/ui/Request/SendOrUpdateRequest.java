@@ -59,7 +59,7 @@ public class SendOrUpdateRequest extends AsyncTask<Void, Void, String> {
                         .add("email", email)
                         .build();
                 request = new Request.Builder()
-                        .url("http://" + GlobalVar.ip + ":8080/sendMessage")
+                        .url(GlobalVar.ip + "/sendMessage")
                         .post(formBody)
                         .build();
                 break;
@@ -72,7 +72,7 @@ public class SendOrUpdateRequest extends AsyncTask<Void, Void, String> {
                         .add("birthData", birthDay)
                         .build();
                 request = new Request.Builder()
-                        .url("http://" + GlobalVar.ip + ":8080/firstUpdate")
+                        .url(GlobalVar.ip + "/firstUpdate")
                         .post(formBody)
                         .build();
                 break;
@@ -83,7 +83,7 @@ public class SendOrUpdateRequest extends AsyncTask<Void, Void, String> {
                         .add("secureKod",secureKod)
                         .build();
                 request = new Request.Builder()
-                        .url("http://" + GlobalVar.ip + ":8080/userUpdate")
+                        .url(GlobalVar.ip + "/userUpdate")
                         .post(formBody)
                         .build();
                 break;

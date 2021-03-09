@@ -63,56 +63,56 @@ public class GetRequest extends AsyncTask<Void, Void, String> {
         switch (methodName) {
             case "getOrdersList": {
                 request = new Request.Builder()
-                        .url("http://" + GlobalVar.ip + ":8080/getOrdersList/" + secureKod)
+                        .url(GlobalVar.ip + "/getOrdersList/" + secureKod)
                         .get()
                         .build();
                 break;
             }
             case "getBasketList": {
                 request = new Request.Builder()
-                        .url("http://" + GlobalVar.ip + ":8080/getBasketList/" + secureKod)
+                        .url(GlobalVar.ip + "/getBasketList/" + secureKod)
                         .get()
                         .build();
                 break;
             }
             case "getList": {
                 request = new Request.Builder()
-                        .url("http://" + GlobalVar.ip + ":8080/getList/" + currentNumberList + "/" + GlobalSort.getInstance().getSpinnerSortItemNameCategory() + "/" + GlobalSort.getInstance().getSortByPriceString() + "/" + GlobalSort.getInstance().getWhereFlag())
+                        .url(GlobalVar.ip + "/getList/" + currentNumberList + "/" + GlobalSort.getInstance().getSpinnerSortItemNameCategory() + "/" + GlobalSort.getInstance().getSortByPriceString() + "/" + GlobalSort.getInstance().getWhereFlag())
                         .get()
                         .build();
                 break;
             }
             case "getUser": {
                 request = new Request.Builder()
-                        .url("http://" + GlobalVar.ip + ":8080/getUser/" + secureKod)
+                        .url(GlobalVar.ip + "/getUser/" + secureKod)
                         .get()
                         .build();
                 break;
             }
             case "getPartner": {
                 request = new Request.Builder()
-                        .url("http://" + GlobalVar.ip + ":8080/getPartner/")
+                        .url(GlobalVar.ip + "/getPartner/")
                         .get()
                         .build();
                 break;
             }
             case "getCatalogSize": {
                 request = new Request.Builder()
-                        .url("http://" + GlobalVar.ip + ":8080/getCatalogSize")
+                        .url(GlobalVar.ip + "/getCatalogSize")
                         .get()
                         .build();
                 break;
             }
             case "getPickUpPointList": {
                 request = new Request.Builder()
-                        .url("http://" + GlobalVar.ip + ":8080/getPickUpPointList")
+                        .url(GlobalVar.ip + "/getPickUpPointList")
                         .get()
                         .build();
                 break;
             }
             case "getOrderToProductList": {
                 request = new Request.Builder()
-                        .url("http://" + GlobalVar.ip + ":8080/getOrderToProductList/"+secureKod+"/"+orderId+"")
+                        .url(GlobalVar.ip + "/getOrderToProductList/"+secureKod+"/"+orderId+"")
                         .get()
                         .build();
                 break;

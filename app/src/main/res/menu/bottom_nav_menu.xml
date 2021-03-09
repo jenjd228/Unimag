@@ -8,11 +8,11 @@
         android:title="@string/title_catalog"
         app:showAsAction="withText" />
 
-    <item
+    <!--<item
         android:id="@+id/navigation_partner_program"
         android:icon="@drawable/partner_program"
         android:title="@string/title_partner_program"
-        app:showAsAction="withText"/>
+        app:showAsAction="withText"/>-->
 
     <item
         android:id="@+id/navigation_basket"

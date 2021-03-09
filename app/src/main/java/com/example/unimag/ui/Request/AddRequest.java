@@ -80,7 +80,7 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
                         .add("secureKod", secureKod)
                         .build();
                 request = new Request.Builder()
-                        .url("http://" + GlobalVar.ip + ":8080/addToBasket")
+                        .url(GlobalVar.ip + "/addToBasket")
                         .post(formBody)
                         .build();
                 break;
@@ -94,7 +94,7 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
                         .add("pickUpPoint", pickUpPoint)
                         .build();
                 request = new Request.Builder()
-                        .url("http://" + GlobalVar.ip + ":8080/addToOrders")
+                        .url(GlobalVar.ip + "/addToOrders")
                         .post(formBody)
                         .build();
                 break;
@@ -105,7 +105,7 @@ public class AddRequest extends AsyncTask<Void, Void, String> {
                         .add("secureKod", secureKod)
                         .build();
                 request = new Request.Builder()
-                        .url("http://" + GlobalVar.ip + ":8080/addOneProductToBasket")
+                        .url(GlobalVar.ip + "/addOneProductToBasket")
                         .post(formBody)
                         .build();
                 break;

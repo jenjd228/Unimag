@@ -60,7 +60,7 @@ public class CheckRequest extends AsyncTask<Void, Void, String> {
         switch (methodName) {
             case "checkBySecureKod": {
                 request = new Request.Builder()
-                        .url("http://" + GlobalVar.ip + ":8080/checkBySecureKod/" + secureKod)
+                        .url(GlobalVar.ip + "/checkBySecureKod/" + secureKod)
                         .get()
                         .build();
                 break;
@@ -71,14 +71,14 @@ public class CheckRequest extends AsyncTask<Void, Void, String> {
                         .add("password", password)
                         .build();
                 request = new Request.Builder()
-                        .url("http://" + GlobalVar.ip + ":8080/checkUserForLoginIn")
+                        .url(GlobalVar.ip + "/checkUserForLoginIn")
                         .post(formBody)
                         .build();
                 break;
             }
             case "userIsSub": {
                 request = new Request.Builder()
-                        .url("http://" + GlobalVar.ip + ":8080/userIsSub/" + secureKod)
+                        .url(GlobalVar.ip + "/userIsSub/" + secureKod)
                         .get()
                         .build();
                 break;
@@ -90,7 +90,7 @@ public class CheckRequest extends AsyncTask<Void, Void, String> {
                         .add("password", password)
                         .build();
                 request = new Request.Builder()
-                        .url("http://" + GlobalVar.ip + ":8080/checkByKod")
+                        .url(GlobalVar.ip + "/checkByKod")
                         .post(formBody)
                         .build();
                 break;

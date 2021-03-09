@@ -78,7 +78,7 @@ public class PartnerProgramFragment extends Fragment {
                                 partner.getPrice(),
                                 partner.getId());
 
-                ((MainActivity)getActivity()).navigateIn(MainActivity.TAB_PARTNER_PROGRAM, new InformationAboutPartnerFragment(), action.getArguments());
+                //((MainActivity)getActivity()).navigateIn(MainActivity.TAB_PARTNER_PROGRAM, new InformationAboutPartnerFragment(), action.getArguments());
             });
 
         } catch (Exception e) {
@@ -87,10 +87,10 @@ public class PartnerProgramFragment extends Fragment {
 
     }
 
-    @Override
+    /*@Override
     public void onDestroyView() {
         ((MainActivity)getActivity()).addInStack(MainActivity.TAB_PARTNER_PROGRAM, this);
         super.onDestroyView();
-    }
+    }*/
 
 }

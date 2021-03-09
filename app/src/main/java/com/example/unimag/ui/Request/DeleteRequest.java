@@ -42,7 +42,7 @@ public class DeleteRequest extends AsyncTask<Void, Void, String> {
         switch (methodName) {
             case "deleteBasketProduct": {
                 request = new Request.Builder()
-                        .url("http://" + GlobalVar.ip + ":8080/deleteBasketProduct/" + secureKod + "/" + productHash) // The URL to send the data to
+                        .url(GlobalVar.ip + "/deleteBasketProduct/" + secureKod + "/" + productHash) // The URL to send the data to
                         .get()
                         .build();
                 break;
@@ -53,7 +53,7 @@ public class DeleteRequest extends AsyncTask<Void, Void, String> {
                         .add("secureKod", secureKod)
                         .build();
                 request = new Request.Builder()
-                        .url("http://" + GlobalVar.ip + ":8080/deleteOneProductFromBasket")
+                        .url(GlobalVar.ip + "/deleteOneProductFromBasket")
                         .post(formBody)
                         .build();
                 break;
