@@ -13,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -28,7 +30,6 @@ import com.example.unimag.ui.Request.GetRequest;
 import com.example.unimag.ui.SqLite.DataDBHelper;
 import com.example.unimag.ui.ThreadCheckingConnection;
 import com.example.unimag.ui.pay.RegisterOrderFragment;
-import com.example.unimag.ui.sort.SortFragment;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -42,13 +43,9 @@ import lombok.SneakyThrows;
 public class BasketFragment extends Fragment {
 
     private DataDBHelper dataDbHelper;
-
     private BasketViewModel basketViewModel;
-
     private GridView gridView;
-
     private String secureKod = null;
-
     private GridAdapterBasket gridAdapterBasket;
 
     @Override
@@ -120,6 +117,10 @@ public class BasketFragment extends Fragment {
     @SneakyThrows
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        actionBar.setTitle("Корзина");
+        actionBar.setDisplayHomeAsUpEnabled(false);
 
         new ThreadCheckingConnection(getParentFragmentManager(), requireContext());
 

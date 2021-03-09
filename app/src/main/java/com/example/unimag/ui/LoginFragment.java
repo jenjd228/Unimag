@@ -15,9 +15,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
 import com.example.unimag.MainActivity;
 import com.example.unimag.R;
@@ -39,7 +39,9 @@ public class LoginFragment extends Fragment {
 
         new ThreadCheckingConnection(getParentFragmentManager(), requireContext());
         ((MainActivity)getActivity()).clearStack(MainActivity.TAB_PERSONAL_AREA);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        actionBar.setTitle("Личный кабинет");
+        actionBar.setDisplayHomeAsUpEnabled(false);
 
         return inflater.inflate(R.layout.fragment_login, container, false);
     }

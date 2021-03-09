@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -40,15 +41,10 @@ import lombok.SneakyThrows;
 public class RegisterOrderFragment extends Fragment {
 
     private GridView gridView;
-
     private GridAdapterForPay gridAdapterForPay;
-
     private DataDBHelper dataDbHelper;
-
     private String secureKod;
-
     private String list;
-
     private ArrayList<String> listPickUpPoints = new ArrayList<>();
 
     public RegisterOrderFragment() {
@@ -68,7 +64,9 @@ public class RegisterOrderFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register_order, container, false);
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        actionBar.setTitle("Оформление заказа");
+        actionBar.setDisplayHomeAsUpEnabled(false);
 
         new ThreadCheckingConnection(getParentFragmentManager(), requireContext());
 

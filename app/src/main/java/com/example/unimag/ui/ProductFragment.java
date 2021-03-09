@@ -32,7 +32,6 @@ import com.example.unimag.ui.productFragment.ProductAdapter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 
@@ -175,7 +174,7 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
                     //Настраиваем адаптер
                     AdapterForSpinner adapter = new AdapterForSpinner(requireContext(), R.layout.spinner_row, arraySizeClothes);
                     spinner.setAdapter(adapter);
-                    spinner.setSelection(1);
+                    spinner.setSelection(0);
 
                     dialog.show(); //Отображаем окно
 
@@ -274,6 +273,7 @@ public class ProductFragment extends Fragment { //Класс шаблона ст
     @Override
     public void onDestroyView() {
         System.out.println("Destroy product");
+        listSizeClothes.clear();
         ((MainActivity)getActivity()).addInStack(MainActivity.TAB_CATALOG, this);
         super.onDestroyView();
     }

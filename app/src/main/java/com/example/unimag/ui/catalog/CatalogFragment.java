@@ -14,6 +14,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 
@@ -35,13 +37,9 @@ import lombok.SneakyThrows;
 public class CatalogFragment extends Fragment {
 
     private GridView gridView;
-
     private Integer currentNumberList = 0;
-
     private GetRequest getRequest;
-
     private Boolean isEnd = false; //Переменная отвечающая за "товары закончились"
-
     private int positionScroll = 0; //Последний нажатый товар в прокрутке
 
     @Override
@@ -56,6 +54,10 @@ public class CatalogFragment extends Fragment {
     @SneakyThrows
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        actionBar.setTitle("Каталог");
+        actionBar.setDisplayHomeAsUpEnabled(false);
 
         new ThreadCheckingConnection(getParentFragmentManager(), requireContext());
 

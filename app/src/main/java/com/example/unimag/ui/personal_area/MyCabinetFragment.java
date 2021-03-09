@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -113,7 +114,9 @@ public class MyCabinetFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false); //Убираем стрелочку назад
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        actionBar.setTitle("Личный кабинет");
+        actionBar.setDisplayHomeAsUpEnabled(false);
 
         new ThreadCheckingConnection(getFragmentManager(), requireContext()); //Проверка на подключение к интернету
         ((MainActivity)getActivity()).clearStack(MainActivity.TAB_PERSONAL_AREA);
