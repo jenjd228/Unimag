@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     private DataDBHelper dataDbHelper;
     private String secureKod;
-    GlobalSort globalSort = new GlobalSort();
 
     private HashMap<String, Stack<Fragment>> mStacks;      //Стек с фрагментами
     private HashMap<String, Stack<Bundle>> mStacksBundle;  //Стек с бандлами от фрагментов

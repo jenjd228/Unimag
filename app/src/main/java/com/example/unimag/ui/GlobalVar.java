@@ -4,7 +4,7 @@ package com.example.unimag.ui;
 
 public class GlobalVar {
 
-    public static String ip = "https://unimagserver.herokuapp.com"; //IP сервера
+    public static String ip = "http://192.168.0.102:8080"; //IP сервераhttps://unimagserver.herokuapp.com
     public static boolean isBuy = false; //ВРЕМЕННО куплена ли хоть одна подписка на партнера
 
 

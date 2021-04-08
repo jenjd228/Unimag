@@ -60,6 +60,7 @@ public class GetRequest extends AsyncTask<Void, Void, String> {
         OkHttpClient client = new OkHttpClient();
         Request request = null;
         Response response;
+
         switch (methodName) {
             case "getOrdersList": {
                 request = new Request.Builder()
